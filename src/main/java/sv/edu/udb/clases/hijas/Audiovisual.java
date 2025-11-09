@@ -1,0 +1,34 @@
+package sv.edu.udb.clases.hijas;
+
+import sv.edu.udb.clases.Material;
+
+public class Audiovisual extends Material {
+    private String formato;
+    private int duracion;
+
+
+    public Audiovisual(int idMaterial, TipoMaterial tipoMaterial, String ubicacion,
+                       int cantidadTotal, int cantidadDisponible,
+                       int cantidadPrestada, int cantidadDaniada,
+                       String formato, int duracion) {
+        super(idMaterial, tipoMaterial, ubicacion, cantidadTotal, cantidadDisponible, cantidadPrestada, cantidadDaniada);
+        this.formato = formato;
+        this.duracion = duracion;
+    }
+
+    public String getFormato() {
+        return formato;
+    }
+
+    public void setFormato(String formato) {
+        this.formato = formato;
+    }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
+    }
+}
