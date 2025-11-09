@@ -1,5 +1,5 @@
 
-package sv.edu.udb.biblioteca;
+package sv.edu.udb.vistas.biblioteca;
 
 
 public class Biblioteca extends javax.swing.JFrame {
