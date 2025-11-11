@@ -1,6 +1,8 @@
 package sv.edu.udb.vistas.INICIO;
 
+
 import javax.swing.JOptionPane;
+import sv.edu.udb.vistas.biblioteca.Biblioteca;
 
 
 /**
@@ -257,6 +259,9 @@ public class INICIO extends javax.swing.JFrame {
                     javax.swing.JOptionPane.INFORMATION_MESSAGE);
             txtCorreo.setText("");
             pwdContra.setText("");
+            Biblioteca ventana = new Biblioteca(); 
+            ventana.setVisible(true);               
+            this.dispose();     
 
 
         } else if (correo.equals("docente@udb.edu.sv")&& contrasena.equals("12345")) {
@@ -267,6 +272,9 @@ public class INICIO extends javax.swing.JFrame {
                     javax.swing.JOptionPane.INFORMATION_MESSAGE);
             txtCorreo.setText("");
             pwdContra.setText("");
+            Biblioteca ventana = new Biblioteca(); 
+            ventana.setVisible(true);               
+            this.dispose(); 
 
 
         } else if (correo.equals("alumno@udb.edu.sv")&& contrasena.equals("12345") ){
@@ -276,6 +284,9 @@ public class INICIO extends javax.swing.JFrame {
                     javax.swing.JOptionPane.INFORMATION_MESSAGE);
             txtCorreo.setText("");
             pwdContra.setText("");
+            Biblioteca ventana = new Biblioteca(); 
+            ventana.setVisible(true);               
+            this.dispose(); 
         }else {
             JOptionPane.showMessageDialog(this,
                     "Verifique su nombre de usuario y contraseña e intente de nuevo.",
