@@ -23,7 +23,7 @@ public class Biblioteca extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         tblmaterial = new javax.swing.JTable();
         jPmaterial = new javax.swing.JPanel();
-        btnConsultarmat = new javax.swing.JButton();
+        btnEliminarmat = new javax.swing.JButton();
         jTfTipomaterial = new javax.swing.JTextField();
         jTftitulomaterial = new javax.swing.JTextField();
         jTfUbimaterial = new javax.swing.JTextField();
@@ -34,6 +34,9 @@ public class Biblioteca extends javax.swing.JFrame {
         jLbcanttotal = new javax.swing.JLabel();
         jTfCantdispmat = new javax.swing.JTextField();
         jLbCantDispmat = new javax.swing.JLabel();
+        btnGuardarmat = new javax.swing.JButton();
+        btnnuevomat = new javax.swing.JButton();
+        btneditarpmat = new javax.swing.JButton();
         jPaneluser = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbluser = new javax.swing.JTable();
@@ -45,13 +48,14 @@ public class Biblioteca extends javax.swing.JFrame {
         jLbnombreuser = new javax.swing.JLabel();
         jLbTipouser = new javax.swing.JLabel();
         jTfnombreuser = new javax.swing.JTextField();
-        jTftipouser = new javax.swing.JTextField();
         jTfcorreouser = new javax.swing.JTextField();
         jTfpassworduser = new javax.swing.JTextField();
         jLbcorreouser = new javax.swing.JLabel();
         jlbpassworduser = new javax.swing.JLabel();
         jTfBusquedauser = new javax.swing.JTextField();
         JlbBusquedaUser = new javax.swing.JLabel();
+        btnEdituser = new javax.swing.JButton();
+        javax.swing.JComboBox<String> Tpuser = new javax.swing.JComboBox<>();
         btnnuevouser = new javax.swing.JButton();
         jPanelmora = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -68,7 +72,7 @@ public class Biblioteca extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         tblPrestamo = new javax.swing.JTable();
         jPprestamos = new javax.swing.JPanel();
-        jLbCatprestamo = new javax.swing.JLabel();
+        jLbmaterprestam = new javax.swing.JLabel();
         jLbtituloprestamo = new javax.swing.JLabel();
         jLbautorprestamo = new javax.swing.JLabel();
         jLbAnioPubprestamo = new javax.swing.JLabel();
@@ -76,8 +80,10 @@ public class Biblioteca extends javax.swing.JFrame {
         jTftituloprestamo = new javax.swing.JTextField();
         jTfAutorprestamo = new javax.swing.JTextField();
         jTfAniopubprestamo = new javax.swing.JTextField();
-        btnConsulPrestamo = new javax.swing.JButton();
-        btnreinciarprestamo = new javax.swing.JButton();
+        btnregdev = new javax.swing.JButton();
+        btnregprest = new javax.swing.JButton();
+        JlbBusquedaUser1 = new javax.swing.JLabel();
+        Txtbusqpres = new javax.swing.JTextField();
         jTfBibliotecaamigosDonBosco = new javax.swing.JTextField();
         Administracion = new javax.swing.JMenuBar();
 
@@ -136,8 +142,8 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jPmaterial.setBackground(new java.awt.Color(0, 102, 204));
 
-        btnConsultarmat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnConsultarmat.setText("Consultar");
+        btnEliminarmat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEliminarmat.setText("Eliminar");
 
         jTftitulomaterial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,37 +166,59 @@ public class Biblioteca extends javax.swing.JFrame {
         jLbCantDispmat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLbCantDispmat.setText("Cantidad Disponible");
 
+        btnGuardarmat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnGuardarmat.setText("Guardar");
+
+        btnnuevomat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnnuevomat.setText("Nuevo");
+
+        btneditarpmat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btneditarpmat.setText("Editar");
+
         javax.swing.GroupLayout jPmaterialLayout = new javax.swing.GroupLayout(jPmaterial);
         jPmaterial.setLayout(jPmaterialLayout);
         jPmaterialLayout.setHorizontalGroup(
             jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPmaterialLayout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addComponent(btnConsultarmat)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPmaterialLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
                 .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPmaterialLayout.createSequentialGroup()
-                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLbcanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLbUbicmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
+                        .addComponent(jLbtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTfTipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterialLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnGuardarmat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnnuevomat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btneditarpmat)
+                            .addComponent(btnEliminarmat))
+                        .addGap(16, 16, 16))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterialLayout.createSequentialGroup()
+                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterialLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLbcanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(72, 72, 72))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPmaterialLayout.createSequentialGroup()
+                                        .addGap(15, 15, 15)
+                                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLbUbicmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLbtitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPmaterialLayout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(jLbCantDispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(34, 34, 34)))
+                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTfUbimaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTftitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTfCanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(37, 37, 37))
-                    .addGroup(jPmaterialLayout.createSequentialGroup()
-                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLbtitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLbtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLbCantDispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTfTipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTfCantdispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(45, 45, 45))))
+                            .addComponent(jTfCanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTfCantdispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(45, 45, 45))
         );
         jPmaterialLayout.setVerticalGroup(
             jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,25 +227,31 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTfTipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
+                .addGap(26, 26, 26)
                 .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbtitulomaterial)
                     .addComponent(jTftitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(49, 49, 49)
+                .addGap(34, 34, 34)
                 .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbUbicmaterial)
                     .addComponent(jTfUbimaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51)
+                .addGap(38, 38, 38)
                 .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbcanttotal)
                     .addComponent(jTfCanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(56, 56, 56)
+                .addGap(30, 30, 30)
                 .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbCantDispmat)
                     .addComponent(jTfCantdispmat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
-                .addComponent(btnConsultarmat, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addGap(65, 65, 65)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btneditarpmat)
+                    .addComponent(btnnuevomat))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminarmat)
+                    .addComponent(btnGuardarmat))
+                .addGap(30, 30, 30))
         );
 
         javax.swing.GroupLayout jPmatLayout = new javax.swing.GroupLayout(jPmat);
@@ -226,20 +260,18 @@ public class Biblioteca extends javax.swing.JFrame {
             jPmatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmatLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(143, Short.MAX_VALUE))
         );
         jPmatLayout.setVerticalGroup(
             jPmatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPmatLayout.createSequentialGroup()
-                .addGroup(jPmatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPmatLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jPmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGroup(jPmatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPmaterial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE))
+                .addGap(92, 92, 92))
         );
 
         jtbprestamos.addTab("Material", jPmat);
@@ -261,6 +293,11 @@ public class Biblioteca extends javax.swing.JFrame {
 
         btnguardarUser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnguardarUser.setText("Guardar");
+        btnguardarUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnguardarUserActionPerformed(evt);
+            }
+        });
 
         btneliminarUser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btneliminarUser.setText("Eliminar");
@@ -293,7 +330,12 @@ public class Biblioteca extends javax.swing.JFrame {
         });
 
         JlbBusquedaUser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        JlbBusquedaUser.setText("Biblioteca ");
+        JlbBusquedaUser.setText("Busqueda ");
+
+        btnEdituser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEdituser.setText("Editar");
+
+        Tpuser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnnuevouser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnnuevouser.setText("Nuevo");
@@ -302,46 +344,45 @@ public class Biblioteca extends javax.swing.JFrame {
         jPusuarios.setLayout(jPusuariosLayout);
         jPusuariosLayout.setHorizontalGroup(
             jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPusuariosLayout.createSequentialGroup()
-                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPusuariosLayout.createSequentialGroup()
+            .addGroup(jPusuariosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPusuariosLayout.createSequentialGroup()
                         .addComponent(jLbiduser, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(80, 80, 80)
+                        .addGap(74, 74, 74)
                         .addComponent(jTfiduser))
                     .addGroup(jPusuariosLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLbTipouser)
+                            .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jlbpassworduser, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLbcorreouser, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(57, 57, 57)
+                        .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTfcorreouser)
                             .addGroup(jPusuariosLayout.createSequentialGroup()
-                                .addComponent(jLbnombreuser, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(74, 74, 74)
-                                .addComponent(jTfnombreuser))
-                            .addGroup(jPusuariosLayout.createSequentialGroup()
-                                .addComponent(jLbTipouser, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38)
-                                .addComponent(jTftipouser))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPusuariosLayout.createSequentialGroup()
-                                .addComponent(jLbcorreouser, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(66, 66, 66)
-                                .addComponent(jTfcorreouser))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPusuariosLayout.createSequentialGroup()
-                                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jlbpassworduser, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(JlbBusquedaUser, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnguardarUser, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPusuariosLayout.createSequentialGroup()
-                                        .addGap(60, 60, 60)
-                                        .addComponent(jTfpassworduser))
-                                    .addGroup(jPusuariosLayout.createSequentialGroup()
-                                        .addGap(7, 7, 7)
-                                        .addComponent(btneliminarUser)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 156, Short.MAX_VALUE)
-                                        .addComponent(btnnuevouser)
-                                        .addGap(20, 20, 20))
-                                    .addGroup(jPusuariosLayout.createSequentialGroup()
-                                        .addGap(69, 69, 69)
-                                        .addComponent(jTfBusquedauser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))))))
+                                .addComponent(Tpuser, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 172, Short.MAX_VALUE))
+                            .addComponent(jTfpassworduser, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPusuariosLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnguardarUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnnuevouser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnEdituser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btneliminarUser, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
+                        .addGap(11, 11, 11))
+                    .addGroup(jPusuariosLayout.createSequentialGroup()
+                        .addComponent(JlbBusquedaUser, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60)
+                        .addComponent(jTfBusquedauser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPusuariosLayout.createSequentialGroup()
+                        .addComponent(jLbnombreuser, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(74, 74, 74)
+                        .addComponent(jTfnombreuser)))
                 .addGap(18, 18, 18))
         );
         jPusuariosLayout.setVerticalGroup(
@@ -351,32 +392,35 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JlbBusquedaUser)
                     .addComponent(jTfBusquedauser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLbiduser, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTfiduser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLbiduser)
+                    .addComponent(jTfiduser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLbnombreuser)
                     .addComponent(jTfnombreuser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLbTipouser, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Tpuser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLbTipouser)
-                    .addComponent(jTftipouser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLbcorreouser)
                     .addComponent(jTfcorreouser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlbpassworduser)
                     .addComponent(jTfpassworduser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEdituser)
+                    .addComponent(btnnuevouser))
+                .addGap(18, 18, 18)
                 .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnguardarUser)
-                    .addComponent(btneliminarUser)
-                    .addComponent(btnnuevouser))
-                .addGap(35, 35, 35))
+                    .addComponent(btneliminarUser))
+                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout jPaneluserLayout = new javax.swing.GroupLayout(jPaneluser);
@@ -387,16 +431,16 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addComponent(jPusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 701, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(87, Short.MAX_VALUE))
         );
         jPaneluserLayout.setVerticalGroup(
             jPaneluserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPaneluserLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPaneluserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPaneluserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPusuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -439,35 +483,33 @@ public class Biblioteca extends javax.swing.JFrame {
         });
 
         jlbBusqumora.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jlbBusqumora.setText("Biblioteca ");
+        jlbBusqumora.setText("Busqueda ");
 
         javax.swing.GroupLayout jPmoraLayout = new javax.swing.GroupLayout(jPmora);
         jPmora.setLayout(jPmoraLayout);
         jPmoraLayout.setHorizontalGroup(
             jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPmoraLayout.createSequentialGroup()
-                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPmoraLayout.createSequentialGroup()
-                        .addGap(210, 210, 210)
-                        .addComponent(jTfbusqumora, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPmoraLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPmoraLayout.createSequentialGroup()
-                                .addComponent(jLbidUsermora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmoraLayout.createSequentialGroup()
+                                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlbBusqumora, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLbidUsermora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(71, 71, 71))
                             .addGroup(jPmoraLayout.createSequentialGroup()
                                 .addComponent(jLbnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTfnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(15, 15, 15))
-                            .addGroup(jPmoraLayout.createSequentialGroup()
-                                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnConsultamora)
-                                    .addComponent(jlbBusqumora, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap(14, Short.MAX_VALUE))
+                                .addGap(85, 85, 85)))
+                        .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTfnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTfbusqumora, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPmoraLayout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addComponent(btnConsultamora)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPmoraLayout.setVerticalGroup(
             jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -479,14 +521,14 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGap(59, 59, 59)
                 .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbidUsermora)
-                    .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(76, 76, 76)
                 .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbnombremora)
                     .addComponent(jTfnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
                 .addComponent(btnConsultamora)
-                .addGap(15, 15, 15))
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout jPanelmoraLayout = new javax.swing.GroupLayout(jPanelmora);
@@ -497,20 +539,17 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addComponent(jPmora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(117, Short.MAX_VALUE))
         );
         jPanelmoraLayout.setVerticalGroup(
             jPanelmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelmoraLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanelmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelmoraLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jPmora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelmoraLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(17, Short.MAX_VALUE))
+                    .addComponent(jPmora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         jtbprestamos.addTab("Mora ", jPanelmora);
@@ -553,8 +592,8 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jPprestamos.setBackground(new java.awt.Color(0, 102, 204));
 
-        jLbCatprestamo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLbCatprestamo.setText("Categoria");
+        jLbmaterprestam.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLbmaterprestam.setText("Material");
 
         jLbtituloprestamo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLbtituloprestamo.setText("Titulo");
@@ -565,75 +604,88 @@ public class Biblioteca extends javax.swing.JFrame {
         jLbAnioPubprestamo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLbAnioPubprestamo.setText("Año de publicacion");
 
-        btnConsulPrestamo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnConsulPrestamo.setText("Consultar ");
+        btnregdev.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnregdev.setText("Registrar Devolucion");
 
-        btnreinciarprestamo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnreinciarprestamo.setText("Reiniciar");
+        btnregprest.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnregprest.setText("Registrar Prestamo");
+
+        JlbBusquedaUser1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        JlbBusquedaUser1.setText("Busqueda ");
+
+        Txtbusqpres.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Txtbusqpres.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TxtbusqpresActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPprestamosLayout = new javax.swing.GroupLayout(jPprestamos);
         jPprestamos.setLayout(jPprestamosLayout);
         jPprestamosLayout.setHorizontalGroup(
             jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPprestamosLayout.createSequentialGroup()
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPprestamosLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
                         .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
-                                .addComponent(jLbtituloprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTftituloprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
-                                        .addComponent(jLbAnioPubprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jTfAniopubprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
-                                        .addComponent(jLbCatprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jTfcatprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
-                                        .addComponent(btnConsulPrestamo)
-                                        .addGap(39, 39, 39)
-                                        .addComponent(btnreinciarprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(134, 134, 134))))))
-                    .addGroup(jPprestamosLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jLbautorprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLbtituloprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPprestamosLayout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(jLbautorprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLbAnioPubprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTftituloprestamo, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                            .addComponent(jTfAutorprestamo, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTfAniopubprestamo, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLbmaterprestam, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JlbBusquedaUser1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTfAutorprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Txtbusqpres)
+                            .addComponent(jTfcatprestamo, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))))
                 .addGap(14, 14, 14))
+            .addGroup(jPprestamosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnregprest)
+                .addGap(32, 32, 32)
+                .addComponent(btnregdev)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPprestamosLayout.setVerticalGroup(
             jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPprestamosLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLbCatprestamo)
+                .addGap(21, 21, 21)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(JlbBusquedaUser1)
+                    .addComponent(Txtbusqpres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLbmaterprestam)
                     .addComponent(jTfcatprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(58, 58, 58)
+                .addGap(33, 33, 33)
                 .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbtituloprestamo)
                     .addComponent(jTftituloprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPprestamosLayout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(jTfAutorprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPprestamosLayout.createSequentialGroup()
                         .addGap(70, 70, 70)
-                        .addComponent(jLbautorprestamo)))
+                        .addComponent(jLbautorprestamo))
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(jTfAutorprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(70, 70, 70)
                 .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLbAnioPubprestamo)
-                    .addComponent(jTfAniopubprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                    .addComponent(jTfAniopubprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLbAnioPubprestamo))
+                .addGap(76, 76, 76)
                 .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnConsulPrestamo)
-                    .addComponent(btnreinciarprestamo))
-                .addGap(36, 36, 36))
+                    .addComponent(btnregprest)
+                    .addComponent(btnregdev))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelprestamoLayout = new javax.swing.GroupLayout(jPanelprestamo);
@@ -644,19 +696,17 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jPprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 688, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         jPanelprestamoLayout.setVerticalGroup(
             jPanelprestamoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelprestamoLayout.createSequentialGroup()
-                .addGroup(jPanelprestamoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelprestamoLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(jPprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelprestamoLayout.createSequentialGroup()
+                .addGroup(jPanelprestamoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane7)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelprestamoLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPprestamos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -678,21 +728,21 @@ public class Biblioteca extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(388, 388, 388)
-                        .addComponent(jTfBibliotecaamigosDonBosco, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jtbprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, 1321, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(601, Short.MAX_VALUE))
+                        .addComponent(jtbprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, 1321, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(381, 381, 381)
+                        .addComponent(jTfBibliotecaamigosDonBosco, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTfBibliotecaamigosDonBosco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtbprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -730,6 +780,17 @@ public class Biblioteca extends javax.swing.JFrame {
       
     }//GEN-LAST:event_jTftitulomaterialActionPerformed
 
+    
+    private void btnguardarUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarUserActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_btnguardarUserActionPerformed
+
+    private void TxtbusqpresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtbusqpresActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TxtbusqpresActionPerformed
+
  
     public static void main(String args[]) {
         
@@ -745,19 +806,24 @@ public class Biblioteca extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar Administracion;
     private javax.swing.JLabel JlbBusquedaUser;
+    private javax.swing.JLabel JlbBusquedaUser1;
     private javax.swing.JTable Tblmora;
-    private javax.swing.JButton btnConsulPrestamo;
+    private javax.swing.JTextField Txtbusqpres;
     private javax.swing.JButton btnConsultamora;
-    private javax.swing.JButton btnConsultarmat;
+    private javax.swing.JButton btnEdituser;
+    private javax.swing.JButton btnEliminarmat;
+    private javax.swing.JButton btnGuardarmat;
+    private javax.swing.JButton btneditarpmat;
     private javax.swing.JButton btneliminarUser;
     private javax.swing.JButton btnguardarUser;
+    private javax.swing.JButton btnnuevomat;
     private javax.swing.JButton btnnuevouser;
-    private javax.swing.JButton btnreinciarprestamo;
+    private javax.swing.JButton btnregdev;
+    private javax.swing.JButton btnregprest;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLbAnioPubprestamo;
     private javax.swing.JLabel jLbCantDispmat;
-    private javax.swing.JLabel jLbCatprestamo;
     private javax.swing.JLabel jLbTipouser;
     private javax.swing.JLabel jLbUbicmaterial;
     private javax.swing.JLabel jLbautorprestamo;
@@ -765,6 +831,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JLabel jLbcorreouser;
     private javax.swing.JLabel jLbidUsermora;
     private javax.swing.JLabel jLbiduser;
+    private javax.swing.JLabel jLbmaterprestam;
     private javax.swing.JLabel jLbnombremora;
     private javax.swing.JLabel jLbnombreuser;
     private javax.swing.JLabel jLbtipomaterial;
@@ -799,7 +866,6 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField jTfnombremora;
     private javax.swing.JTextField jTfnombreuser;
     private javax.swing.JTextField jTfpassworduser;
-    private javax.swing.JTextField jTftipouser;
     private javax.swing.JTextField jTftitulomaterial;
     private javax.swing.JTextField jTftituloprestamo;
     private javax.swing.JLabel jlbBusqumora;
