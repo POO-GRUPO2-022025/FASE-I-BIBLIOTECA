@@ -27,16 +27,38 @@ CREATE TABLE materiales
     cantidad_daniado    INT default 0
 );
 
+CREATE TABLE editoriales
+(
+    id_editorial INT PRIMARY KEY,
+    nombre       VARCHAR(150) NOT NULL,
+    pais         VARCHAR(100)
+);
+
+CREATE TABLE autores
+(
+    id_autor   INT PRIMARY KEY,
+    nombre     VARCHAR(100) NOT NULL,
+    apellidos  VARCHAR(120),
+    pais       VARCHAR(100)
+);
 
 CREATE TABLE libros
 (
     id_material INT PRIMARY KEY,
-    autor       VARCHAR(100),
-    editorial   VARCHAR(100),
+    id_editorial INT,
     isbn        VARCHAR(20),
-    FOREIGN KEY (id_material) REFERENCES materiales (id_material) ON DELETE CASCADE
+    FOREIGN KEY (id_material) REFERENCES materiales (id_material) ON DELETE CASCADE,
+	FOREIGN KEY (id_editorial) REFERENCES editoriales (id_editorial) ON DELETE SET NULL
 );
 
+CREATE TABLE libro_autor
+(
+	id_libro_autor INT AUTO_INCREMENT PRIMARY KEY,
+    id_material INT NOT NULL,
+    id_autor    INT NOT NULL,
+	FOREIGN KEY (id_material) REFERENCES libros (id_material) ON DELETE CASCADE,
+	FOREIGN KEY (id_autor) REFERENCES autores (id_autor) ON DELETE CASCADE
+);
 
 CREATE TABLE revistas
 (
