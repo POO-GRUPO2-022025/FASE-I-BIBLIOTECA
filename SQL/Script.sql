@@ -29,7 +29,7 @@ CREATE TABLE materiales
 
 CREATE TABLE editoriales
 (
-    id_editorial INT PRIMARY KEY,
+    id_editorial INT AUTO_INCREMENT PRIMARY KEY,
     nombre       VARCHAR(150) NOT NULL,
     pais         VARCHAR(100)
 );

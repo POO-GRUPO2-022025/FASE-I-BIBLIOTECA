@@ -1,13 +1,31 @@
 package sv.edu.udb.vistas.biblioteca;
 
+import sv.edu.udb.Datos.EditorialDB;
+import sv.edu.udb.clases.Editorial;
+import javax.swing.table.DefaultTableModel;
+
 
 public class Biblioteca extends javax.swing.JFrame {
-
+    EditorialDB editorialDB = null;
+    private int idEditorialSeleccionado = 0;
     
     public Biblioteca() {
+        editorialDB = new EditorialDB();
         initComponents();
     }
 
+    private void actualizarTablaEditorial() {
+        tblEditorial.setModel(editorialDB.selectEditoriales());
+    }
+
+    private void limpiarFormularioEditorial() {
+        txtNombreEditorial.setText("");
+        txtPaisEditorial.setText("");
+        btnGuardarEditorial.setText("Guardar");
+        btnEliminarEditorial.setEnabled(false);
+        idEditorialSeleccionado = 0;
+        actualizarTablaEditorial();
+    }
  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -18,6 +36,18 @@ public class Biblioteca extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jtbprestamos = new javax.swing.JTabbedPane();
         jpinicio = new javax.swing.JPanel();
+        jpEditorial = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblEditorial = new javax.swing.JTable();
+        jPmaterial1 = new javax.swing.JPanel();
+        btnConsultarmat1 = new javax.swing.JButton();
+        txtNombreEditorial = new javax.swing.JTextField();
+        txtPaisEditorial = new javax.swing.JTextField();
+        jLbtipomaterial1 = new javax.swing.JLabel();
+        jLbtitulomaterial1 = new javax.swing.JLabel();
+        btnGuardarEditorial = new javax.swing.JButton();
+        btnEliminarEditorial = new javax.swing.JButton();
+        btnLimpiarEditorial = new javax.swing.JButton();
         jPmat = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblmaterial = new javax.swing.JTable();
@@ -123,6 +153,133 @@ public class Biblioteca extends javax.swing.JFrame {
         );
 
         jtbprestamos.addTab("Inicio", jpinicio);
+
+        tblEditorial.setModel(editorialDB.selectEditoriales());
+        tblEditorial.setToolTipText("");
+        tblEditorial.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblEditorialMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                tblEditorialMouseEntered(evt);
+            }
+        });
+        jScrollPane6.setViewportView(tblEditorial);
+
+        jPmaterial1.setBackground(new java.awt.Color(0, 102, 204));
+
+        btnConsultarmat1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnConsultarmat1.setText("Consultar");
+
+        txtPaisEditorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPaisEditorialActionPerformed(evt);
+            }
+        });
+
+        jLbtipomaterial1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLbtipomaterial1.setText("Nombre:");
+
+        jLbtitulomaterial1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLbtitulomaterial1.setText("Pais");
+
+        btnGuardarEditorial.setText("Guardar");
+        btnGuardarEditorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarEditorialActionPerformed(evt);
+            }
+        });
+
+        btnEliminarEditorial.setText("Eliminar");
+        btnEliminarEditorial.setEnabled(false);
+        btnEliminarEditorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarEditorialActionPerformed(evt);
+            }
+        });
+
+        btnLimpiarEditorial.setText("Limpiar");
+        btnLimpiarEditorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarEditorialActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPmaterial1Layout = new javax.swing.GroupLayout(jPmaterial1);
+        jPmaterial1.setLayout(jPmaterial1Layout);
+        jPmaterial1Layout.setHorizontalGroup(
+            jPmaterial1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPmaterial1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(jPmaterial1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPmaterial1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtPaisEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37))
+                    .addGroup(jPmaterial1Layout.createSequentialGroup()
+                        .addGroup(jPmaterial1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLbtitulomaterial1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLbtipomaterial1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGuardarEditorial, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(jPmaterial1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPmaterial1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnEliminarEditorial)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLimpiarEditorial))
+                            .addGroup(jPmaterial1Layout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addComponent(txtNombreEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(29, Short.MAX_VALUE))))
+            .addGroup(jPmaterial1Layout.createSequentialGroup()
+                .addGap(121, 121, 121)
+                .addComponent(btnConsultarmat1)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPmaterial1Layout.setVerticalGroup(
+            jPmaterial1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterial1Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPmaterial1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLbtipomaterial1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombreEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44)
+                .addGroup(jPmaterial1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLbtitulomaterial1)
+                    .addComponent(txtPaisEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPmaterial1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardarEditorial)
+                    .addComponent(btnEliminarEditorial)
+                    .addComponent(btnLimpiarEditorial))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE)
+                .addComponent(btnConsultarmat1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
+        );
+
+        javax.swing.GroupLayout jpEditorialLayout = new javax.swing.GroupLayout(jpEditorial);
+        jpEditorial.setLayout(jpEditorialLayout);
+        jpEditorialLayout.setHorizontalGroup(
+            jpEditorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpEditorialLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPmaterial1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(295, Short.MAX_VALUE))
+        );
+        jpEditorialLayout.setVerticalGroup(
+            jpEditorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpEditorialLayout.createSequentialGroup()
+                .addGroup(jpEditorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpEditorialLayout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jPmaterial1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+
+        jtbprestamos.addTab("Editoriales", jpEditorial);
 
         tblmaterial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1044,6 +1201,122 @@ private void limpiarCamposPrestamo() {
         // TODO add your handling code here:
     }                                                   
 
+    private void tblEditorialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEditorialMouseClicked
+        int fila = tblEditorial.rowAtPoint(evt.getPoint());
+        int columna = tblEditorial.columnAtPoint(evt.getPoint());
+
+        if ((fila > -1) && (columna > -1)){
+            DefaultTableModel modelo = (DefaultTableModel) tblEditorial.getModel();
+            idEditorialSeleccionado = Integer.parseInt(modelo.getValueAt(fila,0).toString());
+            txtNombreEditorial.setText(modelo.getValueAt(fila,1).toString());
+            txtPaisEditorial.setText(modelo.getValueAt(fila,2).toString());
+            btnGuardarEditorial.setText("Editar");
+            btnEliminarEditorial.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblEditorialMouseClicked
+
+    private void txtPaisEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaisEditorialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPaisEditorialActionPerformed
+
+    private void tblEditorialMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEditorialMouseEntered
+        
+    }//GEN-LAST:event_tblEditorialMouseEntered
+
+    private void btnLimpiarEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarEditorialActionPerformed
+            limpiarFormularioEditorial();
+    }//GEN-LAST:event_btnLimpiarEditorialActionPerformed
+
+    private void btnGuardarEditorialActionPerformed(java.awt.event.ActionEvent evt) {
+        String nombre = txtNombreEditorial.getText().trim();
+        String pais = txtPaisEditorial.getText().trim();
+        
+        if (nombre.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "El nombre de la editorial es obligatorio", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (pais.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "El país de la editorial es obligatorio", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (btnGuardarEditorial.getText().equals("Guardar")) {
+            Editorial editorial = new Editorial(nombre, pais);
+            int resultado = editorialDB.insert(editorial);
+            
+            if (resultado > 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Editorial guardada correctamente", 
+                    "Éxito", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                limpiarFormularioEditorial();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error al guardar la editorial", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            Editorial editorial = new Editorial(idEditorialSeleccionado, nombre, pais);
+            int resultado = editorialDB.update(editorial);
+            
+            if (resultado > 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Editorial actualizada correctamente", 
+                    "Éxito", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                limpiarFormularioEditorial();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error al actualizar la editorial", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void btnEliminarEditorialActionPerformed(java.awt.event.ActionEvent evt) {
+        if (idEditorialSeleccionado == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Debe seleccionar una editorial para eliminar", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this, 
+            "¿Está seguro que desea eliminar esta editorial?", 
+            "Confirmar eliminación", 
+            javax.swing.JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+            Editorial editorial = new Editorial();
+            editorial.setIdEditorial(idEditorialSeleccionado);
+            
+            int resultado = editorialDB.delete(editorial);
+            
+            if (resultado > 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Editorial eliminada correctamente", 
+                    "Éxito", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                limpiarFormularioEditorial();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error al eliminar la editorial", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
  
     public static void main(String args[]) {
         
@@ -1067,6 +1340,10 @@ private void limpiarCamposPrestamo() {
     private javax.swing.JButton btnEliminarmat;
     private javax.swing.JButton btnGuardarmat;
     private javax.swing.JButton btneditarpmat;
+    private javax.swing.JButton btnConsultarmat1;
+    private javax.swing.JButton btnEliminarEditorial;
+    private javax.swing.JButton btnGuardarEditorial;
+    private javax.swing.JButton btnLimpiarEditorial;
     private javax.swing.JButton btneliminarUser;
     private javax.swing.JButton btnguardarUser;
     private javax.swing.JButton btnnuevomat;
@@ -1088,19 +1365,23 @@ private void limpiarCamposPrestamo() {
     private javax.swing.JLabel jLbnombremora;
     private javax.swing.JLabel jLbnombreuser;
     private javax.swing.JLabel jLbtipomaterial;
+    private javax.swing.JLabel jLbtipomaterial1;
     private javax.swing.JLabel jLbtitulomaterial;
+    private javax.swing.JLabel jLbtitulomaterial1;
     private javax.swing.JLabel jLbtituloprestamo;
     private javax.swing.JPanel jPanelmora;
     private javax.swing.JPanel jPanelprestamo;
     private javax.swing.JPanel jPaneluser;
     private javax.swing.JPanel jPmat;
     private javax.swing.JPanel jPmaterial;
+    private javax.swing.JPanel jPmaterial1;
     private javax.swing.JPanel jPmora;
     private javax.swing.JPanel jPprestamos;
     private javax.swing.JPanel jPusuarios;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTfAniopubprestamo;
@@ -1123,10 +1404,14 @@ private void limpiarCamposPrestamo() {
     private javax.swing.JTextField jTftituloprestamo;
     private javax.swing.JLabel jlbBusqumora;
     private javax.swing.JLabel jlbpassworduser;
+    private javax.swing.JPanel jpEditorial;
     private javax.swing.JPanel jpinicio;
     private javax.swing.JTabbedPane jtbprestamos;
+    private javax.swing.JTable tblEditorial;
     private javax.swing.JTable tblPrestamo;
     private javax.swing.JTable tblmaterial;
     private javax.swing.JTable tbluser;
+    private javax.swing.JTextField txtNombreEditorial;
+    private javax.swing.JTextField txtPaisEditorial;
     // End of variables declaration//GEN-END:variables
 }

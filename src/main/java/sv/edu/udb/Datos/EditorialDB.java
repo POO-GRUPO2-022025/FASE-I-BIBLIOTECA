@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import sv.edu.udb.clases.Editorial;
 
 public class EditorialDB {
-    private final String SQL_INSERT = "INSERT INTO editoriales(id_editorial, nombre, pais) VALUES(?,?,?)";
+    private final String SQL_INSERT = "INSERT INTO editoriales(nombre, pais) VALUES(?,?)";
     private final String SQL_UPDATE = "UPDATE editoriales SET nombre=?, pais=? WHERE id_editorial=?";
     private final String SQL_DELETE = "DELETE FROM editoriales WHERE id_editorial = ?";
     private final String SQL_SELECT = "SELECT id_editorial, nombre, pais FROM editoriales ORDER BY id_editorial";
@@ -23,7 +23,6 @@ public class EditorialDB {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_INSERT);
             int index = 1;
-            stmt.setInt(index++, editorial.getIdEditorial());
             stmt.setString(index++, editorial.getNombre());
             stmt.setString(index, editorial.getPais());
             rows = stmt.executeUpdate();
@@ -146,13 +145,6 @@ public class EditorialDB {
             Conexion.close(conn);
         }
         
-        /*
-         * Retornamos el DefaultTableModel completamente construido.
-         * Ahora contiene:
-         * - Los nombres de las columnas (id_editorial, nombre, pais)
-         * - Todas las filas con los datos de cada editorial
-         * Este objeto se puede usar directamente con un JTable para mostrar los datos en pantalla.
-         */
         return dtm;
     }
 }
