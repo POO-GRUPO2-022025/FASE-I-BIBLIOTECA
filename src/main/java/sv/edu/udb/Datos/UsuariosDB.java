@@ -2,6 +2,7 @@ package sv.edu.udb.Datos;
 
 import sv.edu.udb.clases.Usuarios;
 
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
 public class UsuariosDB {
@@ -10,6 +11,7 @@ public class UsuariosDB {
     private final String SQL_UPDATE = "UPDATE usuarios SET nombre=?, tipo_usuario=?, correo=?, password=? WHERE id_usuario=?\n";
     private final String SQL_DELETE = "DELETE FROM usuarios where id_usuario=?";
     private final String SQL_SELECT = "SELECT id_usuario,nombre,tipo_usuario,correo,password FROM usuarios WHERE id_usuario=?";
+    private final String SQL_SELECT_ALL = "SELECT id_usuario, nombre, tipo_usuario, correo, password FROM usuarios ORDER BY id_usuario";
 
     //Metodo insert crea un nuevo usuario en la base de datos y devuelve el objeto completo con los datos
 
@@ -132,7 +134,42 @@ public class UsuariosDB {
         return usuario;
     }
 
-
+    public DefaultTableModel selectUsuarios() {
+        DefaultTableModel dtm = new DefaultTableModel();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_ALL);
+            rs = stmt.executeQuery();
+            
+            ResultSetMetaData meta = rs.getMetaData();
+            int numberOfColumns = meta.getColumnCount();
+            
+            for (int i = 1; i <= numberOfColumns; i++) {
+                dtm.addColumn(meta.getColumnLabel(i));
+            }
+            
+            while (rs.next()) {
+                Object[] fila = new Object[numberOfColumns];
+                for (int i = 0; i < numberOfColumns; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                dtm.addRow(fila);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        
+        return dtm;
+    }
 
 
 }

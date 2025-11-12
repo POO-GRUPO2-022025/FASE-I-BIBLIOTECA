@@ -2,6 +2,7 @@ package sv.edu.udb.Datos;
 
 import sv.edu.udb.clases.Material;
 
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
 public class MaterialesDB {
@@ -9,6 +10,7 @@ public class MaterialesDB {
     private final String SQL_UPDATE = "UPDATE materiales SET tipo_material=?, titulo=?, ubicacion=?, cantidad_total=?, cantidad_disponible=?, cantidad_prestados=?, cantidad_daniado=? WHERE id_material=?";
     private final String SQL_DELETE = "DELETE FROM materiales WHERE id_material=?";
     private final String SQL_SELECT = "SELECT * FROM materiales WHERE id_material=?";
+    private final String SQL_SELECT_ALL = "SELECT id_material, tipo_material, titulo, ubicacion, cantidad_total, cantidad_disponible, cantidad_prestados, cantidad_daniado FROM materiales ORDER BY id_material";
 
     public Material insert(Material material) {
         Connection conn = null;
@@ -150,5 +152,41 @@ public class MaterialesDB {
         return material;
     }
 
+    public DefaultTableModel selectMateriales() {
+        DefaultTableModel dtm = new DefaultTableModel();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_ALL);
+            rs = stmt.executeQuery();
+            
+            ResultSetMetaData meta = rs.getMetaData();
+            int numberOfColumns = meta.getColumnCount();
+            
+            for (int i = 1; i <= numberOfColumns; i++) {
+                dtm.addColumn(meta.getColumnLabel(i));
+            }
+            
+            while (rs.next()) {
+                Object[] fila = new Object[numberOfColumns];
+                for (int i = 0; i < numberOfColumns; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                dtm.addRow(fila);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        
+        return dtm;
+    }
 
 }

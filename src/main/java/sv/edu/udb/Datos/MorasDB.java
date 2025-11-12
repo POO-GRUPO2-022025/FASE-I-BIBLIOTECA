@@ -3,6 +3,7 @@ package sv.edu.udb.Datos;
 import sv.edu.udb.clases.Mora;
 import sv.edu.udb.clases.Usuarios;
 
+import javax.swing.table.DefaultTableModel;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ public class MorasDB {
     private final String SQL_UPDATE = "UPDATE moras SET fecha_inicio =?,tipo_usuario =?,tarifa_diaria =? WHERE id_mora = ?\n";
     private final String SQL_DELETE = "DELETE FROM moras WHERE id_mora = ?";
     private final String SQL_SELECT = "SELECT id_mora, fecha_inicio, tipo_usuario, tarifa_diaria FROM moras WHERE id_mora = ?";
+    private final String SQL_SELECT_ALL = "SELECT id_mora, fecha_inicio, tipo_usuario, tarifa_diaria FROM moras ORDER BY id_mora";
 
     public Mora insert(LocalDate fechaInicio, Usuarios.TipoUsuario tipoUsuario,
                        BigDecimal taridaDiaria) {
@@ -127,6 +129,43 @@ public class MorasDB {
             Conexion.close(conn);
         }
         return mora;
+    }
+
+    public DefaultTableModel selectMoras() {
+        DefaultTableModel dtm = new DefaultTableModel();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_ALL);
+            rs = stmt.executeQuery();
+            
+            ResultSetMetaData meta = rs.getMetaData();
+            int numberOfColumns = meta.getColumnCount();
+            
+            for (int i = 1; i <= numberOfColumns; i++) {
+                dtm.addColumn(meta.getColumnLabel(i));
+            }
+            
+            while (rs.next()) {
+                Object[] fila = new Object[numberOfColumns];
+                for (int i = 0; i < numberOfColumns; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                dtm.addRow(fila);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        
+        return dtm;
     }
 
 }
