@@ -1,4 +1,3 @@
-
 package sv.edu.udb.vistas.biblioteca;
 
 
@@ -334,8 +333,15 @@ public class Biblioteca extends javax.swing.JFrame {
 
         btnEdituser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEdituser.setText("Editar");
+          btnEdituser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEdituserActionPerformed(evt);
+            }
+        });
 
-        Tpuser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+
+        Tpuser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alumno", "Profesor", "", "" }));
 
         btnnuevouser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnnuevouser.setText("Nuevo");
@@ -564,10 +570,12 @@ public class Biblioteca extends javax.swing.JFrame {
                 "Id", "Categoria", "Titulo", "Autor", "Año de publicacion", "Fecha de Devolución", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
-            };
-            boolean[] canEdit = new boolean [] {
+          Class[] types = new Class [] {
+    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+};
+
+          boolean[] canEdit = new boolean [] {
                 true, true, true, true, true, true, false
             };
 
@@ -607,8 +615,20 @@ public class Biblioteca extends javax.swing.JFrame {
         btnregdev.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnregdev.setText("Registrar Devolucion");
 
+            btnregdev.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+             btnregprestActionPerformed(evt);
+            }
+        });
+
         btnregprest.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnregprest.setText("Registrar Prestamo");
+           btnregprest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnregprestActionPerformed(evt);
+            }
+        });
+
 
         JlbBusquedaUser1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         JlbBusquedaUser1.setText("Busqueda ");
@@ -756,7 +776,62 @@ public class Biblioteca extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jTfiduserActionPerformed
 
+    //BOTON DE BUSQUEDA DE USUARIO
+
     private void jTfBusquedauserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTfBusquedauserActionPerformed
+
+        String buscarID = jTfBusquedauser.getText().trim();
+
+    if (buscarID.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Ingrese un ID para buscar.", 
+            "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    javax.swing.table.DefaultTableModel model = 
+        (javax.swing.table.DefaultTableModel) tbluser.getModel();
+
+    boolean encontrado = false;
+
+    for (int i = 0; i < model.getRowCount(); i++) {
+        Object id = model.getValueAt(i, 0); // 
+        if (id != null && buscarID.equalsIgnoreCase(id.toString())) {
+
+            //  TABLA
+            jTfiduser.setText(model.getValueAt(i, 0).toString());  
+            jTfnombreuser.setText(model.getValueAt(i, 1).toString()); 
+            String tipo = model.getValueAt(i, 2).toString(); 
+            jTfcorreouser.setText(model.getValueAt(i, 3).toString()); 
+            jTfpassworduser.setText(model.getValueAt(i, 4).toString());
+
+
+          
+            if (model.getColumnCount() > 4 && model.getValueAt(i, 4) != null) {
+                jTfpassworduser.setText(model.getValueAt(i, 4).toString());
+            }
+
+            
+            for (java.awt.Component c : jPusuarios.getComponents()) {
+                if (c instanceof javax.swing.JComboBox) {
+                    javax.swing.JComboBox<?> combo = (javax.swing.JComboBox<?>) c;
+                    combo.setSelectedItem(tipo);
+                    break;
+                }
+            }
+
+            tbluser.setRowSelectionInterval(i, i);
+
+            encontrado = true;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "No se encontró un usuario con ese ID.", 
+            "Sin resultados", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+
         
     }//GEN-LAST:event_jTfBusquedauserActionPerformed
 
@@ -780,16 +855,194 @@ public class Biblioteca extends javax.swing.JFrame {
       
     }//GEN-LAST:event_jTftitulomaterialActionPerformed
 
-    
+    //TABLA  USUARIO
     private void btnguardarUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarUserActionPerformed
-        // TODO add your handling code here:
-        
+        java.awt.Component parent = javax.swing.SwingUtilities.getWindowAncestor(btnguardarUser);
+
+
+String id = jTfiduser.getText().trim();
+String nombre = jTfnombreuser.getText().trim();
+String correo = jTfcorreouser.getText().trim();
+String password = jTfpassworduser.getText().trim();
+
+String tipo = "";
+for (java.awt.Component c : jPusuarios.getComponents()) {
+    if (c instanceof javax.swing.JComboBox) {
+        Object sel = ((javax.swing.JComboBox<?>) c).getSelectedItem();
+        tipo = sel == null ? "" : sel.toString();
+        break;
+    }
+}
+
+if (id.isEmpty() || nombre.isEmpty()) {
+    javax.swing.JOptionPane.showMessageDialog(parent,
+        "Los campos ID y Nombre son obligatorios.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+    return;
+}
+javax.swing.table.DefaultTableModel model;
+try {
+    model = (javax.swing.table.DefaultTableModel) tbluser.getModel();
+} catch (ClassCastException ex) {
+    javax.swing.JOptionPane.showMessageDialog(parent,
+        "El modelo de la tabla no es Correcto.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+for (int r = 0; r < model.getRowCount(); r++) {
+    Object existing = model.getValueAt(r, 0);
+    if (existing != null && id.equals(String.valueOf(existing))) {
+        javax.swing.JOptionPane.showMessageDialog(parent,
+            "Ya existe un usuario con ese ID.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+}
+
+Object[] fila = new Object[] { id, nombre, tipo, correo };
+
+model.insertRow(0,fila);
+
+javax.swing.JOptionPane.showMessageDialog(parent, "✅ Usuario guardado correctamente.");
+
+jTfiduser.setText("");
+jTfnombreuser.setText("");
+jTfcorreouser.setText("");
+jTfpassworduser.setText("");
+
+for (java.awt.Component c : jPusuarios.getComponents()) {
+    if (c instanceof javax.swing.JComboBox) {
+        ((javax.swing.JComboBox<?>) c).setSelectedIndex(0);
+        break;
+    }
+    }
         
     }//GEN-LAST:event_btnguardarUserActionPerformed
-
+        
     private void TxtbusqpresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtbusqpresActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TxtbusqpresActionPerformed
+}    //BOTON EDITAR
+   private void btnEdituserActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    
+    String id = jTfiduser.getText().trim();
+    if (id.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Debe ingresar o buscar un usuario antes de editar.",
+            "Aviso",
+            javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    String nombre = jTfnombreuser.getText().trim();
+    String correo = jTfcorreouser.getText().trim();
+    String password = jTfpassworduser.getText().trim();
+
+    String tipo = "";
+    for (java.awt.Component c : jPusuarios.getComponents()) {
+        if (c instanceof javax.swing.JComboBox) {
+            Object sel = ((javax.swing.JComboBox<?>) c).getSelectedItem();
+            tipo = sel == null ? "" : sel.toString();
+            break;
+        }
+    }
+
+    javax.swing.table.DefaultTableModel model = 
+        (javax.swing.table.DefaultTableModel) tbluser.getModel();
+
+    boolean encontrado = false;
+
+    for (int i = 0; i < model.getRowCount(); i++) {
+        Object existingID = model.getValueAt(i, 0);
+        if (existingID != null && id.equalsIgnoreCase(existingID.toString())) {
+         
+            model.setValueAt(nombre, i, 1);
+            model.setValueAt(tipo, i, 2);
+            model.setValueAt(correo, i, 3);
+            if (model.getColumnCount() > 4) {
+                model.setValueAt(password, i, 4);
+            }
+
+            tbluser.setRowSelectionInterval(i, i);
+            encontrado = true;
+            break;
+        }
+    }
+
+    if (encontrado) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            " Usuario actualizado correctamente.",
+            "Éxito",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        jTfiduser.setText("");
+        jTfnombreuser.setText("");
+        jTfcorreouser.setText("");
+        jTfpassworduser.setText("");
+
+        for (java.awt.Component c : jPusuarios.getComponents()) {
+            if (c instanceof javax.swing.JComboBox) {
+                ((javax.swing.JComboBox<?>) c).setSelectedIndex(0);
+                break;
+            }
+        }
+
+        jTfiduser.setEnabled(true);
+
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "No se encontró ningún usuario con ese ID para editar.",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+}            //BOTON DE REGISTRAR PRESTAMO
+       private void btnregprestActionPerformed(java.awt.event.ActionEvent evt) {   
+       
+    java.awt.Component parent = javax.swing.SwingUtilities.getWindowAncestor(btnregprest);
+
+
+    String id = "";  
+    String categoria = ""; 
+    String titulo = jTftituloprestamo.getText().trim();
+    String autor = jTfAutorprestamo.getText().trim();
+    String anioPub = jTfAniopubprestamo.getText().trim();
+    String fechaDevolucion = ""; 
+    String estado = "Pendiente"; 
+
+    if (titulo.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(parent,
+            "Debe llenar al menos el título del préstamo.",
+            "Campos obligatorios",
+            javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    javax.swing.table.DefaultTableModel model = 
+        (javax.swing.table.DefaultTableModel) tblPrestamo.getModel();
+
+    Object[] fila = new Object[] {
+        id.isEmpty() ? "P" + (model.getRowCount() + 1) : id,
+        categoria,
+        titulo,
+        autor,
+        anioPub,
+        fechaDevolucion,
+        estado
+    };
+
+    model.insertRow(0, fila);
+
+    javax.swing.JOptionPane.showMessageDialog(parent, 
+        "Préstamo registrado correctamente.");
+    limpiarCamposPrestamo();
+}
+private void limpiarCamposPrestamo() {
+    jTfcatprestamo.setText("");
+    jTftituloprestamo.setText("");
+    jTfAutorprestamo.setText("");
+    jTfAniopubprestamo.setText("");
+}
+        
+
+      private void btnregdevActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        // TODO add your handling code here:
+    }                                                   
 
  
     public static void main(String args[]) {
