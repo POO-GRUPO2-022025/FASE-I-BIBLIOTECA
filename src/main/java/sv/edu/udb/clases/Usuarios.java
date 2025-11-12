@@ -1,5 +1,7 @@
 package sv.edu.udb.clases;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class Usuarios {
     public enum TipoUsuario{
         Encargado,
@@ -10,7 +12,7 @@ public class Usuarios {
     private int idUsuario;
     private String nombre;
     private String correo;
-    private String password;
+    private String passwordHash;
     private TipoUsuario tipoUsuario;
 
     public Usuarios(){}
@@ -19,8 +21,16 @@ public class Usuarios {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.correo = correo;
-        this.password = password;
-        this.tipoUsuario = TipoUsuario.Encargado;
+        this.passwordHash = encriptarPass(password); //Se encripta la clave mediante el metodo
+        this.tipoUsuario = tipoUsuario;
+    }
+    // Metodo para encriptar la clave
+    public String encriptarPass(String passPlano){
+        return BCrypt.hashpw(passPlano, BCrypt.gensalt());
+    }
+    //Metodo para verificar el PASS
+    public boolean verificarPass(String passPlano){
+        return BCrypt.checkpw(passPlano, this.passwordHash);
     }
     //Métodos getters y setters
     public int getIdUsuario() {
@@ -41,11 +51,14 @@ public class Usuarios {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
+    //El siguiente metodo get para la clave no debe usarse para la interfaz grafica
     public String getPassword() {
-        return password;
-    }
+        return passwordHash;
+    } //El metodo devuelve la clave encriptada
     public void setPassword(String password) {
-        this.password = password;
+
+        this.passwordHash = encriptarPass(password); // Cuando se usa el metodo set, se encrypta la clave
     }
     public TipoUsuario getTipoUsuario() {
         return tipoUsuario;

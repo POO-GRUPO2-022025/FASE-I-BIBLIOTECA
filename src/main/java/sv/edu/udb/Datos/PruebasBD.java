@@ -6,6 +6,7 @@ import sv.edu.udb.clases.Material;
 import sv.edu.udb.clases.Prestamo;
 import sv.edu.udb.clases.Usuarios;
 
+import javax.swing.table.DefaultTableModel;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -15,42 +16,33 @@ import java.time.chrono.ChronoLocalDate;
 
 public class PruebasBD {
     private static final Logger logger = LogManager.getLogger(sv.edu.udb.Main.class);
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         logger.info("Iniciando...");
 
+        //Prueba para ingresar usuario
         UsuariosDB usuariosDB = new UsuariosDB();
-       // usuariosDB.insert("Joel","Encargado","joel3@email.com","1234");
+        Usuarios usuario = new Usuarios();
+/*
+        usuario.setNombre("Joel Granados");
+        usuario.setTipoUsuario(Usuarios.TipoUsuario.Encargado);
+        usuario.setCorreo("joelgranados@email.com");
+        usuario.setPassword("12345");
+        usuariosDB.insert(usuario);
+*/
 
-       // MorasDB morasDB = new MorasDB();
-        //morasDB.insert(LocalDate.parse("2025-12-12"), Usuarios.TipoUsuario.Profesor, BigDecimal.valueOf(10.00));
-        Prestamo prestamo = new Prestamo();
-        prestamo.setIdPrestamo(3);
-        prestamo.setIdMaterial(2);
-        prestamo.setIdUsuario(1);
-        prestamo.setIdMora(2);
-        prestamo.setFechaPrestamo(Date.valueOf("2025-12-12"));
-        prestamo.setMoraTotal(BigDecimal.valueOf(12.00));
-        prestamo.setFechaDevolucion(Date.valueOf("2025-12-12"));
-        prestamo.setEstado(Prestamo.Estado.Pendiente);
-
-        PrestamosDB prestamosDB = new PrestamosDB();
-        prestamosDB.insert(prestamo);
-        Prestamo p = null;
-        p=prestamosDB.select(4);
-
-        System.out.println("ID Préstamo: " + p.getIdPrestamo());
-        System.out.println("ID Usuario: " + p.getIdUsuario());
-        System.out.println("ID Material: " + p.getIdMaterial());
-        System.out.println("ID Mora: " + p.getIdMora());
-        System.out.println("Mora Total: " + p.getMoraTotal());
-        System.out.println("Fecha Préstamo: " + p.getFechaPrestamo());
-        System.out.println("Fecha Devolución: " + p.getFechaDevolucion());
-        System.out.println("Estado: " + p.getEstado());
-
-
-
-
-
+        //Prueba para validar usuario
+        //Se ingresa el correo y la contraseña
+        String correo = "joel1@email.com";
+        String password = "1234";
+        Usuarios usuarioValidado = usuariosDB.loginUser(correo, password); // Devuelve el objeto Usuarios si este es correcto
+        if (usuarioValidado != null) { //Si es diferente a null, (si encontro el usuario valido)
+            System.out.println("Hola, bienvenido: " + usuarioValidado.getNombre()); //Muestra el mensaje de bienvenida
+        } else {
+            System.out.println("Usuario no valido");//De lo contrario mensaje de error al validar
+        }
+        //Prueba del selectALL de usuarios que devuelve una lista de usuarios registrados
 
     }
+
 }
