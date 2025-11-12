@@ -105,8 +105,8 @@ public class INICIO extends javax.swing.JFrame {
                                 .addContainerGap(184, Short.MAX_VALUE))
         );
 
-        icoLog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazInicio/UDB_horizontal22.png"))); // NOI18N
-        icoLog.setText("jLabel2");
+        icoLog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazInicio/UDB_colegio.png"))); // NOI18N
+        icoLog.setText("");
 
         pwdContra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
