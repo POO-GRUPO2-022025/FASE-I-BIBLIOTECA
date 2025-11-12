@@ -5,48 +5,129 @@ import sv.edu.udb.clases.Usuarios;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
 
 public class MorasDB {
-    private final String SQL_INSERT ="INSERT INTO moras(fecha_inicio,tipo_usuario,tarifa_diaria) VALUES (?,?,?)";
-    private final String SQL_UPDATE ="";
-    private final String SQL_DELETE ="";
-    private final String SQL_SELECT ="SELECT id_mora, fecha_inicio, tipo_usuario, tarifa_diaria FROM moras WHERE id_mora = ?";
+    private final String SQL_INSERT = "INSERT INTO moras(fecha_inicio,tipo_usuario,tarifa_diaria) VALUES (?,?,?)";
+    private final String SQL_UPDATE = "UPDATE moras SET fecha_inicio =?,tipo_usuario =?,tarifa_diaria =? WHERE id_mora = ?\n";
+    private final String SQL_DELETE = "DELETE FROM moras WHERE id_mora = ?";
+    private final String SQL_SELECT = "SELECT id_mora, fecha_inicio, tipo_usuario, tarifa_diaria FROM moras WHERE id_mora = ?";
 
-        public Mora insert(Date fechaInicio, Usuarios.TipoUsuario tipoUsuario,
-                           BigDecimal taridaDiaria) {
-            Connection conn = null
-            PreparedStatement stmt = null;
-            ResultSet IdGenerado = null;
-            ResultSet rs = null;
-            Mora moraNueva = null;
+    public Mora insert(LocalDate fechaInicio, Usuarios.TipoUsuario tipoUsuario,
+                       BigDecimal taridaDiaria) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet IdGenerado = null;
+        ResultSet rs = null;
+        Mora moraNueva = null;
 
-            try {
-                conn = Conexion.getConexion();
-                stmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-                stmt.setDate(1, fechaInicio);
-                stmt.setString(2, tipoUsuario.toString());
-                stmt.setBigDecimal(3, taridaDiaria);
-                stmt.executeUpdate();
-                IdGenerado = stmt.getGeneratedKeys();
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
+            stmt.setDate(1, Date.valueOf(fechaInicio));
+            stmt.setString(2, tipoUsuario.toString());
+            stmt.setBigDecimal(3, taridaDiaria);
+            stmt.executeUpdate();
+            rs = stmt.getGeneratedKeys();
 
-                if (IdGenerado.next()) {
-                    stmt = conn.prepareStatement(SQL_SELECT);
-                    stmt.setInt(1, IdGenerado.getInt(1));
-                    rs = stmt.executeQuery();
+            if (rs.next()) {
+                moraNueva = new Mora();
+                moraNueva.setIdMora(rs.getInt(1));
+                System.out.println(moraNueva.getIdMora());
 
-                }
+            }
 
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al agregar mora", e);
+        } finally {
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return moraNueva;
+    }
 
+    public Boolean update(Mora moraUpdate) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        Boolean retorno = false;
+        ResultSet rs = null;
 
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_UPDATE);
+            stmt.setDate(1, Date.valueOf(moraUpdate.getFechaInicio()));
+            stmt.setString(2, moraUpdate.getTipoUsuario().toString());
+            stmt.setBigDecimal(3, moraUpdate.getTarifaDiaria());
+            stmt.setInt(4, moraUpdate.getIdMora());
+            int filas = stmt.executeUpdate();
+            retorno = filas > 0;
 
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException e) { //Proceso para capturar errores y manda un mensaje
+            throw new RuntimeException("Error al actualizar mora", e);
+        } finally {
+            //Cierre de todos los recursos
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return retorno;
+    }
+    public boolean delete(int idMora){
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        boolean retorno = false;
+
+        try{
+
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_DELETE);
+            stmt.setInt(1, idMora);
+            int filas = stmt.executeUpdate();
+            retorno = filas > 0;
+
+        }catch (SQLException | ClassNotFoundException e) { //Proceso para capturar errores y manda un mensaje
+            throw new RuntimeException("Error al actualizar mora", e);
+        } finally {
+            //Cierre de todos los recursos
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return retorno;
+        
+
+    }
+
+    public Mora select(int idMora){
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Mora mora = null;
+
+        try{
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT);
+            stmt.setInt(1, idMora);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                mora = new Mora();
+                mora.setIdMora(rs.getInt(1));
+                mora.setFechaInicio(Date.valueOf(rs.getDate("fecha_inicio").toLocalDate()).toLocalDate());
+                mora.setTipoUsuario(Usuarios.TipoUsuario.valueOf(rs.getString("tipo_usuario")));
+                mora.setTarifaDiaria(rs.getBigDecimal("tarifa_diaria"));
             }
 
 
-            return null;
+        }catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar préstamo", e);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
         }
+        return mora;
+    }
+
 }
 

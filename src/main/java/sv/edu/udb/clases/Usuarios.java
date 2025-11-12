@@ -13,6 +13,8 @@ public class Usuarios {
     private String password;
     private TipoUsuario tipoUsuario;
 
+    public Usuarios(){}
+
     public Usuarios(int idUsuario, String nombre, String correo, String password, TipoUsuario tipoUsuario) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
@@ -51,5 +53,6 @@ public class Usuarios {
     public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
+
 
 }

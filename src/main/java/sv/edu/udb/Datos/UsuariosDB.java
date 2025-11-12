@@ -13,7 +13,7 @@ public class UsuariosDB {
 
     //Metodo insert crea un nuevo usuario en la base de datos y devuelve el objeto completo con los datos
 
-    public Usuarios insert(String nombre, String tipo_usuario, String correo, String password) {
+    public Usuarios insert(Usuarios usuarios) {
         //Declaracion de los recursos
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -24,24 +24,17 @@ public class UsuariosDB {
             conn = Conexion.getConexion(); //Se realiza la conexion a la base de datos
             stmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS); //Se prepara INSERT y se devuelve el ID que genera
             //Se inicia asignando los valores para cada uno de los ? de la sentencia
-            stmt.setString(1, nombre);
-            stmt.setString(2, tipo_usuario.toString());
-            stmt.setString(3, correo);
-            stmt.setString(4, password);
+            stmt.setString(1, usuarios.getNombre());
+            stmt.setString(2, usuarios.getTipoUsuario().toString());
+            stmt.setString(3, usuarios.getCorreo());
+            stmt.setString(4, usuarios.getPassword());
             stmt.executeUpdate(); //Se ejecuta el INSERT
-            IdGenerado = stmt.getGeneratedKeys(); //Se obtiene el ID que se genera
 
-            if (IdGenerado.next()) { //Se valida si se genera el ID y se inicia el proceso para obtener los datos
-                stmt = conn.prepareStatement(SQL_SELECT); //Se ejecuta
-                stmt.setInt(1, IdGenerado.getInt(1));
-                rs = stmt.executeQuery(); //Se ejecuta a consulta
-                //Se crea el objeto Usuarios con los datos ya recuperados
-                usuarioNuevo = new Usuarios(
-                        rs.getInt("id_usuario"),
-                        rs.getString("nombre"),
-                        rs.getString("correo"),
-                        rs.getString("password"),
-                        Usuarios.TipoUsuario.valueOf(rs.getString("tipo_usuario")));
+            rs = stmt.getGeneratedKeys(); //Se obtiene el ID que se genera
+
+            if (rs.next()) { //Se valida si se genera el ID y se inicia el proceso para obtener los datos
+                usuarioNuevo = new Usuarios();
+                        usuarioNuevo.setIdUsuario(rs.getInt(1));
             }
 
         } catch (SQLException | ClassNotFoundException e){ //Proceso para capturar errores y manda un mensaje
@@ -110,6 +103,36 @@ public class UsuariosDB {
         }
         return retorno;
     }
+
+    public Usuarios select(int id_usuario) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Usuarios usuario = null;
+
+        try{
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT);
+            stmt.setInt(1, id_usuario);
+            rs = stmt.executeQuery();
+            if(rs.next()) {
+                usuario = new Usuarios();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setTipoUsuario(Usuarios.TipoUsuario.valueOf(rs.getString("tipo_usuario")));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setPassword(rs.getString("password"));
+            }
+        }catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar préstamo", e);
+        } finally {
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return usuario;
+    }
+
+
 
 
 }
