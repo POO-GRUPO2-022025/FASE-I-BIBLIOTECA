@@ -10,18 +10,22 @@ public class Material {
 
     private int idMaterial;
     private TipoMaterial tipoMaterial;
+    private String titulo;
     private String ubicacion;
     private int cantidadTotal;
     private int cantidadDisponible;
     private int cantidadPrestada;
     private int cantidadDaniada;
 
+    public Material(){}
 
-    public Material(int idMaterial, TipoMaterial tipoMaterial, String ubicacion,
+
+    public Material(int idMaterial, TipoMaterial tipoMaterial,String titulo, String ubicacion,
                     int cantidadTotal, int cantidadDisponible,
                     int cantidadPrestada, int cantidadDaniada) {
         this.idMaterial = idMaterial;
         this.tipoMaterial = tipoMaterial;
+        this.titulo = titulo;
         this.ubicacion = ubicacion;
         this.cantidadTotal = cantidadTotal;
         this.cantidadDisponible = cantidadDisponible;
@@ -44,6 +48,13 @@ public class Material {
 
     public void setTipoMaterial(TipoMaterial tipoMaterial) {
         this.tipoMaterial = tipoMaterial;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getUbicacion() {

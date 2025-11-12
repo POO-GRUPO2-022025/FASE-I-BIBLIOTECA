@@ -7,15 +7,16 @@ public class Libro extends Material {
     private String editorial;
     private String isbn;
 
-    public Libro(int idMaterial, TipoMaterial tipoMaterial, String ubicacion,
+    public Libro(int idMaterial, TipoMaterial tipoMaterial, String titulo, String ubicacion,
                  int cantidadTotal, int cantidadDisponible,
                  int cantidadPrestada, int cantidadDaniada,
                  String autor, String editorial, String isbn) {
-        super(idMaterial, tipoMaterial, ubicacion, cantidadTotal, cantidadDisponible, cantidadPrestada, cantidadDaniada);
+        super(idMaterial, tipoMaterial,titulo, ubicacion, cantidadTotal, cantidadDisponible, cantidadPrestada, cantidadDaniada);
         this.autor = autor;
         this.editorial = editorial;
         this.isbn = isbn;
     }
+    public Libro(){}
 
     //Metodos Getters y Setter
 

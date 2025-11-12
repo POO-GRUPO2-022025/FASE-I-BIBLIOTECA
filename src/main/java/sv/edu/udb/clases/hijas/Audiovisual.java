@@ -7,14 +7,15 @@ public class Audiovisual extends Material {
     private int duracion;
 
 
-    public Audiovisual(int idMaterial, TipoMaterial tipoMaterial, String ubicacion,
+    public Audiovisual(int idMaterial, TipoMaterial tipoMaterial,String titulo, String ubicacion,
                        int cantidadTotal, int cantidadDisponible,
                        int cantidadPrestada, int cantidadDaniada,
                        String formato, int duracion) {
-        super(idMaterial, tipoMaterial, ubicacion, cantidadTotal, cantidadDisponible, cantidadPrestada, cantidadDaniada);
+        super(idMaterial, tipoMaterial,titulo, ubicacion, cantidadTotal, cantidadDisponible, cantidadPrestada, cantidadDaniada);
         this.formato = formato;
         this.duracion = duracion;
     }
+    public Audiovisual() {}
 
     public String getFormato() {
         return formato;

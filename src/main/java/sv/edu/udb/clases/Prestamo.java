@@ -12,9 +12,9 @@ public class Prestamo {
     }
 
     private int idPrestamo;
-    private Usuarios usuario;
-    private Material material;
-    private Mora mora;
+    private int idUsuario;
+    private int idMaterial;
+    private int idMora;
     private Date fechaPrestamo;
     private Date fechaDevolucion;
     private BigDecimal moraTotal;
@@ -24,13 +24,13 @@ public class Prestamo {
     public Prestamo() {}
 
     // Constructor completo
-    public Prestamo(int idPrestamo, Usuarios usuario, Material material,
-                    Mora mora, Date fechaPrestamo, Date fechaDevolucion,
+    public Prestamo(int idPrestamo, int idUsuario, int idMaterial,
+                    int idMora, Date fechaPrestamo, Date fechaDevolucion,
                     BigDecimal moraTotal, Estado estado) {
         this.idPrestamo = idPrestamo;
-        this.usuario = usuario;
-        this.material = material;
-        this.mora = mora;
+        this.idUsuario = idUsuario;
+        this.idMaterial = idMaterial;
+        this.idMora = idMora;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucion = fechaDevolucion;
         this.moraTotal = moraTotal;
@@ -49,28 +49,28 @@ public class Prestamo {
         this.idPrestamo = idPrestamo;
     }
 
-    public Usuarios getUsuario() {
-        return usuario;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuario(Usuarios usuario) {
-        this.usuario = usuario;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public Material getMaterial() {
-        return material;
+    public int getIdMaterial() {
+        return idMaterial;
     }
 
-    public void setMaterial(Material material) {
-        this.material = material;
+    public void setIdMaterial(int idMaterial) {
+        this.idMaterial = idMaterial;
     }
 
-    public Mora getMora() {
-        return mora;
+    public int getIdMora() {
+        return idMora;
     }
 
-    public void setMora(Mora mora) {
-        this.mora = mora;
+    public void setIdMora(int idMora) {
+        this.idMora = idMora;
     }
 
     public Date getFechaPrestamo() {

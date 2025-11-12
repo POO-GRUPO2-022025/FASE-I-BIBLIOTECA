@@ -13,7 +13,7 @@ public class Main {
         logger.info("Iniciando...");
 
         UsuariosDB usuariosDB = new UsuariosDB();
-        usuariosDB.insert("Joel","Encargado","joel3@email.com","1234");
+
 
 
 
