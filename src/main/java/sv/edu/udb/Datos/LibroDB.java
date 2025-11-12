@@ -1,44 +1,51 @@
 package sv.edu.udb.Datos;
 
+import sv.edu.udb.clases.Autor;
 import sv.edu.udb.clases.Material;
-import sv.edu.udb.clases.hijas.Revista;
+import sv.edu.udb.clases.hijas.Libro;
 
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import java.util.List;
 
-public class RevistaDB {
-    private final String SQL_INSERT = "INSERT INTO revistas(id_material, volumen, numero, fecha_publicacion) VALUES(?,?,?,?)";
-    private final String SQL_UPDATE = "UPDATE revistas SET volumen=?, numero=?, fecha_publicacion=? WHERE id_material=?";
-    private final String SQL_DELETE = "DELETE FROM revistas WHERE id_material=?";
-    private final String SQL_SELECT = "SELECT * FROM revistas WHERE id_material=?";
-    private final String SQL_SELECT_ALL = "SELECT r.id_material, r.volumen, r.numero, r.fecha_publicacion, m.tipo_material, m.titulo, m.ubicacion, " +
+public class LibroDB {
+    private final String SQL_INSERT = "INSERT INTO libros(id_material, id_editorial, isbn) VALUES(?,?,?)";
+    private final String SQL_UPDATE = "UPDATE libros SET id_editorial=?, isbn=? WHERE id_material=?";
+    private final String SQL_DELETE = "DELETE FROM libros WHERE id_material=?";
+    private final String SQL_SELECT = "SELECT * FROM libros WHERE id_material=?";
+    private final String SQL_SELECT_ALL = "SELECT l.id_material, l.id_editorial, l.isbn, m.tipo_material, m.titulo, m.ubicacion, " +
             "m.cantidad_total, m.cantidad_disponible, m.cantidad_prestados, m.cantidad_daniado " +
-            "FROM revistas r INNER JOIN materiales m ON r.id_material = m.id_material ORDER BY r.id_material";
+            "FROM libros l INNER JOIN materiales m ON l.id_material = m.id_material ORDER BY l.id_material";
 
-    public Revista insert(Revista revista) {
+    public Libro insert(Libro libro) {
         MaterialesDB materialesDB = new MaterialesDB();
-        Material baseMaterial = materialesDB.insert(revista);
+        Material baseMaterial = materialesDB.insert(libro);
+
         if (baseMaterial == null) return null;
 
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        Revista nuevaRevista = null;
+        Libro nuevoLibro = null;
 
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_INSERT);
             stmt.setInt(1, baseMaterial.getIdMaterial());
-            stmt.setString(2, revista.getVolumen());
-            stmt.setString(3, revista.getNumero());
-            stmt.setDate(4, Date.valueOf(revista.getFechaPublicacion()));
+            stmt.setInt(2, libro.getIdEditorial());
+            stmt.setString(3, libro.getIsbn());
             stmt.executeUpdate();
+
+            if (libro.getIdsAutores() != null && !libro.getIdsAutores().isEmpty()) {
+                LibroAutorDB libroAutorDB = new LibroAutorDB();
+                libroAutorDB.insertRelaciones(baseMaterial.getIdMaterial(), libro.getIdsAutores());
+            }
 
             stmt = conn.prepareStatement(SQL_SELECT);
             stmt.setInt(1, baseMaterial.getIdMaterial());
             rs = stmt.executeQuery();
             if (rs.next()) {
-                nuevaRevista = new Revista(
+                nuevoLibro = new Libro(
                         baseMaterial.getIdMaterial(),
                         baseMaterial.getTipoMaterial(),
                         baseMaterial.getTitulo(),
@@ -47,23 +54,26 @@ public class RevistaDB {
                         baseMaterial.getCantidadDisponible(),
                         baseMaterial.getCantidadPrestada(),
                         baseMaterial.getCantidadDaniada(),
-                        rs.getString("volumen"),
-                        rs.getString("numero"),
-                        rs.getDate("fecha_publicacion").toLocalDate()
+                        libro.getAutor(),
+                        libro.getEditorial(),
+                        rs.getString("isbn")
                 );
+                nuevoLibro.setIdEditorial(rs.getInt("id_editorial"));
+                nuevoLibro.setIdsAutores(libro.getIdsAutores());
             }
+
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al insertar revista", e);
+            throw new RuntimeException("Error al insertar libro", e);
         } finally {
             Conexion.close(rs);
             Conexion.close(stmt);
             Conexion.close(conn);
         }
 
-        return nuevaRevista;
+        return nuevoLibro;
     }
 
-    public boolean update(Revista revista) {
+    public boolean update(Libro libro) {
         Connection conn = null;
         PreparedStatement stmt = null;
         boolean retorno = false;
@@ -71,16 +81,21 @@ public class RevistaDB {
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_UPDATE);
-            stmt.setString(1, revista.getVolumen());
-            stmt.setString(2, revista.getNumero());
-            stmt.setDate(3, Date.valueOf(revista.getFechaPublicacion()));
-            stmt.setInt(4, revista.getIdMaterial());
+            stmt.setInt(1, libro.getIdEditorial());
+            stmt.setString(2, libro.getIsbn());
+            stmt.setInt(3, libro.getIdMaterial());
 
             int filas = stmt.executeUpdate();
             retorno = filas > 0;
 
+            if (retorno && libro.getIdsAutores() != null) {
+                LibroAutorDB libroAutorDB = new LibroAutorDB();
+                libroAutorDB.deleteRelacionesByLibro(libro.getIdMaterial());
+                libroAutorDB.insertRelaciones(libro.getIdMaterial(), libro.getIdsAutores());
+            }
+
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al actualizar revista", e);
+            throw new RuntimeException("Error al actualizar libro", e);
         } finally {
             Conexion.close(stmt);
             Conexion.close(conn);
@@ -89,6 +104,7 @@ public class RevistaDB {
         return retorno;
     }
 
+    // Elimina solo la parte libro
     public boolean delete(int idMaterial) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -102,7 +118,7 @@ public class RevistaDB {
             retorno = filas > 0;
 
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al eliminar revista", e);
+            throw new RuntimeException("Error al eliminar libro", e);
         } finally {
             Conexion.close(stmt);
             Conexion.close(conn);
@@ -111,7 +127,7 @@ public class RevistaDB {
         return retorno;
     }
 
-    public Revista select(int idMaterial) {
+    public Libro select(int idMaterial) {
         MaterialesDB materialesDB = new MaterialesDB();
         Material baseMaterial = materialesDB.select(idMaterial);
         if (baseMaterial == null) return null;
@@ -119,7 +135,7 @@ public class RevistaDB {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        Revista revista = null;
+        Libro libro = null;
 
         try {
             conn = Conexion.getConexion();
@@ -127,7 +143,10 @@ public class RevistaDB {
             stmt.setInt(1, idMaterial);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                revista = new Revista(
+                AutorDB autorDB = new AutorDB();
+                List<Autor> autores = autorDB.selectAutoresByLibro(idMaterial);
+                
+                libro = new Libro(
                         baseMaterial.getIdMaterial(),
                         baseMaterial.getTipoMaterial(),
                         baseMaterial.getTitulo(),
@@ -136,24 +155,29 @@ public class RevistaDB {
                         baseMaterial.getCantidadDisponible(),
                         baseMaterial.getCantidadPrestada(),
                         baseMaterial.getCantidadDaniada(),
-                        rs.getString("volumen"),
-                        rs.getString("numero"),
-                        rs.getDate("fecha_publicacion").toLocalDate()
+                        "", 
+                        "", 
+                        rs.getString("isbn")
                 );
+                libro.setIdEditorial(rs.getInt("id_editorial"));
+                
+                for (Autor autor : autores) {
+                    libro.addIdAutor(autor.getIdAutor());
+                }
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al consultar revista", e);
+            throw new RuntimeException("Error al consultar libro", e);
         } finally {
             Conexion.close(rs);
             Conexion.close(stmt);
             Conexion.close(conn);
         }
 
-        return revista;
+        return libro;
     }
 
-    public DefaultTableModel selectRevistas() {
+    public DefaultTableModel selectLibros() {
         DefaultTableModel dtm = new DefaultTableModel();
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -190,4 +214,3 @@ public class RevistaDB {
         return dtm;
     }
 }
-

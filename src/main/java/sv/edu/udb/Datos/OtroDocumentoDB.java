@@ -1,44 +1,43 @@
 package sv.edu.udb.Datos;
 
 import sv.edu.udb.clases.Material;
-import sv.edu.udb.clases.hijas.Revista;
+import sv.edu.udb.clases.hijas.OtroDocumento;
 
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
-public class RevistaDB {
-    private final String SQL_INSERT = "INSERT INTO revistas(id_material, volumen, numero, fecha_publicacion) VALUES(?,?,?,?)";
-    private final String SQL_UPDATE = "UPDATE revistas SET volumen=?, numero=?, fecha_publicacion=? WHERE id_material=?";
-    private final String SQL_DELETE = "DELETE FROM revistas WHERE id_material=?";
-    private final String SQL_SELECT = "SELECT * FROM revistas WHERE id_material=?";
-    private final String SQL_SELECT_ALL = "SELECT r.id_material, r.volumen, r.numero, r.fecha_publicacion, m.tipo_material, m.titulo, m.ubicacion, " +
+public class OtroDocumentoDB {
+    private final String SQL_INSERT = "INSERT INTO otros_documentos(id_material, descripcion) VALUES(?,?)";
+    private final String SQL_UPDATE = "UPDATE otros_documentos SET descripcion=? WHERE id_material=?";
+    private final String SQL_DELETE = "DELETE FROM otros_documentos WHERE id_material=?";
+    private final String SQL_SELECT = "SELECT * FROM otros_documentos WHERE id_material=?";
+    private final String SQL_SELECT_ALL = "SELECT od.id_material, od.descripcion, m.tipo_material, m.titulo, m.ubicacion, " +
             "m.cantidad_total, m.cantidad_disponible, m.cantidad_prestados, m.cantidad_daniado " +
-            "FROM revistas r INNER JOIN materiales m ON r.id_material = m.id_material ORDER BY r.id_material";
+            "FROM otros_documentos od INNER JOIN materiales m ON od.id_material = m.id_material ORDER BY od.id_material";
 
-    public Revista insert(Revista revista) {
+    public OtroDocumento insert(OtroDocumento otroDocumento) {
         MaterialesDB materialesDB = new MaterialesDB();
-        Material baseMaterial = materialesDB.insert(revista);
+        Material baseMaterial = materialesDB.insert(otroDocumento); // Inserta en materiales
+
         if (baseMaterial == null) return null;
 
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        Revista nuevaRevista = null;
+        OtroDocumento nuevoDocumento = null;
 
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_INSERT);
             stmt.setInt(1, baseMaterial.getIdMaterial());
-            stmt.setString(2, revista.getVolumen());
-            stmt.setString(3, revista.getNumero());
-            stmt.setDate(4, Date.valueOf(revista.getFechaPublicacion()));
+            stmt.setString(2, otroDocumento.getDescripcion());
             stmt.executeUpdate();
 
             stmt = conn.prepareStatement(SQL_SELECT);
             stmt.setInt(1, baseMaterial.getIdMaterial());
             rs = stmt.executeQuery();
             if (rs.next()) {
-                nuevaRevista = new Revista(
+                nuevoDocumento = new OtroDocumento(
                         baseMaterial.getIdMaterial(),
                         baseMaterial.getTipoMaterial(),
                         baseMaterial.getTitulo(),
@@ -47,23 +46,23 @@ public class RevistaDB {
                         baseMaterial.getCantidadDisponible(),
                         baseMaterial.getCantidadPrestada(),
                         baseMaterial.getCantidadDaniada(),
-                        rs.getString("volumen"),
-                        rs.getString("numero"),
-                        rs.getDate("fecha_publicacion").toLocalDate()
+                        rs.getString("descripcion")
                 );
             }
+
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al insertar revista", e);
+            throw new RuntimeException("Error al insertar otro documento", e);
         } finally {
             Conexion.close(rs);
             Conexion.close(stmt);
             Conexion.close(conn);
         }
 
-        return nuevaRevista;
+        return nuevoDocumento;
     }
 
-    public boolean update(Revista revista) {
+    // Actualiza solo la parte otro documento
+    public boolean update(OtroDocumento otroDocumento) {
         Connection conn = null;
         PreparedStatement stmt = null;
         boolean retorno = false;
@@ -71,16 +70,14 @@ public class RevistaDB {
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_UPDATE);
-            stmt.setString(1, revista.getVolumen());
-            stmt.setString(2, revista.getNumero());
-            stmt.setDate(3, Date.valueOf(revista.getFechaPublicacion()));
-            stmt.setInt(4, revista.getIdMaterial());
+            stmt.setString(1, otroDocumento.getDescripcion());
+            stmt.setInt(2, otroDocumento.getIdMaterial());
 
             int filas = stmt.executeUpdate();
             retorno = filas > 0;
 
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al actualizar revista", e);
+            throw new RuntimeException("Error al actualizar otro documento", e);
         } finally {
             Conexion.close(stmt);
             Conexion.close(conn);
@@ -89,6 +86,7 @@ public class RevistaDB {
         return retorno;
     }
 
+    // Elimina solo la parte otro documento
     public boolean delete(int idMaterial) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -102,7 +100,7 @@ public class RevistaDB {
             retorno = filas > 0;
 
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al eliminar revista", e);
+            throw new RuntimeException("Error al eliminar otro documento", e);
         } finally {
             Conexion.close(stmt);
             Conexion.close(conn);
@@ -111,7 +109,8 @@ public class RevistaDB {
         return retorno;
     }
 
-    public Revista select(int idMaterial) {
+    // Consulta el otro documento completo
+    public OtroDocumento select(int idMaterial) {
         MaterialesDB materialesDB = new MaterialesDB();
         Material baseMaterial = materialesDB.select(idMaterial);
         if (baseMaterial == null) return null;
@@ -119,7 +118,7 @@ public class RevistaDB {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        Revista revista = null;
+        OtroDocumento otroDocumento = null;
 
         try {
             conn = Conexion.getConexion();
@@ -127,7 +126,7 @@ public class RevistaDB {
             stmt.setInt(1, idMaterial);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                revista = new Revista(
+                otroDocumento = new OtroDocumento(
                         baseMaterial.getIdMaterial(),
                         baseMaterial.getTipoMaterial(),
                         baseMaterial.getTitulo(),
@@ -136,24 +135,22 @@ public class RevistaDB {
                         baseMaterial.getCantidadDisponible(),
                         baseMaterial.getCantidadPrestada(),
                         baseMaterial.getCantidadDaniada(),
-                        rs.getString("volumen"),
-                        rs.getString("numero"),
-                        rs.getDate("fecha_publicacion").toLocalDate()
+                        rs.getString("descripcion")
                 );
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al consultar revista", e);
+            throw new RuntimeException("Error al consultar otro documento", e);
         } finally {
             Conexion.close(rs);
             Conexion.close(stmt);
             Conexion.close(conn);
         }
 
-        return revista;
+        return otroDocumento;
     }
 
-    public DefaultTableModel selectRevistas() {
+    public DefaultTableModel selectOtrosDocumentos() {
         DefaultTableModel dtm = new DefaultTableModel();
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -190,4 +187,3 @@ public class RevistaDB {
         return dtm;
     }
 }
-

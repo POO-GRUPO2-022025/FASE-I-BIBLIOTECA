@@ -3,6 +3,7 @@ package sv.edu.udb.Datos;
 import sv.edu.udb.clases.Mora;
 import sv.edu.udb.clases.Prestamo;
 
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
 public class PrestamosDB {
@@ -10,6 +11,7 @@ public class PrestamosDB {
     private final String SQL_UPDATE = "UPDATE prestamos SET id_usuario=?, id_material=?, id_mora=?, mora_total=?, fecha_prestamo=?, fecha_devolucion=?, estado=? WHERE id_prestamo=?";
     private final String SQL_DELETE = "DELETE FROM prestamos WHERE id_prestamo=?";
     private final String SQL_SELECT = "SELECT * FROM prestamos WHERE id_prestamo=?";
+    private final String SQL_SELECT_ALL = "SELECT id_prestamo, id_usuario, id_material, id_mora, mora_total, fecha_prestamo, fecha_devolucion, estado FROM prestamos ORDER BY id_prestamo";
 
     public Prestamo insert(Prestamo prestamo) {
         Connection conn = null;
@@ -135,5 +137,42 @@ public class PrestamosDB {
         }
 
         return prestamo;
+    }
+
+    public DefaultTableModel selectPrestamos() {
+        DefaultTableModel dtm = new DefaultTableModel();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_ALL);
+            rs = stmt.executeQuery();
+            
+            ResultSetMetaData meta = rs.getMetaData();
+            int numberOfColumns = meta.getColumnCount();
+            
+            for (int i = 1; i <= numberOfColumns; i++) {
+                dtm.addColumn(meta.getColumnLabel(i));
+            }
+            
+            while (rs.next()) {
+                Object[] fila = new Object[numberOfColumns];
+                for (int i = 0; i < numberOfColumns; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                dtm.addRow(fila);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        
+        return dtm;
     }
 }
