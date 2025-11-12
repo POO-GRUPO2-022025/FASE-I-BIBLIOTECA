@@ -1,5 +1,6 @@
 package sv.edu.udb.Datos;
 
+import org.mindrot.jbcrypt.BCrypt;
 import sv.edu.udb.clases.Usuarios;
 
 import javax.swing.table.DefaultTableModel;
@@ -11,6 +12,7 @@ public class UsuariosDB {
     private final String SQL_UPDATE = "UPDATE usuarios SET nombre=?, tipo_usuario=?, correo=?, password=? WHERE id_usuario=?\n";
     private final String SQL_DELETE = "DELETE FROM usuarios where id_usuario=?";
     private final String SQL_SELECT = "SELECT id_usuario,nombre,tipo_usuario,correo,password FROM usuarios WHERE id_usuario=?";
+    private final String SQL_LOGIN = "SELECT * FROM usuarios WHERE correo=?";
     private final String SQL_SELECT_ALL = "SELECT id_usuario, nombre, tipo_usuario, correo, password FROM usuarios ORDER BY id_usuario";
 
     //Metodo insert crea un nuevo usuario en la base de datos y devuelve el objeto completo con los datos
@@ -19,7 +21,6 @@ public class UsuariosDB {
         //Declaracion de los recursos
         Connection conn = null;
         PreparedStatement stmt = null;
-        ResultSet IdGenerado = null;
         ResultSet rs = null;
         Usuarios usuarioNuevo = null;
         try {
@@ -36,11 +37,11 @@ public class UsuariosDB {
 
             if (rs.next()) { //Se valida si se genera el ID y se inicia el proceso para obtener los datos
                 usuarioNuevo = new Usuarios();
-                        usuarioNuevo.setIdUsuario(rs.getInt(1));
+                usuarioNuevo.setIdUsuario(rs.getInt(1));
             }
 
-        } catch (SQLException | ClassNotFoundException e){ //Proceso para capturar errores y manda un mensaje
-            throw new RuntimeException("Error al añadir usuario",e);
+        } catch (SQLException | ClassNotFoundException e) { //Proceso para capturar errores y manda un mensaje
+            throw new RuntimeException("Error al añadir usuario", e);
         } finally {
             //Cierre de todos los recursos
             Conexion.close(rs);
@@ -97,8 +98,8 @@ public class UsuariosDB {
 
 
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al borrar usuarios",e);
-        }finally {
+            throw new RuntimeException("Error al borrar usuarios", e);
+        } finally {
             Conexion.close(stmt);
             Conexion.close(conn);
 
@@ -112,12 +113,12 @@ public class UsuariosDB {
         ResultSet rs = null;
         Usuarios usuario = null;
 
-        try{
+        try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_SELECT);
             stmt.setInt(1, id_usuario);
             rs = stmt.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 usuario = new Usuarios();
                 usuario.setIdUsuario(rs.getInt("id_usuario"));
                 usuario.setNombre(rs.getString("nombre"));
@@ -125,11 +126,40 @@ public class UsuariosDB {
                 usuario.setCorreo(rs.getString("correo"));
                 usuario.setPassword(rs.getString("password"));
             }
-        }catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException("Error al consultar préstamo", e);
         } finally {
             Conexion.close(stmt);
             Conexion.close(conn);
+        }
+        return usuario;
+    }
+
+    public Usuarios loginUser(String correo, String pass) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Usuarios usuario = null;
+
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_LOGIN);
+            stmt.setString(1, correo); //Se hace la consulta mediante el correo ingresado
+            rs = stmt.executeQuery();//Ejecuta la consulta
+
+            if (rs.next()) { //Valida si devuleve un resultado la consulta
+                String hashAlmacenado = rs.getString("password"); //Guarda la clave encriptada en un variable para luego validar
+                if (BCrypt.checkpw(pass, hashAlmacenado)) { //Valida la clave y si esta es correcta devuelve true
+                    usuario = new Usuarios();
+                    usuario.setNombre(rs.getString("nombre")); //Cuando la clave es correcta devuelve el nombre del usuario
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar préstamo", e);
+        } finally {
+            Conexion.close(stmt);
+            Conexion.close(conn);
+            Conexion.close(rs);
         }
         return usuario;
     }
@@ -143,14 +173,14 @@ public class UsuariosDB {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_SELECT_ALL);
             rs = stmt.executeQuery();
-            
+
             ResultSetMetaData meta = rs.getMetaData();
             int numberOfColumns = meta.getColumnCount();
-            
+
             for (int i = 1; i <= numberOfColumns; i++) {
                 dtm.addColumn(meta.getColumnLabel(i));
             }
-            
+
             while (rs.next()) {
                 Object[] fila = new Object[numberOfColumns];
                 for (int i = 0; i < numberOfColumns; i++) {
@@ -167,9 +197,10 @@ public class UsuariosDB {
             Conexion.close(stmt);
             Conexion.close(conn);
         }
-        
+
         return dtm;
     }
 
 
 }
+
