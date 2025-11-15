@@ -14,6 +14,7 @@ public class UsuariosDB {
     private final String SQL_SELECT = "SELECT id_usuario,nombre,tipo_usuario,correo,password FROM usuarios WHERE id_usuario=?";
     private final String SQL_LOGIN = "SELECT * FROM usuarios WHERE correo=?";
     private final String SQL_SELECT_ALL = "SELECT id_usuario, nombre, tipo_usuario, correo, password FROM usuarios ORDER BY id_usuario";
+    private final String SQL_RESET_PASS = "UPDATE usuarios SET password=? WHERE correo=?";
 
     //Metodo insert crea un nuevo usuario en la base de datos y devuelve el objeto completo con los datos
 
@@ -155,13 +156,64 @@ public class UsuariosDB {
                 }
             }
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al consultar préstamo", e);
+            throw new RuntimeException("Error con el login", e);
         } finally {
             Conexion.close(stmt);
             Conexion.close(conn);
             Conexion.close(rs);
         }
         return usuario;
+    }
+    // Metodo para resetear la contraseña, desde un administrador
+    public boolean ResetPass(String correo, String nuevoPass) { //Solicita el correo y la nueva contraseña a asignar
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        boolean retorno = false;
+
+        try{
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_RESET_PASS);
+            stmt.setString(1, BCrypt.hashpw(nuevoPass, BCrypt.gensalt())); //Se setea la nueva contraseña ya con hash
+            stmt.setString(2, correo);
+
+            int filas = stmt.executeUpdate();
+            retorno = filas > 0; //Devuelve true si se cambia la contraseña
+
+
+        }catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al resetear contraseña", e);
+        } finally {
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return retorno;
+
+
+    }
+
+    // Metodo para resetear la contraseña, desde un usuarios
+    public boolean CambioPass(String correo, String passAterior, String nuevoPass) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        boolean retorno = false;
+        try{
+        Usuarios usuarioValidado = loginUser(correo, passAterior); //Primero valida que la contraseña anterior sea valida
+        if (usuarioValidado != null) {//Si el resultado es correcto procede a hacer un cambio de contraseña
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_RESET_PASS);
+            stmt.setString(1, BCrypt.hashpw(nuevoPass, BCrypt.gensalt()));
+            stmt.setString(2, correo);
+
+            int filas = stmt.executeUpdate();
+            retorno = filas > 0;
+        }
+        }catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al cambiar la contraseña", e);
+        } finally {
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return retorno;
     }
 
     public DefaultTableModel selectUsuarios() {
@@ -200,6 +252,8 @@ public class UsuariosDB {
 
         return dtm;
     }
+
+
 
 
 }
