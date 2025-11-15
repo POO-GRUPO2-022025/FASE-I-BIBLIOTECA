@@ -1,5 +1,9 @@
 package sv.edu.udb.vistas.INICIO;
 
+import sv.edu.udb.Datos.UsuariosDB;
+import sv.edu.udb.clases.Usuarios;
+import sv.edu.udb.vistas.biblioteca.Biblioteca;
+
 import javax.swing.JOptionPane;
 
 
@@ -249,33 +253,19 @@ public class INICIO extends javax.swing.JFrame {
         // TODO add your handling code here:
         String correo = txtCorreo.getText();
         String contrasena = new String(pwdContra.getPassword());
+        UsuariosDB usuariosDB = new UsuariosDB();
 
-        if (correo.equals("admin@udb.edu.sv") && contrasena.equals("12345")) {
+        Usuarios usuarioValidado = usuariosDB.loginUser(correo, contrasena);
+
+            if ((usuarioValidado != null) ){
             JOptionPane.showMessageDialog(this,
-                    "Bienvenido,  Administrador.",
-                    "Inicio correcto",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            txtCorreo.setText("");
-            pwdContra.setText("");
-
-
-        } else if (correo.equals("docente@udb.edu.sv")&& contrasena.equals("12345")) {
-
-            JOptionPane.showMessageDialog(this,
-                    "Bienvenido,  Profesor.",
+                    "Bienvenido",
                     "Acceso Correcto",
                     javax.swing.JOptionPane.INFORMATION_MESSAGE);
             txtCorreo.setText("");
             pwdContra.setText("");
-
-
-        } else if (correo.equals("alumno@udb.edu.sv")&& contrasena.equals("12345") ){
-            JOptionPane.showMessageDialog(this,
-                    "Bienvenido,  Alumno.",
-                    "Acceso Correcto",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            txtCorreo.setText("");
-            pwdContra.setText("");
+                    new Biblioteca().setVisible(true);
+                    this.setVisible(false);
         }else {
             JOptionPane.showMessageDialog(this,
                     "Verifique su nombre de usuario y contraseña e intente de nuevo.",
