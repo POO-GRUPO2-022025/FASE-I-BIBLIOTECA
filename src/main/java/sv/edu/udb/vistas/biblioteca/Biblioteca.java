@@ -1,17 +1,27 @@
 package sv.edu.udb.vistas.biblioteca;
 
+import java.awt.event.ActionEvent;
 import sv.edu.udb.Datos.EditorialDB;
 import sv.edu.udb.clases.Editorial;
+import sv.edu.udb.Datos.UsuariosDB;
+import sv.edu.udb.clases.Usuarios;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
 public class Biblioteca extends javax.swing.JFrame {
     EditorialDB editorialDB = null;
+    UsuariosDB UsuariosDB = null;
+    
     private int idEditorialSeleccionado = 0;
+    private int idUsuarioSeleccionado = 0;
+    private javax.swing.JComboBox Tpuser;
     
     public Biblioteca() {
         editorialDB = new EditorialDB();
+        UsuariosDB = new UsuariosDB();
         initComponents();
+        actualizarTablaUsuario();
     }
 
     private void actualizarTablaEditorial() {
@@ -25,6 +35,53 @@ public class Biblioteca extends javax.swing.JFrame {
         btnEliminarEditorial.setEnabled(false);
         idEditorialSeleccionado = 0;
         actualizarTablaEditorial();
+    }
+    
+    private void actualizarTablaUsuario() {
+        tbluser.setModel(UsuariosDB.selectUsuarios());
+    }
+
+    private void limpiarFormularioUsuario() {
+        jTfiduser.setText("");
+        jTfnombreuser.setText("");
+        jTfcorreouser.setText("");
+        jTfpassworduser.setText("");
+        btnguardarUser.setText("Guardar");
+        btneliminarUser.setEnabled(false);
+        idUsuarioSeleccionado = 0;
+        actualizarTablaUsuario();
+    }
+    
+    private void TpuserActionPerformed(java.awt.event.ActionEvent evt) {
+        String seleccionado = (String) Tpuser.getSelectedItem();
+        System.out.println("Tipo seleccionado: " + seleccionado);
+    }
+
+    private void tbluserMouseClicked(java.awt.event.MouseEvent evt) {
+        int fila = tbluser.getSelectedRow();
+
+        if (fila >= 0) {
+            try {
+                Object idObj = tbluser.getValueAt(fila, 0);
+                idUsuarioSeleccionado = Integer.parseInt(idObj.toString());
+
+                jTfiduser.setText(idObj.toString());
+                jTfnombreuser.setText(tbluser.getValueAt(fila, 1).toString());
+                jTfcorreouser.setText(tbluser.getValueAt(fila, 3).toString());
+
+                btnguardarUser.setText("Actualizar");
+                btneliminarUser.setEnabled(true);
+                jTfpassworduser.setText("");
+            } catch (NumberFormatException e) {
+                System.err.println("Error al convertir el ID de la tabla: " + e.getMessage());
+            } catch (Exception ex) {
+                System.err.println("Error al cargar datos de la fila: " + ex.getMessage());
+            }
+        }
+    }
+    
+    private void jTfpassworduserActionPerformed(java.awt.event.ActionEvent evt) {
+        btnguardarUser.requestFocus();
     }
  
     @SuppressWarnings("unchecked")
@@ -443,6 +500,11 @@ public class Biblioteca extends javax.swing.JFrame {
                 "ID", "Nombre", "Tipo de Uusuario", "Correo"
             }
         ));
+        tbluser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbluserMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tbluser);
 
         jPusuarios.setBackground(new java.awt.Color(0, 102, 204));
@@ -479,6 +541,12 @@ public class Biblioteca extends javax.swing.JFrame {
         jlbpassworduser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jlbpassworduser.setText("Password");
 
+        jTfpassworduser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTfpassworduserActionPerformed(evt);
+            }
+        });
+
         jTfBusquedauser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTfBusquedauserActionPerformed(evt);
@@ -497,8 +565,12 @@ public class Biblioteca extends javax.swing.JFrame {
         });
 
 
-
         Tpuser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alumno", "Profesor", "", "" }));
+        Tpuser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TpuserActionPerformed(evt);
+            }
+        });
 
         btnnuevouser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnnuevouser.setText("Nuevo");
