@@ -94,7 +94,7 @@ private void jTfpassworduserActionPerformed(java.awt.event.ActionEvent evt) {
 }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate=                          
     private void initComponents() {
 
         jInternalFrame1 = new javax.swing.JInternalFrame();
