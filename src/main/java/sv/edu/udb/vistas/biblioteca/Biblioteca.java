@@ -21,6 +21,7 @@ public class Biblioteca extends javax.swing.JFrame {
     RevistaDB revistaDB = null;
     AudioVisualDB audiovisualDB = null;
     OtroDocumentoDB otroDocumentoDB = null;
+    PrestamosDB prestamosDB = null;
 
     private int idEditorialSeleccionado = 0;
     private int idMaterialSeleccionado = 0;
@@ -36,6 +37,7 @@ public class Biblioteca extends javax.swing.JFrame {
         revistaDB = new RevistaDB();
         audiovisualDB = new AudioVisualDB();
         otroDocumentoDB = new OtroDocumentoDB();
+        prestamosDB = new PrestamosDB();
         initComponents();
         cbxtipomaterial.setSelectedIndex(-1);
         ocultarCamposEspecificosMaterial();
@@ -307,16 +309,6 @@ public class Biblioteca extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         tblPrestamo = new javax.swing.JTable();
         jPprestamos = new javax.swing.JPanel();
-        jLbmaterprestam = new javax.swing.JLabel();
-        jLbtituloprestamo = new javax.swing.JLabel();
-        jLbautorprestamo = new javax.swing.JLabel();
-        jLbAnioPubprestamo = new javax.swing.JLabel();
-        jTfcatprestamo = new javax.swing.JTextField();
-        jTftituloprestamo = new javax.swing.JTextField();
-        jTfAutorprestamo = new javax.swing.JTextField();
-        jTfAniopubprestamo = new javax.swing.JTextField();
-        btnregdev = new javax.swing.JButton();
-        btnregprest = new javax.swing.JButton();
         JlbBusquedaUser1 = new javax.swing.JLabel();
         Txtbusqpres = new javax.swing.JTextField();
         jTfBibliotecaamigosDonBosco = new javax.swing.JTextField();
@@ -1042,29 +1034,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jPanelprestamo.setBackground(new java.awt.Color(255, 255, 255));
 
-        tblPrestamo.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Id", "Categoria", "Titulo", "Autor", "Año de publicacion", "Fecha de Devolución", "Estado"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
-            };
-            boolean[] canEdit = new boolean [] {
-                true, true, true, true, true, true, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        tblPrestamo.setModel(prestamosDB.selectPrestamosDetallado());
         tblPrestamo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblPrestamoMouseClicked(evt);
@@ -1077,29 +1047,6 @@ public class Biblioteca extends javax.swing.JFrame {
         }
 
         jPprestamos.setBackground(new java.awt.Color(0, 102, 204));
-
-        jLbmaterprestam.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLbmaterprestam.setText("Material");
-
-        jLbtituloprestamo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLbtituloprestamo.setText("Titulo");
-
-        jLbautorprestamo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLbautorprestamo.setText("Autor");
-
-        jLbAnioPubprestamo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLbAnioPubprestamo.setText("Año de publicacion");
-
-        btnregdev.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnregdev.setText("Registrar Devolucion");
-        btnregdev.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnregdevActionPerformed(evt);
-            }
-        });
-
-        btnregprest.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnregprest.setText("Registrar Prestamo");
 
         JlbBusquedaUser1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         JlbBusquedaUser1.setText("Busqueda ");
@@ -1117,34 +1064,10 @@ public class Biblioteca extends javax.swing.JFrame {
             jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
-                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLbtituloprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPprestamosLayout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(jLbautorprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLbAnioPubprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTftituloprestamo, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
-                            .addComponent(jTfAutorprestamo, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTfAniopubprestamo, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
-                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLbmaterprestam, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JlbBusquedaUser1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Txtbusqpres)
-                            .addComponent(jTfcatprestamo, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))))
+                .addComponent(JlbBusquedaUser1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(108, 108, 108)
+                .addComponent(Txtbusqpres, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
-            .addGroup(jPprestamosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnregprest)
-                .addGap(32, 32, 32)
-                .addComponent(btnregdev)
-                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPprestamosLayout.setVerticalGroup(
             jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1153,30 +1076,7 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(JlbBusquedaUser1)
                     .addComponent(Txtbusqpres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLbmaterprestam)
-                    .addComponent(jTfcatprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLbtituloprestamo)
-                    .addComponent(jTftituloprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPprestamosLayout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jLbautorprestamo))
-                    .addGroup(jPprestamosLayout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(jTfAutorprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(70, 70, 70)
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTfAniopubprestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLbAnioPubprestamo))
-                .addGap(76, 76, 76)
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnregprest)
-                    .addComponent(btnregdev))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelprestamoLayout = new javax.swing.GroupLayout(jPanelprestamo);
@@ -1194,7 +1094,7 @@ public class Biblioteca extends javax.swing.JFrame {
             jPanelprestamoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelprestamoLayout.createSequentialGroup()
                 .addGroup(jPanelprestamoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane7)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelprestamoLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPprestamos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -1354,7 +1254,7 @@ public class Biblioteca extends javax.swing.JFrame {
         lblDescripcion.setBounds(labelX, yPos, 166, 25);
         jScrollPaneDescripcion.setBounds(fieldX, yPos, fieldWidth + 50, 60);
 
-        cbxtipomaterial.addActionListener(new java.awt.event.ActionListener() {
+         cbxtipomaterial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxtipomaterialActionPerformed(evt);
             }
@@ -2147,21 +2047,17 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbxtipomaterial;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLbAnioPubprestamo;
     private javax.swing.JLabel jLbCantDispmat;
     private javax.swing.JLabel jLbTipouser;
     private javax.swing.JLabel jLbUbicmaterial;
-    private javax.swing.JLabel jLbautorprestamo;
     private javax.swing.JLabel jLbcanttotal;
     private javax.swing.JLabel jLbcorreouser;
     private javax.swing.JLabel jLbidUsermora;
     private javax.swing.JLabel jLbiduser;
-    private javax.swing.JLabel jLbmaterprestam;
     private javax.swing.JLabel jLbnombremora;
     private javax.swing.JLabel jLbnombreuser;
     private javax.swing.JLabel jLbtipomaterial;
     private javax.swing.JLabel jLbtitulomaterial;
-    private javax.swing.JLabel jLbtituloprestamo;
     private javax.swing.JPanel jPanelmora;
     private javax.swing.JPanel jPanelprestamo;
     private javax.swing.JPanel jPaneluser;
@@ -2173,15 +2069,12 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTfAniopubprestamo;
-    private javax.swing.JTextField jTfAutorprestamo;
     private javax.swing.JTextField jTfBibliotecaamigosDonBosco;
     private javax.swing.JTextField jTfBusquedauser;
     private javax.swing.JTextField jTfCantdispmat;
     private javax.swing.JTextField jTfCanttotal;
     private javax.swing.JTextField jTfUbimaterial;
     private javax.swing.JTextField jTfbusqumora;
-    private javax.swing.JTextField jTfcatprestamo;
     private javax.swing.JTextField jTfcorreouser;
     private javax.swing.JTextField jTfiduser;
     private javax.swing.JTextField jTfidusermora;
@@ -2189,7 +2082,6 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField jTfnombreuser;
     private javax.swing.JTextField jTfpassworduser;
     private javax.swing.JTextField jTftitulomaterial;
-    private javax.swing.JTextField jTftituloprestamo;
     private javax.swing.JScrollPane jcpTablaAutoresInterno;
     private javax.swing.JScrollPane jcpTablaEditorial;
     private javax.swing.JScrollPane jcpTablaMaterial;

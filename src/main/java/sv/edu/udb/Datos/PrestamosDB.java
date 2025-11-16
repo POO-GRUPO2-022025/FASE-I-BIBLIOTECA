@@ -7,11 +7,11 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
 public class PrestamosDB {
-    private final String SQL_INSERT = "INSERT INTO prestamos(id_usuario,id_material,id_mora,mora_total,fecha_prestamo,fecha_devolucion,estado)VALUES(?,?,?,?,?,?,?)";
-    private final String SQL_UPDATE = "UPDATE prestamos SET id_usuario=?, id_material=?, id_mora=?, mora_total=?, fecha_prestamo=?, fecha_devolucion=?, estado=? WHERE id_prestamo=?";
+    private final String SQL_INSERT = "INSERT INTO prestamos(id_usuario,id_material,id_mora,mora_total,fecha_prestamo,fecha_estimada,fecha_devolucion,estado)VALUES(?,?,?,?,?,?,?,?)";
+    private final String SQL_UPDATE = "UPDATE prestamos SET id_usuario=?, id_material=?, id_mora=?, mora_total=?, fecha_prestamo=?, fecha_estimada=?, fecha_devolucion=?, estado=? WHERE id_prestamo=?";
     private final String SQL_DELETE = "DELETE FROM prestamos WHERE id_prestamo=?";
     private final String SQL_SELECT = "SELECT * FROM prestamos WHERE id_prestamo=?";
-    private final String SQL_SELECT_ALL = "SELECT id_prestamo, id_usuario, id_material, id_mora, mora_total, fecha_prestamo, fecha_devolucion, estado FROM prestamos ORDER BY id_prestamo";
+    private final String SQL_SELECT_ALL = "SELECT id_prestamo, id_usuario, id_material, id_mora, mora_total, fecha_prestamo, fecha_estimada, fecha_devolucion, estado FROM prestamos ORDER BY id_prestamo";
 
     public Prestamo insert(Prestamo prestamo) {
         Connection conn = null;
@@ -29,8 +29,9 @@ public class PrestamosDB {
             stmt.setInt(3, prestamo.getIdMora());
             stmt.setBigDecimal(4, prestamo.getMoraTotal());
             stmt.setDate(5, Date.valueOf(prestamo.getFechaPrestamo().toLocalDate()));
-            stmt.setDate(6, Date.valueOf(prestamo.getFechaDevolucion().toLocalDate()));
-            stmt.setString(7, prestamo.getEstado().toString());
+            stmt.setDate(6, Date.valueOf(prestamo.getFechaEstimada().toLocalDate()));
+            stmt.setDate(7, Date.valueOf(prestamo.getFechaDevolucion().toLocalDate()));
+            stmt.setString(8, prestamo.getEstado().toString());
             stmt.executeUpdate();
 
             rs = stmt.getGeneratedKeys();
@@ -61,14 +62,15 @@ public class PrestamosDB {
             conn = Conexion.getConexion(); // Se establece la conexión
             stmt = conn.prepareStatement(SQL_UPDATE); // Se prepara la sentencia UPDATE
 
-            stmt.setInt(1, prestamo.getIdPrestamo());
-            stmt.setInt(2, prestamo.getIdUsuario());
+            stmt.setInt(1, prestamo.getIdUsuario());
+            stmt.setInt(2, prestamo.getIdMaterial());
             stmt.setInt(3, prestamo.getIdMora());
             stmt.setBigDecimal(4, prestamo.getMoraTotal());
             stmt.setDate(5, Date.valueOf(prestamo.getFechaPrestamo().toLocalDate()));
-            stmt.setDate(6, Date.valueOf(prestamo.getFechaDevolucion().toLocalDate()));
-            stmt.setString(7, String.valueOf(Prestamo.Estado.valueOf(prestamo.getEstado().toString())));
-            stmt.setInt(8, prestamo.getIdPrestamo());
+            stmt.setDate(6, Date.valueOf(prestamo.getFechaEstimada().toLocalDate()));
+            stmt.setDate(7, Date.valueOf(prestamo.getFechaDevolucion().toLocalDate()));
+            stmt.setString(8, prestamo.getEstado().toString());
+            stmt.setInt(9, prestamo.getIdPrestamo());
 
             int filas = stmt.executeUpdate(); // Ejecuta el UPDATE
             retorno = filas > 0; // Si se modificó al menos una fila, retorna true
@@ -124,6 +126,7 @@ public class PrestamosDB {
                 prestamo.setIdMora(rs.getInt("id_mora"));
                 prestamo.setMoraTotal(rs.getBigDecimal("mora_total"));
                 prestamo.setFechaPrestamo(Date.valueOf(rs.getDate("fecha_prestamo").toLocalDate()));
+                prestamo.setFechaEstimada(Date.valueOf(rs.getDate("fecha_estimada").toLocalDate()));
                 prestamo.setFechaDevolucion(Date.valueOf(rs.getDate("fecha_devolucion").toLocalDate()));
                 prestamo.setEstado(Prestamo.Estado.valueOf(rs.getString("estado")));
             }
@@ -167,6 +170,56 @@ public class PrestamosDB {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        
+        return dtm;
+    }
+
+    public DefaultTableModel selectPrestamosDetallado() {
+        DefaultTableModel dtm = new DefaultTableModel();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String SQL_SELECT_DETALLADO = "SELECT p.id_prestamo, u.nombre AS usuario, m.titulo AS material, " +
+                "mo.tarifa_diaria AS tarifa_diaria, p.fecha_prestamo, p.fecha_estimada, p.fecha_devolucion, p.estado " +
+                "FROM prestamos p " +
+                "INNER JOIN usuarios u ON p.id_usuario = u.id_usuario " +
+                "INNER JOIN materiales m ON p.id_material = m.id_material " +
+                "INNER JOIN moras mo ON p.id_mora = mo.id_mora " +
+                "ORDER BY p.id_prestamo";
+        
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_DETALLADO);
+            rs = stmt.executeQuery();
+            
+            dtm.addColumn("ID Préstamo");
+            dtm.addColumn("Usuario");
+            dtm.addColumn("Material");
+            dtm.addColumn("Tarifa Diaria");
+            dtm.addColumn("Fecha Préstamo");
+            dtm.addColumn("Fecha Estimada");
+            dtm.addColumn("Fecha Devolución");
+            dtm.addColumn("Estado");
+            
+            while (rs.next()) {
+                Object[] fila = new Object[8];
+                fila[0] = rs.getInt("id_prestamo");
+                fila[1] = rs.getString("usuario");
+                fila[2] = rs.getString("material");
+                fila[3] = rs.getBigDecimal("tarifa_diaria");
+                fila[4] = rs.getDate("fecha_prestamo");
+                fila[5] = rs.getDate("fecha_estimada");
+                fila[6] = rs.getDate("fecha_devolucion");
+                fila[7] = rs.getString("estado");
+                dtm.addRow(fila);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar préstamos detallados", e);
         } finally {
             Conexion.close(rs);
             Conexion.close(stmt);
