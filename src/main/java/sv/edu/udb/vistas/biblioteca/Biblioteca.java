@@ -5,27 +5,32 @@ import sv.edu.udb.Datos.EditorialDB;
 import sv.edu.udb.clases.Editorial;
 import sv.edu.udb.Datos.UsuariosDB;
 import sv.edu.udb.clases.Usuarios;
+import sv.edu.udb.clases.Material;
+import sv.edu.udb.Datos.MaterialesDB;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
 public class Biblioteca extends javax.swing.JFrame {
     EditorialDB editorialDB = null;
+    MaterialesDB materialesDB = null;
     UsuariosDB UsuariosDB = null;
     
     private int idEditorialSeleccionado = 0;
+    private int idMaterialSeleccionado = 0;
     private int idUsuarioSeleccionado = 0;
     private javax.swing.JComboBox Tpuser;
     
     public Biblioteca() {
         editorialDB = new EditorialDB();
         UsuariosDB = new UsuariosDB();
+        materialesDB = new MaterialesDB();
         initComponents();
         actualizarTablaUsuario();
     }
 
     private void actualizarTablaEditorial() {
-        tblEditorial.setModel(editorialDB.selectEditoriales());
+  
     }
 
     private void limpiarFormularioEditorial() {
@@ -37,6 +42,23 @@ public class Biblioteca extends javax.swing.JFrame {
         actualizarTablaEditorial();
     }
     
+     private void limpiarFormularioMaterial() {
+        cbxtipomaterial.setSelectedIndex(0);
+        jTftitulomaterial.setText("");
+        jTfUbimaterial.setText("");
+        jTfCanttotal.setText("");
+        jTfCantdispmat.setText("");
+        btnGuardarmat.setText("Guardar");
+        btnEliminarmat.setEnabled(false);
+        idMaterialSeleccionado = 0;
+        
+        actualizarTablaMateriales();
+    }
+     
+     private void actualizarTablaMateriales() {
+        tblmaterial.setModel(materialesDB.selectMateriales());
+    }
+     
     private void actualizarTablaUsuario() {
         tbluser.setModel(UsuariosDB.selectUsuarios());
     }
@@ -93,9 +115,7 @@ public class Biblioteca extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jtbprestamos = new javax.swing.JTabbedPane();
         jpinicio = new javax.swing.JPanel();
-        jpEditorial = new javax.swing.JPanel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        tblEditorial = new javax.swing.JTable();
+        jPmat = new javax.swing.JPanel();
         jPmaterial1 = new javax.swing.JPanel();
         btnConsultarmat1 = new javax.swing.JButton();
         txtNombreEditorial = new javax.swing.JTextField();
@@ -105,12 +125,11 @@ public class Biblioteca extends javax.swing.JFrame {
         btnGuardarEditorial = new javax.swing.JButton();
         btnEliminarEditorial = new javax.swing.JButton();
         btnLimpiarEditorial = new javax.swing.JButton();
-        jPmat = new javax.swing.JPanel();
+        jPmat1 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblmaterial = new javax.swing.JTable();
         jPmaterial = new javax.swing.JPanel();
         btnEliminarmat = new javax.swing.JButton();
-        jTfTipomaterial = new javax.swing.JTextField();
         jTftitulomaterial = new javax.swing.JTextField();
         jTfUbimaterial = new javax.swing.JTextField();
         jTfCanttotal = new javax.swing.JTextField();
@@ -121,8 +140,8 @@ public class Biblioteca extends javax.swing.JFrame {
         jTfCantdispmat = new javax.swing.JTextField();
         jLbCantDispmat = new javax.swing.JLabel();
         btnGuardarmat = new javax.swing.JButton();
-        btnnuevomat = new javax.swing.JButton();
-        btneditarpmat = new javax.swing.JButton();
+        btnlimpiarmaterial = new javax.swing.JButton();
+        cbxtipomaterial = new javax.swing.JComboBox<>();
         jPaneluser = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbluser = new javax.swing.JTable();
@@ -211,18 +230,6 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jtbprestamos.addTab("Inicio", jpinicio);
 
-        tblEditorial.setModel(editorialDB.selectEditoriales());
-        tblEditorial.setToolTipText("");
-        tblEditorial.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblEditorialMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                tblEditorialMouseEntered(evt);
-            }
-        });
-        jScrollPane6.setViewportView(tblEditorial);
-
         jPmaterial1.setBackground(new java.awt.Color(0, 102, 204));
 
         btnConsultarmat1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -241,19 +248,9 @@ public class Biblioteca extends javax.swing.JFrame {
         jLbtitulomaterial1.setText("Pais");
 
         btnGuardarEditorial.setText("Guardar");
-        btnGuardarEditorial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarEditorialActionPerformed(evt);
-            }
-        });
 
         btnEliminarEditorial.setText("Eliminar");
         btnEliminarEditorial.setEnabled(false);
-        btnEliminarEditorial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarEditorialActionPerformed(evt);
-            }
-        });
 
         btnLimpiarEditorial.setText("Limpiar");
         btnLimpiarEditorial.addActionListener(new java.awt.event.ActionListener() {
@@ -314,38 +311,27 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGap(28, 28, 28))
         );
 
-        javax.swing.GroupLayout jpEditorialLayout = new javax.swing.GroupLayout(jpEditorial);
-        jpEditorial.setLayout(jpEditorialLayout);
-        jpEditorialLayout.setHorizontalGroup(
-            jpEditorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpEditorialLayout.createSequentialGroup()
+        javax.swing.GroupLayout jPmatLayout = new javax.swing.GroupLayout(jPmat);
+        jPmat.setLayout(jPmatLayout);
+        jPmatLayout.setHorizontalGroup(
+            jPmatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmatLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPmaterial1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(295, Short.MAX_VALUE))
+                .addContainerGap(983, Short.MAX_VALUE))
         );
-        jpEditorialLayout.setVerticalGroup(
-            jpEditorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpEditorialLayout.createSequentialGroup()
-                .addGroup(jpEditorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpEditorialLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jPmaterial1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+        jPmatLayout.setVerticalGroup(
+            jPmatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPmatLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPmaterial1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(92, 92, 92))
         );
 
-        jtbprestamos.addTab("Editoriales", jpEditorial);
+        jtbprestamos.addTab("Editoriales", jPmat);
 
-        tblmaterial.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Material", "Título", "Ubicacion", "Cantidad Total", "Cantidad Disponible"
-            }
-        ));
+        tblmaterial.setModel(materialesDB.selectMateriales()
+        );
         tblmaterial.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblmaterialMouseClicked(evt);
@@ -357,6 +343,12 @@ public class Biblioteca extends javax.swing.JFrame {
 
         btnEliminarmat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEliminarmat.setText("Eliminar");
+        btnEliminarmat.setEnabled(false);
+        btnEliminarmat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarmatActionPerformed(evt);
+            }
+        });
 
         jTftitulomaterial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -381,38 +373,38 @@ public class Biblioteca extends javax.swing.JFrame {
 
         btnGuardarmat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnGuardarmat.setText("Guardar");
+        btnGuardarmat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarmatActionPerformed(evt);
+            }
+        });
 
-        btnnuevomat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnnuevomat.setText("Nuevo");
+        btnlimpiarmaterial.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnlimpiarmaterial.setText("Limpiar");
+        btnlimpiarmaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlimpiarmaterialActionPerformed(evt);
+            }
+        });
 
-        btneditarpmat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btneditarpmat.setText("Editar");
+        cbxtipomaterial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cbxtipomaterial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Libro", "Revista", "Audiovisual", "Otro" }));
 
         javax.swing.GroupLayout jPmaterialLayout = new javax.swing.GroupLayout(jPmaterial);
         jPmaterial.setLayout(jPmaterialLayout);
         jPmaterialLayout.setHorizontalGroup(
             jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPmaterialLayout.createSequentialGroup()
-                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPmaterialLayout.createSequentialGroup()
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPmaterialLayout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(jLbtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTfTipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterialLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnGuardarmat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnnuevomat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btneditarpmat)
-                            .addComponent(btnEliminarmat))
-                        .addGap(16, 16, 16))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterialLayout.createSequentialGroup()
+                        .addComponent(cbxtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPmaterialLayout.createSequentialGroup()
+                        .addGap(0, 6, Short.MAX_VALUE)
                         .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterialLayout.createSequentialGroup()
-                                .addContainerGap()
                                 .addComponent(jLbcanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(72, 72, 72))
                             .addGroup(jPmaterialLayout.createSequentialGroup()
@@ -422,72 +414,82 @@ public class Biblioteca extends javax.swing.JFrame {
                                         .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLbUbicmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLbtitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPmaterialLayout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(jLbCantDispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLbCantDispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(34, 34, 34)))
                         .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTfUbimaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTftitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTfCanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTfCantdispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTfCantdispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPmaterialLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(btnGuardarmat)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnlimpiarmaterial)
+                        .addGap(23, 23, 23)))
                 .addGap(45, 45, 45))
+            .addGroup(jPmaterialLayout.createSequentialGroup()
+                .addGap(127, 127, 127)
+                .addComponent(btnEliminarmat)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPmaterialLayout.setVerticalGroup(
             jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterialLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLbtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTfTipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLbtitulomaterial)
-                    .addComponent(jTftitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLbUbicmaterial)
-                    .addComponent(jTfUbimaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLbcanttotal)
-                    .addComponent(jTfCanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLbCantDispmat)
-                    .addComponent(jTfCantdispmat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(65, 65, 65)
-                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btneditarpmat)
-                    .addComponent(btnnuevomat))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEliminarmat)
-                    .addComponent(btnGuardarmat))
-                .addGap(30, 30, 30))
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPmaterialLayout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLbtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLbtitulomaterial)
+                            .addComponent(jTftitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
+                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLbUbicmaterial)
+                            .addComponent(jTfUbimaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
+                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLbcanttotal)
+                            .addComponent(jTfCanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLbCantDispmat)
+                            .addComponent(jTfCantdispmat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(67, 67, 67)
+                        .addComponent(btnlimpiarmaterial)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterialLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGuardarmat)
+                        .addGap(25, 25, 25)))
+                .addComponent(btnEliminarmat)
+                .addGap(38, 38, 38))
         );
 
-        javax.swing.GroupLayout jPmatLayout = new javax.swing.GroupLayout(jPmat);
-        jPmat.setLayout(jPmatLayout);
-        jPmatLayout.setHorizontalGroup(
-            jPmatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmatLayout.createSequentialGroup()
+        javax.swing.GroupLayout jPmat1Layout = new javax.swing.GroupLayout(jPmat1);
+        jPmat1.setLayout(jPmat1Layout);
+        jPmat1Layout.setHorizontalGroup(
+            jPmat1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmat1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(143, Short.MAX_VALUE))
         );
-        jPmatLayout.setVerticalGroup(
-            jPmatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPmatLayout.createSequentialGroup()
-                .addGroup(jPmatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+        jPmat1Layout.setVerticalGroup(
+            jPmat1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPmat1Layout.createSequentialGroup()
+                .addGroup(jPmat1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPmaterial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE))
                 .addGap(92, 92, 92))
         );
 
-        jtbprestamos.addTab("Material", jPmat);
+        jtbprestamos.addTab("Material", jPmat1);
 
         tbluser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -500,11 +502,6 @@ public class Biblioteca extends javax.swing.JFrame {
                 "ID", "Nombre", "Tipo de Uusuario", "Correo"
             }
         ));
-        tbluser.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbluserMouseClicked(evt);
-            }
-        });
         jScrollPane4.setViewportView(tbluser);
 
         jPusuarios.setBackground(new java.awt.Color(0, 102, 204));
@@ -541,12 +538,6 @@ public class Biblioteca extends javax.swing.JFrame {
         jlbpassworduser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jlbpassworduser.setText("Password");
 
-        jTfpassworduser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTfpassworduserActionPerformed(evt);
-            }
-        });
-
         jTfBusquedauser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTfBusquedauserActionPerformed(evt);
@@ -558,14 +549,8 @@ public class Biblioteca extends javax.swing.JFrame {
 
         btnEdituser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEdituser.setText("Editar");
-          btnEdituser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEdituserActionPerformed(evt);
-            }
-        });
 
-
-        Tpuser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alumno", "Profesor", "", "" }));
+        Tpuser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         Tpuser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TpuserActionPerformed(evt);
@@ -676,7 +661,7 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPaneluserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPusuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane4))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jtbprestamos.addTab("Usuarios", jPaneluser);
@@ -784,7 +769,7 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPanelmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPmora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         jtbprestamos.addTab("Mora ", jPanelmora);
@@ -799,12 +784,10 @@ public class Biblioteca extends javax.swing.JFrame {
                 "Id", "Categoria", "Titulo", "Autor", "Año de publicacion", "Fecha de Devolución", "Estado"
             }
         ) {
-          Class[] types = new Class [] {
-    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
-    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
-};
-
-          boolean[] canEdit = new boolean [] {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
                 true, true, true, true, true, true, false
             };
 
@@ -843,21 +826,14 @@ public class Biblioteca extends javax.swing.JFrame {
 
         btnregdev.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnregdev.setText("Registrar Devolucion");
-
-            btnregdev.addActionListener(new java.awt.event.ActionListener() {
+        btnregdev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-             btnregprestActionPerformed(evt);
+                btnregdevActionPerformed(evt);
             }
         });
 
         btnregprest.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnregprest.setText("Registrar Prestamo");
-           btnregprest.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnregprestActionPerformed(evt);
-            }
-        });
-
 
         JlbBusquedaUser1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         JlbBusquedaUser1.setText("Busqueda ");
@@ -961,6 +937,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jtbprestamos.addTab("prestamos", jPanelprestamo);
 
+        jTfBibliotecaamigosDonBosco.setEditable(false);
         jTfBibliotecaamigosDonBosco.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
         jTfBibliotecaamigosDonBosco.setText("Bliblioteca Amigos Don Bosco");
         jTfBibliotecaamigosDonBosco.addActionListener(new java.awt.event.ActionListener() {
@@ -1077,9 +1054,22 @@ public class Biblioteca extends javax.swing.JFrame {
     }//GEN-LAST:event_tblPrestamoMouseClicked
 
     private void tblmaterialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblmaterialMouseClicked
-  
-    }//GEN-LAST:event_tblmaterialMouseClicked
+  int fila = tblmaterial.rowAtPoint(evt.getPoint());
+        int columna = tblmaterial.columnAtPoint(evt.getPoint());
 
+        if ((fila > -1) && (columna > -1)){
+            DefaultTableModel modelo = (DefaultTableModel) tblmaterial.getModel();
+            idMaterialSeleccionado = Integer.parseInt(modelo.getValueAt(fila,0).toString());
+            jTftitulomaterial.setText(modelo.getValueAt(fila,2).toString());
+            jTfUbimaterial.setText(modelo.getValueAt(fila,3).toString());
+            jTfCanttotal.setText(modelo.getValueAt(fila,4).toString());
+            jTfCantdispmat.setText (modelo.getValueAt(fila,5).toString());
+            cbxtipomaterial.setSelectedItem(modelo.getValueAt(fila,1).toString());
+            btnGuardarmat.setText("Editar");
+            btnEliminarmat.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblmaterialMouseClicked
+        
     private void jTftitulomaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTftitulomaterialActionPerformed
       
     }//GEN-LAST:event_jTftitulomaterialActionPerformed
@@ -1146,7 +1136,7 @@ for (java.awt.Component c : jPusuarios.getComponents()) {
         
     }//GEN-LAST:event_btnguardarUserActionPerformed
         
-    private void TxtbusqpresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtbusqpresActionPerformed
+    private void TxtbusqpresActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
 }    //BOTON EDITAR
    private void btnEdituserActionPerformed(java.awt.event.ActionEvent evt) {                                            
@@ -1273,31 +1263,137 @@ private void limpiarCamposPrestamo() {
         // TODO add your handling code here:
     }                                                   
 
-    private void tblEditorialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEditorialMouseClicked
-        int fila = tblEditorial.rowAtPoint(evt.getPoint());
-        int columna = tblEditorial.columnAtPoint(evt.getPoint());
-
-        if ((fila > -1) && (columna > -1)){
-            DefaultTableModel modelo = (DefaultTableModel) tblEditorial.getModel();
-            idEditorialSeleccionado = Integer.parseInt(modelo.getValueAt(fila,0).toString());
-            txtNombreEditorial.setText(modelo.getValueAt(fila,1).toString());
-            txtPaisEditorial.setText(modelo.getValueAt(fila,2).toString());
-            btnGuardarEditorial.setText("Editar");
-            btnEliminarEditorial.setEnabled(true);
-        }
-    }//GEN-LAST:event_tblEditorialMouseClicked
-
     private void txtPaisEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaisEditorialActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPaisEditorialActionPerformed
 
-    private void tblEditorialMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEditorialMouseEntered
-        
-    }//GEN-LAST:event_tblEditorialMouseEntered
-
     private void btnLimpiarEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarEditorialActionPerformed
             limpiarFormularioEditorial();
     }//GEN-LAST:event_btnLimpiarEditorialActionPerformed
+
+    private void btnGuardarmatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarmatActionPerformed
+        // TODO add your handling code here:
+       //TRABAJAR : SI EL BOTON DICE GUARDAR ES GUARADARLO, CAPTURAR EL TIPO DEMATERIAL DE CONMBOX Y CONVERTIRLO A ENUM 
+         Material.TipoMaterial tipo = Material.TipoMaterial.valueOf(cbxtipomaterial.getSelectedItem().toString());
+       String titulo = jTftitulomaterial.getText(); 
+        String ubicacion = jTfUbimaterial.getText();
+        int cantidad_total = Integer.valueOf(jTfCanttotal.getText());
+        int cantidad_disponible = Integer.valueOf(jTfCantdispmat.getText());
+        
+        if (titulo.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "El titulo del material es obligatorio", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (ubicacion.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "ubicacion del material es obligatorio", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+         if (cantidad_total < 1) {  
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Cantidad total debe ser mayor a o igual a 1 ", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+         
+          if (cantidad_disponible < 1) {  
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Cantidad disponible debe ser mayor a o igual a 1 ", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+         
+         
+         
+        
+
+        if (btnGuardarmat.getText().equals("Guardar")) {
+            Material material = new Material(0,tipo,titulo,ubicacion,cantidad_total,cantidad_disponible,0,0);
+            Material resultado = materialesDB.insert(material);
+
+            if (resultado != null ) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Material guardado correctamente", 
+                    "Éxito", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                limpiarFormularioMaterial();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error al guardar el material", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+            actualizarTablaMateriales();
+        } else {
+           Material material = new Material(idMaterialSeleccionado,tipo,titulo,ubicacion,cantidad_total,cantidad_disponible,0,0);
+            boolean resultado = materialesDB.update(material);
+
+            if (resultado) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Material actualizado correctamente", 
+                    "Éxito", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                limpiarFormularioEditorial();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error al actualizar el material", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+            actualizarTablaMateriales();
+        }
+    }//GEN-LAST:event_btnGuardarmatActionPerformed
+
+    private void btnEliminarmatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarmatActionPerformed
+        // TODO add your handling code here:
+        //COPIAR CODIGO DE EDITORIAL  
+        if (idMaterialSeleccionado == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Debe seleccionar un material para eliminar", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this, 
+            "¿Está seguro que desea eliminar este material?", 
+            "Confirmar eliminación", 
+            javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+ 
+            boolean resultado = materialesDB.delete(idMaterialSeleccionado);
+
+            if (resultado) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Material eliminado correctamente", 
+                    "Éxito", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                limpiarFormularioMaterial();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error al eliminar el material", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarmatActionPerformed
+
+    private void btnlimpiarmaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlimpiarmaterialActionPerformed
+        // TODO add your handling code here:
+        //llamar a la funcion que limpia el formulario de materiales 
+        limpiarFormularioMaterial();
+        
+    }//GEN-LAST:event_btnlimpiarmaterialActionPerformed
 
     private void btnGuardarEditorialActionPerformed(java.awt.event.ActionEvent evt) {
         String nombre = txtNombreEditorial.getText().trim();
@@ -1408,20 +1504,20 @@ private void limpiarCamposPrestamo() {
     private javax.swing.JTable Tblmora;
     private javax.swing.JTextField Txtbusqpres;
     private javax.swing.JButton btnConsultamora;
-    private javax.swing.JButton btnEdituser;
-    private javax.swing.JButton btnEliminarmat;
-    private javax.swing.JButton btnGuardarmat;
-    private javax.swing.JButton btneditarpmat;
     private javax.swing.JButton btnConsultarmat1;
+    private javax.swing.JButton btnEdituser;
     private javax.swing.JButton btnEliminarEditorial;
+    private javax.swing.JButton btnEliminarmat;
     private javax.swing.JButton btnGuardarEditorial;
+    private javax.swing.JButton btnGuardarmat;
     private javax.swing.JButton btnLimpiarEditorial;
     private javax.swing.JButton btneliminarUser;
     private javax.swing.JButton btnguardarUser;
-    private javax.swing.JButton btnnuevomat;
+    private javax.swing.JButton btnlimpiarmaterial;
     private javax.swing.JButton btnnuevouser;
     private javax.swing.JButton btnregdev;
     private javax.swing.JButton btnregprest;
+    private javax.swing.JComboBox<String> cbxtipomaterial;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLbAnioPubprestamo;
@@ -1445,6 +1541,7 @@ private void limpiarCamposPrestamo() {
     private javax.swing.JPanel jPanelprestamo;
     private javax.swing.JPanel jPaneluser;
     private javax.swing.JPanel jPmat;
+    private javax.swing.JPanel jPmat1;
     private javax.swing.JPanel jPmaterial;
     private javax.swing.JPanel jPmaterial1;
     private javax.swing.JPanel jPmora;
@@ -1453,7 +1550,6 @@ private void limpiarCamposPrestamo() {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTfAniopubprestamo;
@@ -1462,7 +1558,6 @@ private void limpiarCamposPrestamo() {
     private javax.swing.JTextField jTfBusquedauser;
     private javax.swing.JTextField jTfCantdispmat;
     private javax.swing.JTextField jTfCanttotal;
-    private javax.swing.JTextField jTfTipomaterial;
     private javax.swing.JTextField jTfUbimaterial;
     private javax.swing.JTextField jTfbusqumora;
     private javax.swing.JTextField jTfcatprestamo;
@@ -1476,10 +1571,8 @@ private void limpiarCamposPrestamo() {
     private javax.swing.JTextField jTftituloprestamo;
     private javax.swing.JLabel jlbBusqumora;
     private javax.swing.JLabel jlbpassworduser;
-    private javax.swing.JPanel jpEditorial;
     private javax.swing.JPanel jpinicio;
     private javax.swing.JTabbedPane jtbprestamos;
-    private javax.swing.JTable tblEditorial;
     private javax.swing.JTable tblPrestamo;
     private javax.swing.JTable tblmaterial;
     private javax.swing.JTable tbluser;

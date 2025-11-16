@@ -72,14 +72,15 @@ public class MaterialesDB {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_UPDATE);
 
-            stmt.setInt(1, material.getIdMaterial());
-            stmt.setString(2, material.getTipoMaterial().toString());
-            stmt.setString(3, material.getTitulo());
-            stmt.setString(4, material.getUbicacion());
-            stmt.setInt(5, material.getCantidadTotal());
-            stmt.setInt(6, material.getCantidadDisponible());
-            stmt.setInt(7, material.getCantidadPrestada());
-            stmt.setInt(8, material.getCantidadDaniada());
+            stmt.setString(1, material.getTipoMaterial().toString());
+            stmt.setString(2, material.getTitulo());
+            stmt.setString(3, material.getUbicacion());
+            stmt.setInt(4, material.getCantidadTotal());
+            stmt.setInt(5, material.getCantidadDisponible());
+            stmt.setInt(6, material.getCantidadPrestada());
+            stmt.setInt(7, material.getCantidadDaniada());
+            
+            stmt.setInt(8, material.getIdMaterial());
 
             int filas = stmt.executeUpdate();
             retorno = filas > 0;
