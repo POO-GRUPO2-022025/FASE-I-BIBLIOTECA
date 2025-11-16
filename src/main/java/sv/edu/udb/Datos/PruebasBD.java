@@ -23,13 +23,13 @@ public class PruebasBD {
         //Prueba para ingresar usuario
         UsuariosDB usuariosDB = new UsuariosDB();
         Usuarios usuario = new Usuarios();
-/*
+
         usuario.setNombre("Joel Granados");
         usuario.setTipoUsuario(Usuarios.TipoUsuario.Encargado);
         usuario.setCorreo("joelgranados@email.com");
         usuario.setPassword("12345");
         usuariosDB.insert(usuario);
-*/
+
 
         //Prueba para validar usuario
         //Se ingresa el correo y la contraseña

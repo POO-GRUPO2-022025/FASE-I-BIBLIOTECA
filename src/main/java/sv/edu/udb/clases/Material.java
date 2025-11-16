@@ -5,7 +5,8 @@ public class Material {
         Libro,
         Revista,
         Audiovisual,
-        Otro,
+        Otro
+
     }
 
     private int idMaterial;
