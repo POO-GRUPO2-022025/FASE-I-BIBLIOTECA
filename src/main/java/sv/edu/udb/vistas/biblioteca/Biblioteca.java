@@ -1,15 +1,18 @@
 package sv.edu.udb.vistas.biblioteca;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultListModel;
+import javax.swing.*;
+
 import sv.edu.udb.Datos.*;
 import sv.edu.udb.clases.*;
 import sv.edu.udb.clases.hijas.*;
-import javax.swing.JOptionPane;
+import sv.edu.udb.vistas.INICIO.INICIO;
+
 import javax.swing.table.DefaultTableModel;
 
 public class Biblioteca extends javax.swing.JFrame {
@@ -27,7 +30,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private int idUsuarioSeleccionado = 0;
     private int idAutorSeleccionado = 0;
 
-    public Biblioteca() {
+    public Biblioteca(Usuarios usuarioValidado) {
         editorialDB = new EditorialDB();
         UsuariosDB = new UsuariosDB();
         materialesDB = new MaterialesDB();
@@ -37,6 +40,7 @@ public class Biblioteca extends javax.swing.JFrame {
         audiovisualDB = new AudioVisualDB();
         otroDocumentoDB = new OtroDocumentoDB();
         initComponents();
+        setLocationRelativeTo(null);
         cbxtipomaterial.setSelectedIndex(-1);
         ocultarCamposEspecificosMaterial();
         actualizarCamposPorTipoMaterial();
@@ -44,6 +48,20 @@ public class Biblioteca extends javax.swing.JFrame {
         cargarListaAutores();
         actualizarTablaUsuario();
         jpEditorial.setVisible(false);
+        ValidarTipoUsuario(usuarioValidado);
+    }
+    //Metodo para activar o desactivar paneles acorde al tipo de usuario
+    public void ValidarTipoUsuario(Usuarios usuarioValidado){
+        if(!usuarioValidado.getTipoUsuario().toString().equals("Encargado")) {
+            jtbprestamos.removeTabAt(4);
+            jtbprestamos.removeTabAt(3);
+            jtbprestamos.removeTabAt(2);
+            jtbprestamos.removeTabAt(1);
+            jtbprestamos.removeTabAt(0);
+        }
+        
+        jLbNombreUsuario.setText("Hola, "+usuarioValidado.getNombre());
+
     }
 
     private void actualizarTablaEditorial() {
@@ -272,6 +290,26 @@ public class Biblioteca extends javax.swing.JFrame {
         txtCantPrestados = new javax.swing.JTextField();
         lblCantDaniados = new javax.swing.JLabel();
         txtCantDaniados = new javax.swing.JTextField();
+        lblISBN = new javax.swing.JLabel();
+        txtISBN = new javax.swing.JTextField();
+        lblEditorial = new javax.swing.JLabel();
+        cbxEditorial = new javax.swing.JComboBox<>();
+        lblAutores = new javax.swing.JLabel();
+        jScrollPaneAutores = new javax.swing.JScrollPane();
+        lstAutores = new javax.swing.JList<>();
+        lblVolumen = new javax.swing.JLabel();
+        txtVolumen = new javax.swing.JTextField();
+        lblNumero = new javax.swing.JLabel();
+        txtNumero = new javax.swing.JTextField();
+        lblFechaPublicacion = new javax.swing.JLabel();
+        txtFechaPublicacion = new javax.swing.JTextField();
+        lblFormato = new javax.swing.JLabel();
+        txtFormato = new javax.swing.JTextField();
+        lblDuracion = new javax.swing.JLabel();
+        txtDuracion = new javax.swing.JTextField();
+        lblDescripcion = new javax.swing.JLabel();
+        jScrollPaneDescripcion = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
         jPaneluser = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbluser = new javax.swing.JTable();
@@ -320,6 +358,8 @@ public class Biblioteca extends javax.swing.JFrame {
         JlbBusquedaUser1 = new javax.swing.JLabel();
         Txtbusqpres = new javax.swing.JTextField();
         jTfBibliotecaamigosDonBosco = new javax.swing.JTextField();
+        jLbNombreUsuario = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         Administracion = new javax.swing.JMenuBar();
 
         jInternalFrame1.setVisible(true);
@@ -344,6 +384,7 @@ public class Biblioteca extends javax.swing.JFrame {
         jtbprestamos.setBackground(new java.awt.Color(204, 204, 204));
         jtbprestamos.setForeground(new java.awt.Color(51, 0, 51));
         jtbprestamos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jtbprestamos.setName(""); // NOI18N
 
         jpEditorialinterno.setBackground(new java.awt.Color(0, 102, 204));
 
@@ -642,12 +683,52 @@ public class Biblioteca extends javax.swing.JFrame {
 
         cbxtipomaterial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cbxtipomaterial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Libro", "Revista", "Audiovisual", "Otro" }));
+        cbxtipomaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxtipomaterialActionPerformed(evt);
+            }
+        });
 
         lblCantPrestados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblCantPrestados.setText("Cantidad Prestada");
 
         lblCantDaniados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblCantDaniados.setText("Cantidad Dañados");
+
+        lblISBN.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblISBN.setText("ISBN");
+
+        lblEditorial.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblEditorial.setText("Editorial");
+
+        cbxEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        lblAutores.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblAutores.setText("Autores");
+
+        jScrollPaneAutores.setViewportView(lstAutores);
+
+        lblVolumen.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblVolumen.setText("Volumen");
+
+        lblNumero.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblNumero.setText("Número");
+
+        lblFechaPublicacion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFechaPublicacion.setText("Fecha Publicación");
+
+        lblFormato.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFormato.setText("Formato");
+
+        lblDuracion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDuracion.setText("Duración (min)");
+
+        lblDescripcion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDescripcion.setText("Descripción");
+
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(3);
+        jScrollPaneDescripcion.setViewportView(txtDescripcion);
 
         javax.swing.GroupLayout jPmaterialLayout = new javax.swing.GroupLayout(jPmaterial);
         jPmaterial.setLayout(jPmaterialLayout);
@@ -1211,6 +1292,26 @@ public class Biblioteca extends javax.swing.JFrame {
                 jTfBibliotecaamigosDonBoscoActionPerformed(evt);
             }
         });
+
+        jLbNombreUsuario.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        jLbNombreUsuario.setForeground(new java.awt.Color(51, 153, 255));
+        jLbNombreUsuario.setText("jLabel2");
+        jLbNombreUsuario.setName("LbNombreUser"); // NOI18N
+
+        jButton1.setBackground(new java.awt.Color(255, 51, 51));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Logout");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         setJMenuBar(Administracion);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1224,141 +1325,27 @@ public class Biblioteca extends javax.swing.JFrame {
                         .addComponent(jtbprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, 1321, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(381, 381, 381)
-                        .addComponent(jTfBibliotecaamigosDonBosco, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTfBibliotecaamigosDonBosco, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLbNombreUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTfBibliotecaamigosDonBosco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTfBibliotecaamigosDonBosco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLbNombreUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtbprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
-
-        lblISBN = new javax.swing.JLabel();
-        lblISBN.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblISBN.setText("ISBN");
-        txtISBN = new javax.swing.JTextField();
-        
-        lblEditorial = new javax.swing.JLabel();
-        lblEditorial.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblEditorial.setText("Editorial");
-        cbxEditorial = new javax.swing.JComboBox<>();
-        cbxEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14));
-        
-        lblAutores = new javax.swing.JLabel();
-        lblAutores.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblAutores.setText("Autores");
-        lstAutores = new javax.swing.JList<>();
-        lstAutores.setFont(new java.awt.Font("Segoe UI", 0, 12));
-        lstAutores.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        jScrollPaneAutores = new javax.swing.JScrollPane();
-        jScrollPaneAutores.setViewportView(lstAutores);
-        jScrollPaneAutores.setPreferredSize(new java.awt.Dimension(200, 80));
-        
-        lblVolumen = new javax.swing.JLabel();
-        lblVolumen.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblVolumen.setText("Volumen");
-        txtVolumen = new javax.swing.JTextField();
-        
-        lblNumero = new javax.swing.JLabel();
-        lblNumero.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblNumero.setText("Número");
-        txtNumero = new javax.swing.JTextField();
-        
-        lblFechaPublicacion = new javax.swing.JLabel();
-        lblFechaPublicacion.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblFechaPublicacion.setText("Fecha (YYYY-MM-DD)");
-        txtFechaPublicacion = new javax.swing.JTextField();
-        
-        lblFormato = new javax.swing.JLabel();
-        lblFormato.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblFormato.setText("Formato");
-        txtFormato = new javax.swing.JTextField();
-        
-        lblDuracion = new javax.swing.JLabel();
-        lblDuracion.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblDuracion.setText("Duración (min)");
-        txtDuracion = new javax.swing.JTextField();
-        
-        lblDescripcion = new javax.swing.JLabel();
-        lblDescripcion.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblDescripcion.setText("Descripción");
-        txtDescripcion = new javax.swing.JTextArea();
-        txtDescripcion.setColumns(20);
-        txtDescripcion.setRows(3);
-        txtDescripcion.setLineWrap(true);
-        txtDescripcion.setWrapStyleWord(true);
-        jScrollPaneDescripcion = new javax.swing.JScrollPane();
-        jScrollPaneDescripcion.setViewportView(txtDescripcion);
-        jScrollPaneDescripcion.setPreferredSize(new java.awt.Dimension(200, 60));
-        
-        jPmaterial.add(lblISBN);
-        jPmaterial.add(txtISBN);
-        jPmaterial.add(lblEditorial);
-        jPmaterial.add(cbxEditorial);
-        jPmaterial.add(lblAutores);
-        jPmaterial.add(jScrollPaneAutores);
-        jPmaterial.add(lblVolumen);        jPmaterial.add(txtVolumen);
-        jPmaterial.add(lblNumero);
-        jPmaterial.add(txtNumero);
-        jPmaterial.add(lblFechaPublicacion);
-        jPmaterial.add(txtFechaPublicacion);
-        jPmaterial.add(lblFormato);
-        jPmaterial.add(txtFormato);
-        jPmaterial.add(lblDuracion);
-        jPmaterial.add(txtDuracion);
-        jPmaterial.add(lblDescripcion);
-        jPmaterial.add(jScrollPaneDescripcion);
-        
-        int yPos = 250; // Start below existing fields
-        int labelX = 15;
-        int fieldX = 191;
-        int fieldWidth = 119;
-        int rowHeight = 30;
-        
-        lblISBN.setBounds(labelX, yPos, 166, 25);
-        txtISBN.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos += rowHeight;
-        lblEditorial.setBounds(labelX, yPos, 166, 25);
-        cbxEditorial.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos += rowHeight;
-        lblAutores.setBounds(labelX, yPos, 166, 25);
-        jScrollPaneAutores.setBounds(fieldX, yPos, fieldWidth, 80);
-        
-        yPos = 250;
-        lblVolumen.setBounds(labelX, yPos, 166, 25);
-        txtVolumen.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos += rowHeight;
-        lblNumero.setBounds(labelX, yPos, 166, 25);
-        txtNumero.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos += rowHeight;
-        lblFechaPublicacion.setBounds(labelX, yPos, 166, 25);
-        txtFechaPublicacion.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos = 250;
-        lblFormato.setBounds(labelX, yPos, 166, 25);
-        txtFormato.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos += rowHeight;
-        lblDuracion.setBounds(labelX, yPos, 166, 25);
-        txtDuracion.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos = 250;
-        lblDescripcion.setBounds(labelX, yPos, 166, 25);
-        jScrollPaneDescripcion.setBounds(fieldX, yPos, fieldWidth + 50, 60);
-
-        cbxtipomaterial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxtipomaterialActionPerformed(evt);
-            }
-        });
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1533,6 +1520,16 @@ public class Biblioteca extends javax.swing.JFrame {
     private void jTfCantdispmatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTfCantdispmatActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTfCantdispmatActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new INICIO().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1MouseClicked
 
     private void jTfBibliotecaamigosDonBoscoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTfBibliotecaamigosDonBoscoActionPerformed
 
@@ -2117,7 +2114,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Biblioteca().setVisible(true);
+                //new Biblioteca().setVisible(true);
             }
         });
     }
@@ -2144,11 +2141,14 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JButton btnnuevouser;
     private javax.swing.JButton btnregdev;
     private javax.swing.JButton btnregprest;
+    private javax.swing.JComboBox<String> cbxEditorial;
     private javax.swing.JComboBox<String> cbxtipomaterial;
+    private javax.swing.JButton jButton1;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLbAnioPubprestamo;
     private javax.swing.JLabel jLbCantDispmat;
+    private javax.swing.JLabel jLbNombreUsuario;
     private javax.swing.JLabel jLbTipouser;
     private javax.swing.JLabel jLbUbicmaterial;
     private javax.swing.JLabel jLbautorprestamo;
@@ -2172,6 +2172,8 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPaneAutores;
+    private javax.swing.JScrollPane jScrollPaneDescripcion;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTfAniopubprestamo;
     private javax.swing.JTextField jTfAutorprestamo;
@@ -2202,12 +2204,22 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JPanel jpMaterial;
     private javax.swing.JTabbedPane jtbprestamos;
     private javax.swing.JLabel lblApellidosAutor;
+    private javax.swing.JLabel lblAutores;
     private javax.swing.JLabel lblCantDaniados;
     private javax.swing.JLabel lblCantPrestados;
+    private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JLabel lblDuracion;
+    private javax.swing.JLabel lblEditorial;
+    private javax.swing.JLabel lblFechaPublicacion;
+    private javax.swing.JLabel lblFormato;
+    private javax.swing.JLabel lblISBN;
     private javax.swing.JLabel lblNombreAutor;
     private javax.swing.JLabel lblNombreEditorial;
+    private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblPaisAutor;
     private javax.swing.JLabel lblPaisEditorial;
+    private javax.swing.JLabel lblVolumen;
+    private javax.swing.JList<String> lstAutores;
     private javax.swing.JTable tblAutor;
     private javax.swing.JTable tblEditorial;
     private javax.swing.JTable tblPrestamo;
@@ -2216,30 +2228,16 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField txtApellidosAutor;
     private javax.swing.JTextField txtCantDaniados;
     private javax.swing.JTextField txtCantPrestados;
+    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextField txtDuracion;
+    private javax.swing.JTextField txtFechaPublicacion;
+    private javax.swing.JTextField txtFormato;
+    private javax.swing.JTextField txtISBN;
     private javax.swing.JTextField txtNombreAutor;
     private javax.swing.JTextField txtNombreEditorial;
+    private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtPaisAutor;
     private javax.swing.JTextField txtPaisEditorial;
-    // Material type-specific components
-    private javax.swing.JLabel lblISBN;
-    private javax.swing.JTextField txtISBN;
-    private javax.swing.JLabel lblEditorial;
-    private javax.swing.JComboBox<String> cbxEditorial;
-    private javax.swing.JLabel lblAutores;
-    private javax.swing.JScrollPane jScrollPaneAutores;
-    private javax.swing.JList<String> lstAutores;
-    private javax.swing.JLabel lblVolumen;
     private javax.swing.JTextField txtVolumen;
-    private javax.swing.JLabel lblNumero;
-    private javax.swing.JTextField txtNumero;
-    private javax.swing.JLabel lblFechaPublicacion;
-    private javax.swing.JTextField txtFechaPublicacion;
-    private javax.swing.JLabel lblFormato;
-    private javax.swing.JTextField txtFormato;
-    private javax.swing.JLabel lblDuracion;
-    private javax.swing.JTextField txtDuracion;
-    private javax.swing.JLabel lblDescripcion;
-    private javax.swing.JScrollPane jScrollPaneDescripcion;
-    private javax.swing.JTextArea txtDescripcion;
     // End of variables declaration//GEN-END:variables
 }

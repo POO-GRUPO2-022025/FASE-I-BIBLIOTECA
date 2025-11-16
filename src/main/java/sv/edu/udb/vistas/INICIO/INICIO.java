@@ -18,6 +18,7 @@ public class INICIO extends javax.swing.JFrame {
      */
     public INICIO() {
         initComponents();
+        setLocationRelativeTo(null);
 
 
 
@@ -247,8 +248,8 @@ public class INICIO extends javax.swing.JFrame {
                     javax.swing.JOptionPane.INFORMATION_MESSAGE);
             txtCorreo.setText("");
             pwdContra.setText("");
-                    new Biblioteca().setVisible(true);
-                    this.setVisible(false);
+                    new Biblioteca(usuarioValidado).setVisible(true);
+                    this.dispose();
         }else {
             JOptionPane.showMessageDialog(this,
                     "Verifique su nombre de usuario y contraseña e intente de nuevo.",
