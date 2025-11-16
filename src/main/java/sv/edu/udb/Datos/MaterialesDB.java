@@ -138,13 +138,13 @@ public class MaterialesDB {
                 material.setUbicacion(rs.getString("ubicacion"));
                 material.setCantidadTotal(rs.getInt("cantidad_total"));
                 material.setCantidadDisponible(rs.getInt("cantidad_disponible"));
-                material.setCantidadPrestada(rs.getInt("cantidad_prestada"));
-                material.setCantidadDaniada(rs.getInt("cantidad_daniada"));
+                material.setCantidadPrestada(rs.getInt("cantidad_prestados"));
+                material.setCantidadDaniada(rs.getInt("cantidad_daniado"));
 
             }
 
         }catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error al consultar préstamo", e);
+            throw new RuntimeException("Error al consultar el material", e);
         } finally {
             Conexion.close(rs);
             Conexion.close(stmt);

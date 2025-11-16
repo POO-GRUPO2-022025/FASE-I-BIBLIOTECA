@@ -1,19 +1,26 @@
 package sv.edu.udb.vistas.biblioteca;
 
 import java.awt.event.ActionEvent;
-import sv.edu.udb.Datos.EditorialDB;
-import sv.edu.udb.Datos.UsuariosDB;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import sv.edu.udb.Datos.*;
 import sv.edu.udb.clases.*;
-import sv.edu.udb.Datos.MaterialesDB;
+import sv.edu.udb.clases.hijas.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import sv.edu.udb.Datos.AutorDB;
 
 public class Biblioteca extends javax.swing.JFrame {
     EditorialDB editorialDB = null;
     MaterialesDB materialesDB = null;
     UsuariosDB UsuariosDB = null;
     AutorDB autorDB = null;
+    LibroDB libroDB = null;
+    RevistaDB revistaDB = null;
+    AudioVisualDB audiovisualDB = null;
+    OtroDocumentoDB otroDocumentoDB = null;
 
     private int idEditorialSeleccionado = 0;
     private int idMaterialSeleccionado = 0;
@@ -25,7 +32,16 @@ public class Biblioteca extends javax.swing.JFrame {
         UsuariosDB = new UsuariosDB();
         materialesDB = new MaterialesDB();
         autorDB = new AutorDB();
+        libroDB = new LibroDB();
+        revistaDB = new RevistaDB();
+        audiovisualDB = new AudioVisualDB();
+        otroDocumentoDB = new OtroDocumentoDB();
         initComponents();
+        cbxtipomaterial.setSelectedIndex(-1);
+        ocultarCamposEspecificosMaterial();
+        actualizarCamposPorTipoMaterial();
+        cargarComboBoxEditoriales();
+        cargarListaAutores();
         actualizarTablaUsuario();
     }
 
@@ -44,6 +60,7 @@ public class Biblioteca extends javax.swing.JFrame {
         btnEliminarEditorial.setEnabled(false);
         idEditorialSeleccionado = 0;
         actualizarTablaEditorial();
+        cargarComboBoxEditoriales();
     }
 
     private void limpiarFormularioAutor() {
@@ -54,6 +71,7 @@ public class Biblioteca extends javax.swing.JFrame {
         btnEliminarAutor.setEnabled(false);
         idAutorSeleccionado = 0;
         actualizarTablaAutor();
+        cargarListaAutores();
     }
 
     private void limpiarFormularioMaterial() {
@@ -64,15 +82,124 @@ public class Biblioteca extends javax.swing.JFrame {
         jTfCantdispmat.setText("");
         txtCantDaniados.setText("");
         txtCantPrestados.setText("");
+        clearMaterialSpecificFields();
         btnGuardarmat.setText("Guardar");
         btnEliminarmat.setEnabled(false);
         idMaterialSeleccionado = 0;
-
+        cbxtipomaterial.setSelectedIndex(-1);
         actualizarTablaMateriales();
+    }
+
+    // Carga todas las editoriales en el combo box (solo para Libros)
+    private void cargarComboBoxEditoriales() {
+        try {
+            cbxEditorial.removeAllItems();
+            List<Editorial> editoriales = editorialDB.getAllEditoriales();
+            for (Editorial editorial : editoriales) {
+                cbxEditorial.addItem(editorial.getNombre());
+            }
+        } catch (Exception e) {
+            System.err.println("Error cargando editoriales: " + e.getMessage());
+        }
+    }
+
+    // Carga todos los autores en la lista de selección múltiple (solo para Libros)
+    private void cargarListaAutores() {
+        try {
+            DefaultListModel<String> model = new DefaultListModel<>();
+            List<Autor> autores = autorDB.getAllAutores();
+            for (Autor autor : autores) {
+                model.addElement(autor.getNombre() + " " + autor.getApellidos());
+            }
+            lstAutores.setModel(model);
+        } catch (Exception e) {
+            System.err.println("Error cargando autores: " + e.getMessage());
+        }
+    }
+
+    // Oculta todos los campos específicos de cada tipo de material
+    private void ocultarCamposEspecificosMaterial() {
+        // Campos de Libro
+        lblISBN.setVisible(false);
+        txtISBN.setVisible(false);
+        lblEditorial.setVisible(false);
+        cbxEditorial.setVisible(false);
+        lblAutores.setVisible(false);
+        jScrollPaneAutores.setVisible(false);
+        
+        // Campos de Revista
+        lblVolumen.setVisible(false);
+        txtVolumen.setVisible(false);
+        lblNumero.setVisible(false);
+        txtNumero.setVisible(false);
+        lblFechaPublicacion.setVisible(false);
+        txtFechaPublicacion.setVisible(false);
+        
+        // Campos de Audiovisual
+        lblFormato.setVisible(false);
+        txtFormato.setVisible(false);
+        lblDuracion.setVisible(false);
+        txtDuracion.setVisible(false);
+        
+        // Campos de Otro
+        lblDescripcion.setVisible(false);
+        jScrollPaneDescripcion.setVisible(false);
+    }
+
+    // Muestra u oculta campos según el tipo de material seleccionado
+    private void actualizarCamposPorTipoMaterial() {
+        ocultarCamposEspecificosMaterial();
+        String tipoSeleccionado = (String) cbxtipomaterial.getSelectedItem();
+        
+        if ("Libro".equals(tipoSeleccionado)) {
+            lblISBN.setVisible(true);
+            txtISBN.setVisible(true);
+            lblEditorial.setVisible(true);
+            cbxEditorial.setVisible(true);
+            lblAutores.setVisible(true);
+            jScrollPaneAutores.setVisible(true);
+        } else if ("Revista".equals(tipoSeleccionado)) {
+            lblVolumen.setVisible(true);
+            txtVolumen.setVisible(true);
+            lblNumero.setVisible(true);
+            txtNumero.setVisible(true);
+            lblFechaPublicacion.setVisible(true);
+            txtFechaPublicacion.setVisible(true);
+        } else if ("Audiovisual".equals(tipoSeleccionado)) {
+            lblFormato.setVisible(true);
+            txtFormato.setVisible(true);
+            lblDuracion.setVisible(true);
+            txtDuracion.setVisible(true);
+        } else if ("Otro".equals(tipoSeleccionado)) {
+            lblDescripcion.setVisible(true);
+            jScrollPaneDescripcion.setVisible(true);
+        }
+    }
+
+    // Limpia todos los campos específicos de cada tipo de material
+    private void clearMaterialSpecificFields() {
+        // Limpiar campos de Libro
+        txtISBN.setText("");
+        cbxEditorial.setSelectedIndex(-1);
+        lstAutores.clearSelection();
+
+        // Limpiar campos de Revista
+        txtVolumen.setText("");
+        txtNumero.setText("");
+        txtFechaPublicacion.setText("");
+
+        // Limpiar campos de Audiovisual
+        txtFormato.setText("");
+        txtDuracion.setText("");
+
+        // Limpiar campos de Otro
+        txtDescripcion.setText("");
     }
 
     private void actualizarTablaMateriales() {
         tblmaterial.setModel(materialesDB.selectMateriales());
+        cargarComboBoxEditoriales();
+        cargarListaAutores();
     }
 
     private void actualizarTablaUsuario() {
@@ -1109,6 +1236,129 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        lblISBN = new javax.swing.JLabel();
+        lblISBN.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        lblISBN.setText("ISBN");
+        txtISBN = new javax.swing.JTextField();
+        
+        lblEditorial = new javax.swing.JLabel();
+        lblEditorial.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        lblEditorial.setText("Editorial");
+        cbxEditorial = new javax.swing.JComboBox<>();
+        cbxEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14));
+        
+        lblAutores = new javax.swing.JLabel();
+        lblAutores.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        lblAutores.setText("Autores");
+        lstAutores = new javax.swing.JList<>();
+        lstAutores.setFont(new java.awt.Font("Segoe UI", 0, 12));
+        lstAutores.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        jScrollPaneAutores = new javax.swing.JScrollPane();
+        jScrollPaneAutores.setViewportView(lstAutores);
+        jScrollPaneAutores.setPreferredSize(new java.awt.Dimension(200, 80));
+        
+        lblVolumen = new javax.swing.JLabel();
+        lblVolumen.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        lblVolumen.setText("Volumen");
+        txtVolumen = new javax.swing.JTextField();
+        
+        lblNumero = new javax.swing.JLabel();
+        lblNumero.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        lblNumero.setText("Número");
+        txtNumero = new javax.swing.JTextField();
+        
+        lblFechaPublicacion = new javax.swing.JLabel();
+        lblFechaPublicacion.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        lblFechaPublicacion.setText("Fecha (YYYY-MM-DD)");
+        txtFechaPublicacion = new javax.swing.JTextField();
+        
+        lblFormato = new javax.swing.JLabel();
+        lblFormato.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        lblFormato.setText("Formato");
+        txtFormato = new javax.swing.JTextField();
+        
+        lblDuracion = new javax.swing.JLabel();
+        lblDuracion.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        lblDuracion.setText("Duración (min)");
+        txtDuracion = new javax.swing.JTextField();
+        
+        lblDescripcion = new javax.swing.JLabel();
+        lblDescripcion.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        lblDescripcion.setText("Descripción");
+        txtDescripcion = new javax.swing.JTextArea();
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(3);
+        txtDescripcion.setLineWrap(true);
+        txtDescripcion.setWrapStyleWord(true);
+        jScrollPaneDescripcion = new javax.swing.JScrollPane();
+        jScrollPaneDescripcion.setViewportView(txtDescripcion);
+        jScrollPaneDescripcion.setPreferredSize(new java.awt.Dimension(200, 60));
+        
+        jPmaterial.add(lblISBN);
+        jPmaterial.add(txtISBN);
+        jPmaterial.add(lblEditorial);
+        jPmaterial.add(cbxEditorial);
+        jPmaterial.add(lblAutores);
+        jPmaterial.add(jScrollPaneAutores);
+        jPmaterial.add(lblVolumen);        jPmaterial.add(txtVolumen);
+        jPmaterial.add(lblNumero);
+        jPmaterial.add(txtNumero);
+        jPmaterial.add(lblFechaPublicacion);
+        jPmaterial.add(txtFechaPublicacion);
+        jPmaterial.add(lblFormato);
+        jPmaterial.add(txtFormato);
+        jPmaterial.add(lblDuracion);
+        jPmaterial.add(txtDuracion);
+        jPmaterial.add(lblDescripcion);
+        jPmaterial.add(jScrollPaneDescripcion);
+        
+        int yPos = 250; // Start below existing fields
+        int labelX = 15;
+        int fieldX = 191;
+        int fieldWidth = 119;
+        int rowHeight = 30;
+        
+        lblISBN.setBounds(labelX, yPos, 166, 25);
+        txtISBN.setBounds(fieldX, yPos, fieldWidth, 22);
+        
+        yPos += rowHeight;
+        lblEditorial.setBounds(labelX, yPos, 166, 25);
+        cbxEditorial.setBounds(fieldX, yPos, fieldWidth, 22);
+        
+        yPos += rowHeight;
+        lblAutores.setBounds(labelX, yPos, 166, 25);
+        jScrollPaneAutores.setBounds(fieldX, yPos, fieldWidth, 80);
+        
+        yPos = 250;
+        lblVolumen.setBounds(labelX, yPos, 166, 25);
+        txtVolumen.setBounds(fieldX, yPos, fieldWidth, 22);
+        
+        yPos += rowHeight;
+        lblNumero.setBounds(labelX, yPos, 166, 25);
+        txtNumero.setBounds(fieldX, yPos, fieldWidth, 22);
+        
+        yPos += rowHeight;
+        lblFechaPublicacion.setBounds(labelX, yPos, 166, 25);
+        txtFechaPublicacion.setBounds(fieldX, yPos, fieldWidth, 22);
+        
+        yPos = 250;
+        lblFormato.setBounds(labelX, yPos, 166, 25);
+        txtFormato.setBounds(fieldX, yPos, fieldWidth, 22);
+        
+        yPos += rowHeight;
+        lblDuracion.setBounds(labelX, yPos, 166, 25);
+        txtDuracion.setBounds(fieldX, yPos, fieldWidth, 22);
+        
+        yPos = 250;
+        lblDescripcion.setBounds(labelX, yPos, 166, 25);
+        jScrollPaneDescripcion.setBounds(fieldX, yPos, fieldWidth + 50, 60);
+
+        cbxtipomaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxtipomaterialActionPerformed(evt);
+            }
+        });
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
@@ -1329,85 +1579,233 @@ public class Biblioteca extends javax.swing.JFrame {
         limpiarFormularioMaterial();
     }// GEN-LAST:event_btnlimpiarmaterialActionPerformed
 
+    private void cbxtipomaterialActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cbxtipomaterialActionPerformed
+        actualizarCamposPorTipoMaterial();
+    }// GEN-LAST:event_cbxtipomaterialActionPerformed
+
     private void btnGuardarmatActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnGuardarmatActionPerformed
-        // TODO add your handling code here:
-        // TRABAJAR : SI EL BOTON DICE GUARDAR ES GUARADARLO, CAPTURAR EL TIPO
-        // DEMATERIAL DE CONMBOX Y CONVERTIRLO A ENUM
-        Material.TipoMaterial tipo = Material.TipoMaterial.valueOf(cbxtipomaterial.getSelectedItem().toString());
-        String titulo = jTftitulomaterial.getText();
-        String ubicacion = jTfUbimaterial.getText();
-        int cantidad_total = Integer.valueOf(jTfCanttotal.getText());
-        int cantidad_disponible = Integer.valueOf(jTfCantdispmat.getText());
-        int cantidad_prestado = Integer.valueOf(txtCantPrestados.getText());
-        int cantidad_daniado = Integer.valueOf(txtCantDaniados.getText());
-
-        if (titulo.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "El titulo del material es obligatorio",
-                    "Error de validación",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (ubicacion.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "ubicacion del material es obligatorio",
-                    "Error de validación",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (cantidad_total < 1) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Cantidad total debe ser mayor a o igual a 1 ",
-                    "Error de validación",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (cantidad_disponible < 1) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Cantidad disponible debe ser mayor a o igual a 1 ",
-                    "Error de validación",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (btnGuardarmat.getText().equals("Guardar")) {
-            Material material = new Material(0, tipo, titulo, ubicacion, cantidad_total, cantidad_disponible, cantidad_prestado, cantidad_daniado);
-            Material resultado = materialesDB.insert(material);
-
-            if (resultado != null) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "Material guardado correctamente",
-                        "Éxito",
-                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                limpiarFormularioMaterial();
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "Error al guardar el material",
-                        "Error",
-                        javax.swing.JOptionPane.ERROR_MESSAGE);
+        try {
+            if(cbxtipomaterial.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo de material", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        } else {
-            Material material = new Material(idMaterialSeleccionado, tipo, titulo, ubicacion, cantidad_total,
-                    cantidad_disponible, cantidad_prestado, cantidad_daniado);
-            boolean resultado = materialesDB.update(material);
+            String tipoStr = cbxtipomaterial.getSelectedItem().toString();
+            Material.TipoMaterial tipo = Material.TipoMaterial.valueOf(tipoStr);
+            String titulo = jTftitulomaterial.getText();
+            String ubicacion = jTfUbimaterial.getText();
+            int cantidad_total = Integer.parseInt(jTfCanttotal.getText());
+            int cantidad_disponible = Integer.parseInt(jTfCantdispmat.getText());
+            int cantidad_prestado = Integer.parseInt(txtCantPrestados.getText());
+            int cantidad_daniado = Integer.parseInt(txtCantDaniados.getText());
 
-            if (resultado) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "Material actualizado correctamente",
-                        "Éxito",
-                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                limpiarFormularioMaterial();
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "Error al actualizar el material",
-                        "Error",
-                        javax.swing.JOptionPane.ERROR_MESSAGE);
+            if (titulo.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El título del material es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+            if (ubicacion.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "La ubicación del material es obligatoria", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (cantidad_total < 1) {
+                JOptionPane.showMessageDialog(this, "Cantidad total debe ser mayor o igual a 1", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (cantidad_disponible < 0) {
+                JOptionPane.showMessageDialog(this, "Cantidad disponible debe ser mayor o igual a 0", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            boolean isUpdate = !btnGuardarmat.getText().equals("Guardar");
+
+            if ("Libro".equals(tipoStr)) {
+                guardarLibro(tipo, titulo, ubicacion, cantidad_total, cantidad_disponible, cantidad_prestado, cantidad_daniado, isUpdate);
+            } else if ("Revista".equals(tipoStr)) {
+                guardarRevista(tipo, titulo, ubicacion, cantidad_total, cantidad_disponible, cantidad_prestado, cantidad_daniado, isUpdate);
+            } else if ("Audiovisual".equals(tipoStr)) {
+                guardarAudiovisual(tipo, titulo, ubicacion, cantidad_total, cantidad_disponible, cantidad_prestado, cantidad_daniado, isUpdate);
+            } else if ("Otro".equals(tipoStr)) {
+                guardarOtroDocumento(tipo, titulo, ubicacion, cantidad_total, cantidad_disponible, cantidad_prestado, cantidad_daniado, isUpdate);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese valores numéricos válidos", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }// GEN-LAST:event_btnGuardarmatActionPerformed
+
+    // Guarda o actualiza un Libro con sus campos específicos (ISBN, Editorial, Autores)
+    private void guardarLibro(Material.TipoMaterial tipo, String titulo, String ubicacion,
+                              int cantTotal, int cantDisp, int cantPrest, int cantDan, boolean isUpdate) {
+        try {
+            // Obtener datos específicos del libro
+            String isbn = txtISBN != null ? txtISBN.getText() : "";
+            int idEditorial = cbxEditorial != null && cbxEditorial.getSelectedIndex() >= 0 ? 
+                              editorialDB.getAllEditoriales().get(cbxEditorial.getSelectedIndex()).getIdEditorial() : 0;
+            
+            List<Integer> idsAutores = new ArrayList<>();
+            if (lstAutores != null && lstAutores.getSelectedIndices().length > 0) {
+                List<Autor> autores = autorDB.getAllAutores();
+                for (int idx : lstAutores.getSelectedIndices()) {
+                    if (idx < autores.size()) {
+                        idsAutores.add(autores.get(idx).getIdAutor());
+                    }
+                }
+            }
+
+            Libro libro = new Libro();
+            libro.setIdMaterial(isUpdate ? idMaterialSeleccionado : 0);
+            libro.setTipoMaterial(tipo);
+            libro.setTitulo(titulo);
+            libro.setUbicacion(ubicacion);
+            libro.setCantidadTotal(cantTotal);
+            libro.setCantidadDisponible(cantDisp);
+            libro.setCantidadPrestada(cantPrest);
+            libro.setCantidadDaniada(cantDan);
+            libro.setIsbn(isbn);
+            libro.setIdEditorial(idEditorial);
+            libro.setIdsAutores(idsAutores);
+
+            if (isUpdate) {
+                materialesDB.update(libro);
+                libroDB.update(libro);
+                JOptionPane.showMessageDialog(this, "Libro actualizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                Libro resultado = libroDB.insert(libro);
+                if (resultado != null) {
+                    JOptionPane.showMessageDialog(this, "Libro guardado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al guardar el libro", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            limpiarFormularioMaterial();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar libro: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Guarda o actualiza una Revista con sus campos específicos (Volumen, Número, Fecha)
+    private void guardarRevista(Material.TipoMaterial tipo, String titulo, String ubicacion,
+                                int cantTotal, int cantDisp, int cantPrest, int cantDan, boolean isUpdate) {
+        try {
+            // Obtener datos específicos de la revista
+            String volumen = txtVolumen != null ? txtVolumen.getText() : "";
+            String numero = txtNumero != null ? txtNumero.getText() : "";
+            LocalDate fechaPub = null;
+            if (txtFechaPublicacion != null && !txtFechaPublicacion.getText().isEmpty()) {
+                fechaPub = LocalDate.parse(txtFechaPublicacion.getText(), DateTimeFormatter.ISO_LOCAL_DATE);
+            }
+
+            Revista revista = new Revista();
+            revista.setIdMaterial(isUpdate ? idMaterialSeleccionado : 0);
+            revista.setTipoMaterial(tipo);
+            revista.setTitulo(titulo);
+            revista.setUbicacion(ubicacion);
+            revista.setCantidadTotal(cantTotal);
+            revista.setCantidadDisponible(cantDisp);
+            revista.setCantidadPrestada(cantPrest);
+            revista.setCantidadDaniada(cantDan);
+            revista.setVolumen(volumen);
+            revista.setNumero(numero);
+            revista.setFechaPublicacion(fechaPub);
+
+            if (isUpdate) {
+                materialesDB.update(revista);
+                revistaDB.update(revista);
+                JOptionPane.showMessageDialog(this, "Revista actualizada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                Revista resultado = revistaDB.insert(revista);
+                if (resultado != null) {
+                    JOptionPane.showMessageDialog(this, "Revista guardada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al guardar la revista", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            limpiarFormularioMaterial();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar revista: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Guarda o actualiza un Audiovisual con sus campos específicos (Formato, Duración)
+    private void guardarAudiovisual(Material.TipoMaterial tipo, String titulo, String ubicacion,
+                                    int cantTotal, int cantDisp, int cantPrest, int cantDan, boolean isUpdate) {
+        try {
+            // Obtener datos específicos del audiovisual
+            String formato = txtFormato != null ? txtFormato.getText() : "";
+            int duracion = 0;
+            if (txtDuracion != null && !txtDuracion.getText().isEmpty()) {
+                duracion = Integer.parseInt(txtDuracion.getText());
+            }
+
+            Audiovisual audiovisual = new Audiovisual();
+            audiovisual.setIdMaterial(isUpdate ? idMaterialSeleccionado : 0);
+            audiovisual.setTipoMaterial(tipo);
+            audiovisual.setTitulo(titulo);
+            audiovisual.setUbicacion(ubicacion);
+            audiovisual.setCantidadTotal(cantTotal);
+            audiovisual.setCantidadDisponible(cantDisp);
+            audiovisual.setCantidadPrestada(cantPrest);
+            audiovisual.setCantidadDaniada(cantDan);
+            audiovisual.setFormato(formato);
+            audiovisual.setDuracion(duracion);
+
+            if (isUpdate) {
+                materialesDB.update(audiovisual);
+                audiovisualDB.update(audiovisual);
+                JOptionPane.showMessageDialog(this, "Audiovisual actualizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                Audiovisual resultado = audiovisualDB.insert(audiovisual);
+                if (resultado != null) {
+                    JOptionPane.showMessageDialog(this, "Audiovisual guardado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al guardar el audiovisual", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            limpiarFormularioMaterial();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar audiovisual: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Guarda o actualiza Otro tipo de documento con su campo específico (Descripción)
+    private void guardarOtroDocumento(Material.TipoMaterial tipo, String titulo, String ubicacion,
+                                      int cantTotal, int cantDisp, int cantPrest, int cantDan, boolean isUpdate) {
+        try {
+            // Obtener datos específicos del documento
+            String descripcion = txtDescripcion != null ? txtDescripcion.getText() : "";
+
+            OtroDocumento otroDoc = new OtroDocumento();
+            otroDoc.setIdMaterial(isUpdate ? idMaterialSeleccionado : 0);
+            otroDoc.setTipoMaterial(tipo);
+            otroDoc.setTitulo(titulo);
+            otroDoc.setUbicacion(ubicacion);
+            otroDoc.setCantidadTotal(cantTotal);
+            otroDoc.setCantidadDisponible(cantDisp);
+            otroDoc.setCantidadPrestada(cantPrest);
+            otroDoc.setCantidadDaniada(cantDan);
+            otroDoc.setDescripcion(descripcion);
+
+            if (isUpdate) {
+                materialesDB.update(otroDoc);
+                otroDocumentoDB.update(otroDoc);
+                JOptionPane.showMessageDialog(this, "Documento actualizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                OtroDocumento resultado = otroDocumentoDB.insert(otroDoc);
+                if (resultado != null) {
+                    JOptionPane.showMessageDialog(this, "Documento guardado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al guardar el documento", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            limpiarFormularioMaterial();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar documento: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void jTftitulomaterialActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTftitulomaterialActionPerformed
 
@@ -1455,15 +1853,81 @@ public class Biblioteca extends javax.swing.JFrame {
         if ((fila > -1) && (columna > -1)) {
             DefaultTableModel modelo = (DefaultTableModel) tblmaterial.getModel();
             idMaterialSeleccionado = Integer.parseInt(modelo.getValueAt(fila, 0).toString());
+            String tipoMaterial = modelo.getValueAt(fila, 1).toString();
             jTftitulomaterial.setText(modelo.getValueAt(fila, 2).toString());
             jTfUbimaterial.setText(modelo.getValueAt(fila, 3).toString());
             jTfCanttotal.setText(modelo.getValueAt(fila, 4).toString());
             jTfCantdispmat.setText(modelo.getValueAt(fila, 5).toString());
-            cbxtipomaterial.setSelectedItem(modelo.getValueAt(fila, 1).toString());
+            txtCantPrestados.setText(modelo.getValueAt(fila, 6) != null ? modelo.getValueAt(fila, 6).toString() : "0");
+            txtCantDaniados.setText(modelo.getValueAt(fila, 7) != null ? modelo.getValueAt(fila, 7).toString() : "0");
+            cbxtipomaterial.setSelectedItem(tipoMaterial);
+            
+            cargarDatosEspecificosMaterial(idMaterialSeleccionado, tipoMaterial);
+            
             btnGuardarmat.setText("Editar");
             btnEliminarmat.setEnabled(true);
         }
     }// GEN-LAST:event_tblmaterialMouseClicked
+
+    // Carga los datos específicos de un material según su tipo al editar
+    private void cargarDatosEspecificosMaterial(int idMaterial, String tipoMaterial) {
+        try {
+            if ("Libro".equals(tipoMaterial)) {
+                Libro libro = libroDB.select(idMaterial);
+                if (libro != null) {
+                    // Cargar datos específicos del libro
+                    txtISBN.setText(libro.getIsbn() != null ? libro.getIsbn() : "");
+                    // Seleccionar la editorial correspondiente
+                    if (libro.getIdEditorial() > 0) {
+                        List<Editorial> editoriales = editorialDB.getAllEditoriales();
+                        for (int i = 0; i < editoriales.size(); i++) {
+                            if (editoriales.get(i).getIdEditorial() == libro.getIdEditorial()) {
+                                cbxEditorial.setSelectedIndex(i);
+                                break;
+                            }
+                        }
+                    }
+                    // Seleccionar los autores correspondientes
+                    if (libro.getIdsAutores() != null) {
+                        List<Autor> todosAutores = autorDB.getAllAutores();
+                        List<Integer> indices = new ArrayList<>();
+                        for (int i = 0; i < todosAutores.size(); i++) {
+                            if (libro.getIdsAutores().contains(todosAutores.get(i).getIdAutor())) {
+                                indices.add(i);
+                            }
+                        }
+                        int[] selectedIndices = indices.stream().mapToInt(Integer::intValue).toArray();
+                        lstAutores.setSelectedIndices(selectedIndices);
+                    }
+                }
+            } else if ("Revista".equals(tipoMaterial)) {
+                // Cargar datos específicos de la revista
+                Revista revista = revistaDB.select(idMaterial);
+                if (revista != null) {
+                    txtVolumen.setText(revista.getVolumen() != null ? revista.getVolumen() : "");
+                    txtNumero.setText(revista.getNumero() != null ? revista.getNumero() : "");
+                    if (revista.getFechaPublicacion() != null) {
+                        txtFechaPublicacion.setText(revista.getFechaPublicacion().toString());
+                    }
+                }
+            } else if ("Audiovisual".equals(tipoMaterial)) {
+                // Cargar datos específicos del audiovisual
+                Audiovisual audiovisual = audiovisualDB.select(idMaterial);
+                if (audiovisual != null) {
+                    txtFormato.setText(audiovisual.getFormato() != null ? audiovisual.getFormato() : "");
+                    txtDuracion.setText(String.valueOf(audiovisual.getDuracion()));
+                }
+            } else if ("Otro".equals(tipoMaterial)) {
+                // Cargar datos específicos del otro documento
+                OtroDocumento otro = otroDocumentoDB.select(idMaterial);
+                if (otro != null) {
+                    txtDescripcion.setText(otro.getDescripcion() != null ? otro.getDescripcion() : "");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error cargando datos específicos del material: " + e.getMessage());
+        }
+    }
 
     private void btnLimpiarEditorialActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnLimpiarEditorialActionPerformed
         limpiarFormularioEditorial();
@@ -2811,5 +3275,26 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombreEditorial;
     private javax.swing.JTextField txtPaisAutor;
     private javax.swing.JTextField txtPaisEditorial;
+    // Material type-specific components
+    private javax.swing.JLabel lblISBN;
+    private javax.swing.JTextField txtISBN;
+    private javax.swing.JLabel lblEditorial;
+    private javax.swing.JComboBox<String> cbxEditorial;
+    private javax.swing.JLabel lblAutores;
+    private javax.swing.JScrollPane jScrollPaneAutores;
+    private javax.swing.JList<String> lstAutores;
+    private javax.swing.JLabel lblVolumen;
+    private javax.swing.JTextField txtVolumen;
+    private javax.swing.JLabel lblNumero;
+    private javax.swing.JTextField txtNumero;
+    private javax.swing.JLabel lblFechaPublicacion;
+    private javax.swing.JTextField txtFechaPublicacion;
+    private javax.swing.JLabel lblFormato;
+    private javax.swing.JTextField txtFormato;
+    private javax.swing.JLabel lblDuracion;
+    private javax.swing.JTextField txtDuracion;
+    private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JScrollPane jScrollPaneDescripcion;
+    private javax.swing.JTextArea txtDescripcion;
     // End of variables declaration//GEN-END:variables
 }

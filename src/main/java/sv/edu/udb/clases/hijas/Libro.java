@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Libro extends Material {
-    private String autor;
     private String editorial;
     private int idEditorial;
     private String isbn;
@@ -13,11 +12,9 @@ public class Libro extends Material {
 
     public Libro(int idMaterial, TipoMaterial tipoMaterial, String titulo, String ubicacion,
                  int cantidadTotal, int cantidadDisponible,
-                 int cantidadPrestada, int cantidadDaniada,
-                 String autor, String editorial, String isbn) {
+                 int cantidadPrestada, int cantidadDaniada,int idEditorial, String isbn) {
         super(idMaterial, tipoMaterial,titulo, ubicacion, cantidadTotal, cantidadDisponible, cantidadPrestada, cantidadDaniada);
-        this.autor = autor;
-        this.editorial = editorial;
+        this.idEditorial = idEditorial;
         this.isbn = isbn;
         this.idsAutores = new ArrayList<>();
     }
@@ -26,15 +23,6 @@ public class Libro extends Material {
     }
 
     //Metodos Getters y Setter
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
     public String getEditorial() {
         return editorial;
     }
