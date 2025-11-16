@@ -349,4 +349,50 @@ public class PrestamosDB {
         return dtm;
     }
 
+    public DefaultTableModel selectPrestamosActivosPorUsuario(int idUsuario) {
+        DefaultTableModel dtm = new DefaultTableModel();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        String SQL_SELECT_ACTIVOS_USUARIO = 
+            "SELECT m.titulo, m.tipo_material, p.fecha_prestamo, p.fecha_estimada, " +
+            "p.fecha_devolucion, COALESCE(p.mora_total, 0) AS mora, p.estado " +
+            "FROM prestamos p " +
+            "INNER JOIN materiales m ON p.id_material = m.id_material " +
+            "WHERE p.id_usuario = ? " +
+            "AND (p.estado = 'En_Curso' OR p.mora_total > 0) " +
+            "ORDER BY p.fecha_prestamo DESC";
+        
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_ACTIVOS_USUARIO);
+            stmt.setInt(1, idUsuario);
+            rs = stmt.executeQuery();
+            
+            ResultSetMetaData meta = rs.getMetaData();
+            int numberOfColumns = meta.getColumnCount();
+            
+            for (int i = 1; i <= numberOfColumns; i++) {
+                dtm.addColumn(meta.getColumnLabel(i));
+            }
+            
+            while (rs.next()) {
+                Object[] fila = new Object[numberOfColumns];
+                for (int i = 0; i < numberOfColumns; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                dtm.addRow(fila);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar préstamos activos del usuario", e);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        
+        return dtm;
+    }
+
 }

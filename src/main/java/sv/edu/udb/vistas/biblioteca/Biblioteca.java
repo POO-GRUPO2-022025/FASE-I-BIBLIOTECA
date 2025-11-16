@@ -22,12 +22,16 @@ public class Biblioteca extends javax.swing.JFrame {
     AudioVisualDB audiovisualDB = null;
     OtroDocumentoDB otroDocumentoDB = null;
     PrestamosDB prestamosDB = null;
+    MorasDB morasDB = null;
+    int prestamosMaximos = 3;
+    boolean usuarioPuedePrestar = false;
 
     private int idEditorialSeleccionado = 0;
     private int idMaterialSeleccionado = 0;
     private int idUsuarioSeleccionado = 0;
     private int idAutorSeleccionado = 0;
     private int idPrestamoSeleccionado = 0;
+    private int idUsuarioActual = 1; // ID del usuario que inició sesión (temporal, cambiar según login)
 
     public Biblioteca() {
         editorialDB = new EditorialDB();
@@ -39,6 +43,7 @@ public class Biblioteca extends javax.swing.JFrame {
         audiovisualDB = new AudioVisualDB();
         otroDocumentoDB = new OtroDocumentoDB();
         prestamosDB = new PrestamosDB();
+        morasDB = new MorasDB();
         initComponents();
         cbxtipomaterial.setSelectedIndex(-1);
         ocultarCamposEspecificosMaterial();
@@ -46,7 +51,33 @@ public class Biblioteca extends javax.swing.JFrame {
         cargarComboBoxEditoriales();
         cargarListaAutores();
         actualizarTablaUsuario();
-        jpEditorial.setVisible(false);
+        actualizarMisPrestamos();
+    }
+
+    private void actualizarMisPrestamos(){
+        // Obtener préstamos activos del usuario actual
+        DefaultTableModel modeloPrestamos = prestamosDB.selectPrestamosActivosPorUsuario(idUsuarioActual);
+        
+        // Actualizar la tabla de "Mis Préstamos"
+        tblPrestamosUsuario.setModel(modeloPrestamos);
+        
+        // Verificar si el usuario puede solicitar más préstamos
+        int prestamosActivos = modeloPrestamos.getRowCount();
+        
+        if (prestamosActivos >= prestamosMaximos) {
+            // Usuario alcanzó el límite de préstamos
+            usuarioPuedePrestar = false;
+            btnFiltrarPrestamoUsuario.setEnabled(false);
+            btnSolicitarPrestamoUsuario.setEnabled(false);
+            lblErrorPrestamosUsuario.setVisible(true);
+            lblErrorPrestamosUsuario.setText("Ha alcanzado el límite de " + prestamosMaximos + " préstamos activos. No puede solicitar más préstamos.");
+        } else {
+            // Usuario puede solicitar préstamos
+            usuarioPuedePrestar = true;
+            btnFiltrarPrestamoUsuario.setEnabled(true);
+            btnSolicitarPrestamoUsuario.setEnabled(false); // Se habilitará al seleccionar un material
+            lblErrorPrestamosUsuario.setVisible(false);
+        }
     }
 
     private void actualizarTablaEditorial() {
@@ -92,6 +123,15 @@ public class Biblioteca extends javax.swing.JFrame {
         idMaterialSeleccionado = 0;
         cbxtipomaterial.setSelectedIndex(-1);
         actualizarTablaMateriales();
+    }
+
+    private void limpiarFormularioPrestamoUsuario(){
+        txtTituloMaterialEnPrestamoUsuario.setText("");
+        txtTipoMaterialEnPrestamoUsuario.setText("");
+        cbxTipoMaterialPrestamoUsuario.setSelectedIndex(0);
+        btnSolicitarPrestamoUsuario.setEnabled(false);
+        actualizarMisPrestamos();
+        tblMaterialesPrestamoUsuario.setModel(new DefaultTableModel());
     }
 
     // Carga todas las editoriales en el combo box (solo para Libros)
@@ -368,6 +408,27 @@ public class Biblioteca extends javax.swing.JFrame {
         txtEstadoPrestamo = new javax.swing.JTextField();
         btnFiltrarPrestamo = new javax.swing.JButton();
         checkConMora = new javax.swing.JCheckBox();
+        jPanelPrestamoUsuario = new javax.swing.JPanel();
+        jspPrestamoUsuarioTabla = new javax.swing.JScrollPane();
+        tblMaterialesPrestamoUsuario = new javax.swing.JTable();
+        jpPrestamosUsuario = new javax.swing.JPanel();
+        lblFiltrosPrestamoUsuario = new javax.swing.JLabel();
+        lblDetallesPrestamoUsuario = new javax.swing.JLabel();
+        lblTipoMaterialPrestamoUsuario = new javax.swing.JLabel();
+        lblTituloMaterialPrestamoUsuarioFiltro = new javax.swing.JLabel();
+        cbxTipoMaterialPrestamoUsuario = new javax.swing.JComboBox<>();
+        lblTituloMaterialEnPrestamoUsuario = new javax.swing.JLabel();
+        lblTipoMaterialEnPrestamoUsuario = new javax.swing.JLabel();
+        btnSolicitarPrestamoUsuario = new javax.swing.JButton();
+        btnLimpiarFormularioPrestamoUsuario = new javax.swing.JButton();
+        txtTituloMaterialEnPrestamoUsuario = new javax.swing.JTextField();
+        txtTipoMaterialEnPrestamoUsuario = new javax.swing.JTextField();
+        btnFiltrarPrestamoUsuario = new javax.swing.JButton();
+        txtTituloFiltroPrestamoUsuario = new javax.swing.JTextField();
+        lblMisPrestamosUsuario = new javax.swing.JLabel();
+        jspTablaPrestamosUsuario = new javax.swing.JScrollPane();
+        tblPrestamosUsuario = new javax.swing.JTable();
+        lblErrorPrestamosUsuario = new javax.swing.JLabel();
         jTfBibliotecaamigosDonBosco = new javax.swing.JTextField();
         Administracion = new javax.swing.JMenuBar();
 
@@ -1481,7 +1542,192 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jtbprestamos.addTab("Prestamos", jPanelprestamo);
+        jtbprestamos.addTab("Admin Prestamos", jPanelprestamo);
+
+        jPanelPrestamoUsuario.setBackground(new java.awt.Color(255, 255, 255));
+
+        tblMaterialesPrestamoUsuario.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblMaterialesPrestamoUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMaterialesPrestamoUsuarioMouseClicked(evt);
+            }
+        });
+        jspPrestamoUsuarioTabla.setViewportView(tblMaterialesPrestamoUsuario);
+        if (tblMaterialesPrestamoUsuario.getColumnModel().getColumnCount() > 0) {
+            tblMaterialesPrestamoUsuario.getColumnModel().getColumn(5).setHeaderValue("Fecha de Devolución");
+            tblMaterialesPrestamoUsuario.getColumnModel().getColumn(6).setHeaderValue("Estado");
+        }
+
+        jpPrestamosUsuario.setBackground(new java.awt.Color(0, 102, 204));
+
+        lblFiltrosPrestamoUsuario.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblFiltrosPrestamoUsuario.setText("Filtros");
+
+        lblDetallesPrestamoUsuario.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblDetallesPrestamoUsuario.setText("Detalles");
+
+        lblTipoMaterialPrestamoUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTipoMaterialPrestamoUsuario.setText("Tipo de material");
+
+        lblTituloMaterialPrestamoUsuarioFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTituloMaterialPrestamoUsuarioFiltro.setText("Titulo");
+
+        cbxTipoMaterialPrestamoUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Libro", "Revista", "Audiovisual", "Otro" }));
+
+        lblTituloMaterialEnPrestamoUsuario.setText("Titulo:");
+
+        lblTipoMaterialEnPrestamoUsuario.setText("Tipo:");
+
+        btnSolicitarPrestamoUsuario.setText("Solicitar");
+        btnSolicitarPrestamoUsuario.setEnabled(false);
+        btnSolicitarPrestamoUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSolicitarPrestamoUsuarioActionPerformed(evt);
+            }
+        });
+
+        btnLimpiarFormularioPrestamoUsuario.setText("Limpiar");
+        btnLimpiarFormularioPrestamoUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarFormularioPrestamoUsuarioActionPerformed(evt);
+            }
+        });
+
+        txtTituloMaterialEnPrestamoUsuario.setEditable(false);
+        txtTituloMaterialEnPrestamoUsuario.setEnabled(false);
+
+        txtTipoMaterialEnPrestamoUsuario.setEditable(false);
+        txtTipoMaterialEnPrestamoUsuario.setEnabled(false);
+
+        btnFiltrarPrestamoUsuario.setText("Filtrar");
+        btnFiltrarPrestamoUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarPrestamoUsuarioActionPerformed(evt);
+            }
+        });
+
+        lblMisPrestamosUsuario.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblMisPrestamosUsuario.setText("Mis prestamos pendientes");
+
+        jspTablaPrestamosUsuario.setViewportView(tblPrestamosUsuario);
+
+        lblErrorPrestamosUsuario.setBackground(new java.awt.Color(255, 255, 255));
+        lblErrorPrestamosUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblErrorPrestamosUsuario.setForeground(new java.awt.Color(153, 0, 0));
+        lblErrorPrestamosUsuario.setText("Posee prestamos pendientes. No es posible solicitar un nuevo prestamo");
+        lblErrorPrestamosUsuario.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        javax.swing.GroupLayout jpPrestamosUsuarioLayout = new javax.swing.GroupLayout(jpPrestamosUsuario);
+        jpPrestamosUsuario.setLayout(jpPrestamosUsuarioLayout);
+        jpPrestamosUsuarioLayout.setHorizontalGroup(
+            jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpPrestamosUsuarioLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jspTablaPrestamosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGroup(jpPrestamosUsuarioLayout.createSequentialGroup()
+                            .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblFiltrosPrestamoUsuario)
+                                .addGroup(jpPrestamosUsuarioLayout.createSequentialGroup()
+                                    .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblTituloMaterialEnPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblTipoMaterialEnPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtTipoMaterialEnPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtTituloMaterialEnPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jpPrestamosUsuarioLayout.createSequentialGroup()
+                                            .addGap(6, 6, 6)
+                                            .addComponent(btnSolicitarPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(btnLimpiarFormularioPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jpPrestamosUsuarioLayout.createSequentialGroup()
+                                    .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblMisPrestamosUsuario, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblTituloMaterialPrestamoUsuarioFiltro, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(jpPrestamosUsuarioLayout.createSequentialGroup()
+                                            .addComponent(lblDetallesPrestamoUsuario)
+                                            .addGap(42, 42, 42))
+                                        .addComponent(lblTipoMaterialPrestamoUsuario, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jpPrestamosUsuarioLayout.createSequentialGroup()
+                                            .addComponent(txtTituloFiltroPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(btnFiltrarPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(cbxTipoMaterialPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGap(49, 49, 49)))
+                    .addComponent(lblErrorPrestamosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jpPrestamosUsuarioLayout.setVerticalGroup(
+            jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpPrestamosUsuarioLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(lblFiltrosPrestamoUsuario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbxTipoMaterialPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTipoMaterialPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTituloMaterialPrestamoUsuarioFiltro)
+                    .addComponent(txtTituloFiltroPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFiltrarPrestamoUsuario))
+                .addGap(9, 9, 9)
+                .addComponent(lblDetallesPrestamoUsuario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTituloMaterialEnPrestamoUsuario)
+                    .addComponent(txtTituloMaterialEnPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTipoMaterialEnPrestamoUsuario)
+                    .addComponent(txtTipoMaterialEnPrestamoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpPrestamosUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSolicitarPrestamoUsuario)
+                    .addComponent(btnLimpiarFormularioPrestamoUsuario))
+                .addGap(18, 18, 18)
+                .addComponent(lblErrorPrestamosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMisPrestamosUsuario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jspTablaPrestamosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanelPrestamoUsuarioLayout = new javax.swing.GroupLayout(jPanelPrestamoUsuario);
+        jPanelPrestamoUsuario.setLayout(jPanelPrestamoUsuarioLayout);
+        jPanelPrestamoUsuarioLayout.setHorizontalGroup(
+            jPanelPrestamoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPrestamoUsuarioLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jpPrestamosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jspPrestamoUsuarioTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
+        );
+        jPanelPrestamoUsuarioLayout.setVerticalGroup(
+            jPanelPrestamoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelPrestamoUsuarioLayout.createSequentialGroup()
+                .addGroup(jPanelPrestamoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jspPrestamoUsuarioTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelPrestamoUsuarioLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jpPrestamosUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jtbprestamos.addTab("Prestamos", jPanelPrestamoUsuario);
 
         jTfBibliotecaamigosDonBosco.setEditable(false);
         jTfBibliotecaamigosDonBosco.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
@@ -1908,6 +2154,73 @@ public class Biblioteca extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnPrestarDevolverPrestamoActionPerformed
+
+    private void tblMaterialesPrestamoUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMaterialesPrestamoUsuarioMouseClicked
+        // Habilitar el botón Solicitar solo si el usuario puede prestar
+        if (usuarioPuedePrestar) {
+            btnSolicitarPrestamoUsuario.setEnabled(true);
+            int fila = tblmaterial.rowAtPoint(evt.getPoint());
+            int columna = tblmaterial.columnAtPoint(evt.getPoint());
+            if ((fila > -1) && (columna > -1)){
+                DefaultTableModel modelo = (DefaultTableModel) tblmaterial.getModel();
+                idMaterialSeleccionado = Integer.parseInt(modelo.getValueAt(fila,0).toString());
+                txtTituloMaterialEnPrestamoUsuario.setText(modelo.getValueAt(fila,1).toString());
+                txtTipoMaterialEnPrestamoUsuario.setText(modelo.getValueAt(fila,2).toString()); 
+            }
+        }
+    }//GEN-LAST:event_tblMaterialesPrestamoUsuarioMouseClicked
+
+    private void btnSolicitarPrestamoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitarPrestamoUsuarioActionPerformed
+        if(usuarioPuedePrestar){
+            if (idMaterialSeleccionado == 0) {
+                JOptionPane.showMessageDialog(this, "Por favor seleccione un material primero", 
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            try {
+                // Crear nuevo préstamo
+                Prestamo nuevoPrestamo = new Prestamo();
+                nuevoPrestamo.setIdUsuario(idUsuarioActual);
+                nuevoPrestamo.setIdMaterial(idMaterialSeleccionado);
+                nuevoPrestamo.setFechaPrestamo(new java.sql.Date(System.currentTimeMillis()));
+                nuevoPrestamo.setIdMora(morasDB.getIdMoraPorTipoUsuario(Usuarios.TipoUsuario.Alumno)); // TODO: Ajustar usando objeto usuario
+                nuevoPrestamo.setEstado(Prestamo.Estado.Pendiente);
+                nuevoPrestamo.setMoraTotal(java.math.BigDecimal.ZERO);
+
+                // Insertar en la base de datos
+                Prestamo resultado = prestamosDB.insert(nuevoPrestamo);
+
+                if (resultado != null) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Préstamo solicitado correctamente. Espere la aprobación del administrador.", 
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    limpiarFormularioPrestamo();
+                    actualizarMisPrestamos(); // Actualizar tabla de préstamos del usuario
+                } else {
+                    JOptionPane.showMessageDialog(this, 
+                        "Error al solicitar el préstamo", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnSolicitarPrestamoUsuarioActionPerformed
+
+    private void btnLimpiarFormularioPrestamoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarFormularioPrestamoUsuarioActionPerformed
+        limpiarFormularioPrestamoUsuario();
+    }//GEN-LAST:event_btnLimpiarFormularioPrestamoUsuarioActionPerformed
+
+    private void btnFiltrarPrestamoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarPrestamoUsuarioActionPerformed
+        String tipoMaterial = (String) cbxTipoMaterialPrestamoUsuario.getSelectedItem();
+        String tituloMaterial = txtTituloFiltroPrestamoUsuario.getText().trim();
+        DefaultTableModel modeloFiltrado = materialesDB.selectMaterialesFiltrado(tipoMaterial, tituloMaterial);
+        tblMaterialesPrestamoUsuario.setModel(modeloFiltrado);
+    }//GEN-LAST:event_btnFiltrarPrestamoUsuarioActionPerformed
     
     // Aprueba un préstamo pendiente y lo pone en curso
     private void aprobarPrestamo(Prestamo prestamo) {
@@ -2745,12 +3058,15 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarEditorial;
     private javax.swing.JButton btnEliminarmat;
     private javax.swing.JButton btnFiltrarPrestamo;
+    private javax.swing.JButton btnFiltrarPrestamoUsuario;
     private javax.swing.JButton btnGuardarAutor;
     private javax.swing.JButton btnGuardarEditorial;
     private javax.swing.JButton btnGuardarmat;
     private javax.swing.JButton btnLimpiarEditorial;
     private javax.swing.JButton btnLimpiarFormularioPrestamo;
+    private javax.swing.JButton btnLimpiarFormularioPrestamoUsuario;
     private javax.swing.JButton btnPrestarDevolverPrestamo;
+    private javax.swing.JButton btnSolicitarPrestamoUsuario;
     private javax.swing.JButton btneliminarUser;
     private javax.swing.JButton btnguardarUser;
     private javax.swing.JButton btnlimpiarmaterial;
@@ -2758,6 +3074,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbxEditorial;
     private javax.swing.JComboBox<String> cbxEstadoMaterialPrestamo;
     private javax.swing.JComboBox<String> cbxTipoMaterialPrestamo;
+    private javax.swing.JComboBox<String> cbxTipoMaterialPrestamoUsuario;
     private javax.swing.JComboBox<String> cbxtipomaterial;
     private javax.swing.JCheckBox checkConMora;
     private javax.swing.JInternalFrame jInternalFrame1;
@@ -2773,6 +3090,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JLabel jLbnombreuser;
     private javax.swing.JLabel jLbtipomaterial;
     private javax.swing.JLabel jLbtitulomaterial;
+    private javax.swing.JPanel jPanelPrestamoUsuario;
     private javax.swing.JPanel jPanelmora;
     private javax.swing.JPanel jPanelprestamo;
     private javax.swing.JPanel jPaneluser;
@@ -2809,6 +3127,9 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JPanel jpEditorial;
     private javax.swing.JPanel jpEditorialinterno;
     private javax.swing.JPanel jpMaterial;
+    private javax.swing.JPanel jpPrestamosUsuario;
+    private javax.swing.JScrollPane jspPrestamoUsuarioTabla;
+    private javax.swing.JScrollPane jspTablaPrestamosUsuario;
     private javax.swing.JTabbedPane jtbprestamos;
     private javax.swing.JLabel lblAccionesPrestamo;
     private javax.swing.JLabel lblApellidosAutor;
@@ -2818,16 +3139,20 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JLabel lblCorreoEnPrestamo;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblDetallesPrestamo;
+    private javax.swing.JLabel lblDetallesPrestamoUsuario;
     private javax.swing.JLabel lblDiasDeRetradoPrestamo;
     private javax.swing.JLabel lblDuracion;
     private javax.swing.JLabel lblEditorial;
+    private javax.swing.JLabel lblErrorPrestamosUsuario;
     private javax.swing.JLabel lblEstadoPrestamo;
     private javax.swing.JLabel lblFechaDevolucion;
     private javax.swing.JLabel lblFechaPrestamo;
     private javax.swing.JLabel lblFechaPublicacion;
     private javax.swing.JLabel lblFiltrosPrestamo;
+    private javax.swing.JLabel lblFiltrosPrestamoUsuario;
     private javax.swing.JLabel lblFormato;
     private javax.swing.JLabel lblISBN;
+    private javax.swing.JLabel lblMisPrestamosUsuario;
     private javax.swing.JLabel lblMoraActualPrestamo;
     private javax.swing.JLabel lblMoraAplicable;
     private javax.swing.JLabel lblNombreAutor;
@@ -2837,15 +3162,21 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JLabel lblPaisAutor;
     private javax.swing.JLabel lblPaisEditorial;
     private javax.swing.JLabel lblTipoMaterialEnPrestamo;
+    private javax.swing.JLabel lblTipoMaterialEnPrestamoUsuario;
     private javax.swing.JLabel lblTipoMaterialPrestamo;
+    private javax.swing.JLabel lblTipoMaterialPrestamoUsuario;
     private javax.swing.JLabel lblTituloMaterialEnPrestamo;
+    private javax.swing.JLabel lblTituloMaterialEnPrestamoUsuario;
+    private javax.swing.JLabel lblTituloMaterialPrestamoUsuarioFiltro;
     private javax.swing.JLabel lblUbicacionMaterialEnPrestamo;
     private javax.swing.JLabel lblVolumen;
     private javax.swing.JLabel lblcbxEstadoPrestamo;
     private javax.swing.JList<String> lstAutores;
     private javax.swing.JTable tblAutor;
     private javax.swing.JTable tblEditorial;
+    private javax.swing.JTable tblMaterialesPrestamoUsuario;
     private javax.swing.JTable tblPrestamo;
+    private javax.swing.JTable tblPrestamosUsuario;
     private javax.swing.JTable tblmaterial;
     private javax.swing.JTable tbluser;
     private javax.swing.JTextField txtApellidosAutor;
@@ -2870,7 +3201,10 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField txtPaisAutor;
     private javax.swing.JTextField txtPaisEditorial;
     private javax.swing.JTextField txtTipoMaterialEnPrestamo;
+    private javax.swing.JTextField txtTipoMaterialEnPrestamoUsuario;
+    private javax.swing.JTextField txtTituloFiltroPrestamoUsuario;
     private javax.swing.JTextField txtTituloMaterialEnPrestamo;
+    private javax.swing.JTextField txtTituloMaterialEnPrestamoUsuario;
     private javax.swing.JTextField txtUbicacionEnPrestamo;
     private javax.swing.JTextField txtVolumen;
     // End of variables declaration//GEN-END:variables

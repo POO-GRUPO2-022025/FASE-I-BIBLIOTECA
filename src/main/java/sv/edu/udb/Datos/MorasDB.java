@@ -168,5 +168,34 @@ public class MorasDB {
         return dtm;
     }
 
+    public int getIdMoraPorTipoUsuario(Usuarios.TipoUsuario tipoUsuario) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        int idMora = 0;
+        
+        String SQL_SELECT_BY_TIPO = "SELECT id_mora FROM moras WHERE tipo_usuario = ? LIMIT 1";
+        
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_BY_TIPO);
+            stmt.setString(1, tipoUsuario.toString());
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                idMora = rs.getInt("id_mora");
+            }
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar ID de mora por tipo de usuario", e);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        
+        return idMora;
+    }
+
 }
 
