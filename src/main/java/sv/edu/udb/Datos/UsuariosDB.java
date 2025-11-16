@@ -152,7 +152,11 @@ public class UsuariosDB {
                 String hashAlmacenado = rs.getString("password"); //Guarda la clave encriptada en un variable para luego validar
                 if (BCrypt.checkpw(pass, hashAlmacenado)) { //Valida la clave y si esta es correcta devuelve true
                     usuario = new Usuarios();
+                    usuario.setIdUsuario(rs.getInt("id_usuario"));
                     usuario.setNombre(rs.getString("nombre")); //Cuando la clave es correcta devuelve el nombre del usuario
+                    usuario.setTipoUsuario(Usuarios.TipoUsuario.valueOf(rs.getString("tipo_usuario")));
+                    usuario.setCorreo(rs.getString("correo"));
+
                 }
             }
         } catch (SQLException | ClassNotFoundException e) {
