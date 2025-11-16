@@ -1,14 +1,11 @@
 package sv.edu.udb.clases;
 
-
-
 public class Material {
     public enum TipoMaterial {
         Libro,
         Revista,
         Audiovisual,
         Otro,
-
     }
 
     private int idMaterial;
@@ -21,7 +18,6 @@ public class Material {
     private int cantidadDaniada;
 
     public Material(){}
-
 
     public Material(int idMaterial, TipoMaterial tipoMaterial,String titulo, String ubicacion,
                     int cantidadTotal, int cantidadDisponible,

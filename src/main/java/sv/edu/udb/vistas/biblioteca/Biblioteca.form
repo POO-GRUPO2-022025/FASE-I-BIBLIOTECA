@@ -391,7 +391,6 @@
                                   <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="1" attributes="0">
-                                          <EmptySpace max="-2" attributes="0"/>
                                           <Component id="jLbcanttotal" min="-2" pref="128" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                                       </Group>
@@ -404,10 +403,7 @@
                                                       <Component id="jLbtitulomaterial" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jLbCantDispmat" min="-2" pref="166" max="-2" attributes="0"/>
-                                              </Group>
+                                              <Component id="jLbCantDispmat" alignment="0" min="-2" pref="166" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                                       </Group>
@@ -1395,6 +1391,7 @@
     </Container>
     <Component class="javax.swing.JTextField" name="jTfBibliotecaamigosDonBosco">
       <Properties>
+        <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="24" style="3"/>
         </Property>

@@ -405,7 +405,6 @@ public class Biblioteca extends javax.swing.JFrame {
                         .addGap(0, 6, Short.MAX_VALUE)
                         .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterialLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLbcanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(72, 72, 72))
                             .addGroup(jPmaterialLayout.createSequentialGroup()
@@ -415,9 +414,7 @@ public class Biblioteca extends javax.swing.JFrame {
                                         .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLbUbicmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLbtitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPmaterialLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLbCantDispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLbCantDispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(34, 34, 34)))
                         .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTfUbimaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -940,6 +937,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jtbprestamos.addTab("prestamos", jPanelprestamo);
 
+        jTfBibliotecaamigosDonBosco.setEditable(false);
         jTfBibliotecaamigosDonBosco.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
         jTfBibliotecaamigosDonBosco.setText("Bliblioteca Amigos Don Bosco");
         jTfBibliotecaamigosDonBosco.addActionListener(new java.awt.event.ActionListener() {
@@ -1334,6 +1332,7 @@ private void limpiarCamposPrestamo() {
                     "Error", 
                     javax.swing.JOptionPane.ERROR_MESSAGE);
             }
+            actualizarTablaMateriales();
         } else {
            Material material = new Material(idMaterialSeleccionado,tipo,titulo,ubicacion,cantidad_total,cantidad_disponible,0,0);
             boolean resultado = materialesDB.update(material);
@@ -1350,6 +1349,7 @@ private void limpiarCamposPrestamo() {
                     "Error", 
                     javax.swing.JOptionPane.ERROR_MESSAGE);
             }
+            actualizarTablaMateriales();
         }
     }//GEN-LAST:event_btnGuardarmatActionPerformed
 
