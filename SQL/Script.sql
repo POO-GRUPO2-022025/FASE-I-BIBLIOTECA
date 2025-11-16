@@ -36,7 +36,7 @@ CREATE TABLE editoriales
 
 CREATE TABLE autores
 (
-    id_autor   INT PRIMARY KEY,
+    id_autor   INT AUTO_INCREMENT PRIMARY KEY,
     nombre     VARCHAR(100) NOT NULL,
     apellidos  VARCHAR(120),
     pais       VARCHAR(100)
