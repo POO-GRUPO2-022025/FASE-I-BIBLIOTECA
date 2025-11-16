@@ -1790,17 +1790,6 @@ public class Biblioteca extends javax.swing.JFrame {
             return;
         }
         
-        // Confirmar la denegación del préstamo
-        int confirmacion = JOptionPane.showConfirmDialog(this, 
-            "¿Está seguro que desea denegar este préstamo?", 
-            "Confirmar Denegación", 
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
-            
-        if (confirmacion != JOptionPane.YES_OPTION) {
-            return;
-        }
-        
         try {
             // Obtener el préstamo actual
             Prestamo prestamo = prestamosDB.select(idPrestamoSeleccionado);
@@ -1811,25 +1800,88 @@ public class Biblioteca extends javax.swing.JFrame {
                 return;
             }
             
-            // Verificar que el préstamo esté en estado Pendiente
-            if (prestamo.getEstado() != Prestamo.Estado.Pendiente) {
+            // Verificar que el préstamo tenga mora
+            if (prestamo.getMoraTotal() == null || prestamo.getMoraTotal().compareTo(java.math.BigDecimal.ZERO) <= 0) {
                 JOptionPane.showMessageDialog(this, 
-                    "Solo se pueden denegar préstamos en estado Pendiente", 
+                    "Este préstamo no tiene mora pendiente", 
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             
-            // Cambiar el estado a Denegado
-            prestamo.setEstado(Prestamo.Estado.Denegado);
+            // Solicitar el monto a abonar
+            String montoStr = JOptionPane.showInputDialog(this, 
+                "Mora actual: $" + prestamo.getMoraTotal() + "\n\nIngrese el monto a abonar:",
+                "Abonar a la Mora",
+                JOptionPane.QUESTION_MESSAGE);
             
-            // Actualizar en la base de datos
-            if (prestamosDB.update(prestamo)) {
-                JOptionPane.showMessageDialog(this, "Préstamo denegado exitosamente", 
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                limpiarFormularioPrestamo();
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al denegar el préstamo", 
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            if (montoStr == null || montoStr.trim().isEmpty()) {
+                return; // Usuario canceló
+            }
+            
+            try {
+                java.math.BigDecimal montoAbonar = new java.math.BigDecimal(montoStr.trim());
+                
+                // Validar que el monto sea positivo
+                if (montoAbonar.compareTo(java.math.BigDecimal.ZERO) <= 0) {
+                    JOptionPane.showMessageDialog(this, 
+                        "El monto debe ser mayor a cero", 
+                        "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                // Validar que el monto no sea mayor a la mora actual
+                if (montoAbonar.compareTo(prestamo.getMoraTotal()) > 0) {
+                    JOptionPane.showMessageDialog(this, 
+                        "El monto a abonar no puede ser mayor a la mora actual ($" + prestamo.getMoraTotal() + ")", 
+                        "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                // Calcular nueva mora
+                java.math.BigDecimal nuevaMora = prestamo.getMoraTotal().subtract(montoAbonar);
+                
+                // Confirmar el abono
+                int confirmacion = JOptionPane.showConfirmDialog(this, 
+                    "¿Confirmar abono?\n\n" +
+                    "Mora actual: $" + prestamo.getMoraTotal() + "\n" +
+                    "Monto a abonar: $" + montoAbonar + "\n" +
+                    "Nueva mora: $" + nuevaMora,
+                    "Confirmar Abono", 
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+                    
+                if (confirmacion != JOptionPane.YES_OPTION) {
+                    return;
+                }
+                
+                // Actualizar la mora
+                prestamo.setMoraTotal(nuevaMora);
+                
+                // Guardar en la base de datos
+                if (prestamosDB.update(prestamo)) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Abono registrado exitosamente\n" +
+                        "Nueva mora: $" + nuevaMora, 
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    // Actualizar solo el campo de mora en la interfaz
+                    txtMoraActualPrestamo.setText(nuevaMora.toString());
+                    
+                    // Si la mora llegó a cero, deshabilitar el botón
+                    if (nuevaMora.compareTo(java.math.BigDecimal.ZERO) == 0) {
+                        btnDenegarPrestamo.setEnabled(false);
+                    }
+                    
+                    actualizarTablaPrestamos();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al registrar el abono", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, 
+                    "Por favor ingrese un número válido", 
+                    "Error de validación", JOptionPane.ERROR_MESSAGE);
             }
             
         } catch (Exception e) {
@@ -2020,13 +2072,20 @@ public class Biblioteca extends javax.swing.JFrame {
                     moraActual = mora.getTarifaDiaria().multiply(java.math.BigDecimal.valueOf(diasRetraso));
                 }
             }
-        } else if (prestamo.getEstado() == Prestamo.Estado.Devuelto && prestamo.getMoraTotal() != null) {
+        } else if (prestamo.getEstado() == Prestamo.Estado.Devuelto) {
             // Si ya está devuelto, mostrar la mora total que se cobró
-            moraActual = prestamo.getMoraTotal();
+            if (prestamo.getMoraTotal() != null) {
+                moraActual = prestamo.getMoraTotal();
+            }
             
-            // Calcular días de retraso basado en la mora total y tarifa diaria
-            if (mora != null && mora.getTarifaDiaria().compareTo(java.math.BigDecimal.ZERO) > 0) {
-                diasRetraso = moraActual.divide(mora.getTarifaDiaria(), 0, java.math.RoundingMode.DOWN).intValue();
+            // Calcular días de retraso basado en la fecha de devolución vs fecha estimada
+            if (prestamo.getFechaDevolucion() != null && prestamo.getFechaEstimada() != null) {
+                LocalDate fechaDevolucion = prestamo.getFechaDevolucion().toLocalDate();
+                LocalDate fechaEstimada = prestamo.getFechaEstimada().toLocalDate();
+                
+                if (fechaDevolucion.isAfter(fechaEstimada)) {
+                    diasRetraso = (int) java.time.temporal.ChronoUnit.DAYS.between(fechaEstimada, fechaDevolucion);
+                }
             }
         }
         
@@ -2040,21 +2099,25 @@ public class Biblioteca extends javax.swing.JFrame {
             case Pendiente:
                 btnPrestarDevolverPrestamo.setText("Aprobar");
                 btnPrestarDevolverPrestamo.setEnabled(true);
-                btnDenegarPrestamo.setEnabled(true);
+                btnDenegarPrestamo.setText("Abonar Mora");
+                btnDenegarPrestamo.setEnabled(false); // No hay mora en pendiente
                 txtFechaDevolucionPrestamo.setEditable(true);
                 break;
                 
             case En_Curso:
                 btnPrestarDevolverPrestamo.setText("Devolver");
                 btnPrestarDevolverPrestamo.setEnabled(true);
-                btnDenegarPrestamo.setEnabled(false);
+                btnDenegarPrestamo.setText("Abonar Mora");
+                btnDenegarPrestamo.setEnabled(false); // Todavía no hay mora registrada
                 txtFechaDevolucionPrestamo.setEditable(false);
                 break;
                 
             case Devuelto:
             case Denegado:
                 btnPrestarDevolverPrestamo.setEnabled(false);
-                btnDenegarPrestamo.setEnabled(false);
+                btnDenegarPrestamo.setText("Abonar Mora");
+                // Habilitar solo si hay mora pendiente
+                btnDenegarPrestamo.setEnabled(false); // Se habilitará en el método de selección si hay mora
                 txtFechaDevolucionPrestamo.setEditable(false);
                 break;
         }
@@ -2155,6 +2218,11 @@ public class Biblioteca extends javax.swing.JFrame {
                 
                 // Actualizar botones según el estado
                 actualizarBotonesSegunEstado(prestamo.getEstado());
+                
+                // Habilitar botón "Abonar Mora" solo si hay mora pendiente
+                if (prestamo.getMoraTotal() != null && prestamo.getMoraTotal().compareTo(java.math.BigDecimal.ZERO) > 0) {
+                    btnDenegarPrestamo.setEnabled(true);
+                }
             }
         }
     }// GEN-LAST:event_tblPrestamoMouseClicked

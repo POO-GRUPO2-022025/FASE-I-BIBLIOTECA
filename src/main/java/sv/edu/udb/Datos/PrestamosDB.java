@@ -301,9 +301,9 @@ public class PrestamosDB {
         
         if (conMora) {
             if (hayFiltros) {
-                sql.append("AND p.mora_total > 0 ");
+                sql.append("AND (p.mora_total > 0 OR (p.estado = 'En_Curso' AND p.fecha_estimada < CURDATE())) ");
             } else {
-                sql.append("WHERE p.mora_total > 0 ");
+                sql.append("WHERE (p.mora_total > 0 OR (p.estado = 'En_Curso' AND p.fecha_estimada < CURDATE())) ");
             }
         }
         
