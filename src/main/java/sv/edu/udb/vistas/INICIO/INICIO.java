@@ -75,7 +75,7 @@ public class INICIO extends javax.swing.JFrame {
         txtInfo.setBorder(null);
         jScrollPane1.setViewportView(txtInfo);
 
-        icoLibro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iniciodesesion/libro-recomendado-icon.png"))); // NOI18N
+        icoLibro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazInicio/libro-recomendado-icon.png"))); // NOI18N
         icoLibro.setText("jLabel8");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -108,7 +108,7 @@ public class INICIO extends javax.swing.JFrame {
                 .addContainerGap(184, Short.MAX_VALUE))
         );
 
-        icoLog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iniciodesesion/UDB_horizontal22.png"))); // NOI18N
+        icoLog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazInicio/UDB_horizontal22.png"))); // NOI18N
         icoLog.setText("jLabel2");
 
         pwdContra.addActionListener(new java.awt.event.ActionListener() {
@@ -135,10 +135,10 @@ public class INICIO extends javax.swing.JFrame {
         lblBiblio.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblBiblio.setText("Colegio Amigos De Don Bosco");
 
-        icoContra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iniciodesesion/WhatsApp Image 2025-11-06 at 7.56.38 AM.jpeg"))); // NOI18N
+        icoContra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazInicio/WhatsApp Image 2025-11-06 at 7.56.38 AM.jpeg"))); // NOI18N
         icoContra.setText("jLabel9");
 
-        icoCorreo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iniciodesesion/WhatsApp Image 2025-11-06 at 7.56.38 AM (1).jpeg"))); // NOI18N
+        icoCorreo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazInicio/WhatsApp Image 2025-11-06 at 7.56.38 AM (1).jpeg"))); // NOI18N
         icoCorreo.setText("jLabel10");
 
         btnIngresar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
