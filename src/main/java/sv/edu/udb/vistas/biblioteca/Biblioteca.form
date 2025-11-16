@@ -477,7 +477,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="jPmaterial" max="32767" attributes="0"/>
-                          <Component id="jcpTablaMaterial" pref="464" max="32767" attributes="0"/>
+                          <Component id="jcpTablaMaterial" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   </Group>
@@ -558,35 +558,6 @@
                                   <Component id="btnlimpiarmaterial" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="15" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="cbxtipomaterial" alignment="1" min="-2" pref="108" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jLbCantDispmat" min="-2" pref="166" max="-2" attributes="0"/>
-                                              <Component id="jLbUbicmaterial" alignment="0" min="-2" pref="87" max="-2" attributes="0"/>
-                                              <Component id="jLbtitulomaterial" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
-                                              <Component id="jLbcanttotal" min="-2" pref="128" max="-2" attributes="0"/>
-                                              <Component id="jLbtipomaterial" alignment="0" min="-2" pref="119" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                                                  <Component id="jTfCantdispmat" min="-2" pref="119" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="jTfUbimaterial" alignment="1" min="-2" pref="119" max="-2" attributes="0"/>
-                                                      <Component id="jTftitulomaterial" alignment="1" min="-2" pref="119" max="-2" attributes="0"/>
-                                                  </Group>
-                                              </Group>
-                                          </Group>
-                                      </Group>
-                                      <Component id="jTfCanttotal" alignment="1" min="-2" pref="119" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="102" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Group type="102" attributes="0">
@@ -598,6 +569,76 @@
                                           <Component id="lblCantPrestados" min="-2" pref="166" max="-2" attributes="0"/>
                                           <EmptySpace max="32767" attributes="0"/>
                                           <Component id="txtCantPrestados" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLbcanttotal" min="-2" pref="128" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="jTfCanttotal" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLbCantDispmat" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="jTfCantdispmat" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLbUbicmaterial" min="-2" pref="87" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="jTfUbimaterial" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLbtitulomaterial" min="-2" pref="72" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="jTftitulomaterial" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLbtipomaterial" min="-2" pref="119" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="cbxtipomaterial" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblISBN" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="txtISBN" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblEditorial" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="cbxEditorial" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblAutores" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="jScrollPaneAutores" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblVolumen" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="txtVolumen" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblNumero" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="txtNumero" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblFechaPublicacion" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="txtFechaPublicacion" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblFormato" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="txtFormato" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblDuracion" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="txtDuracion" min="-2" pref="119" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblDescripcion" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="jScrollPaneDescripcion" min="-2" pref="119" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -643,6 +684,51 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblCantDaniados" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtCantDaniados" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblISBN" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtISBN" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblEditorial" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cbxEditorial" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblAutores" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jScrollPaneAutores" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblVolumen" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtVolumen" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblNumero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNumero" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblFechaPublicacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtFechaPublicacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblFormato" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtFormato" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblDuracion" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtDuracion" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblDescripcion" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jScrollPaneDescripcion" alignment="0" min="-2" pref="60" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -1441,8 +1527,8 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="prestamos">
-                <Property name="tabTitle" type="java.lang.String" value="prestamos"/>
+              <JTabbedPaneConstraints tabName="Prestamos">
+                <Property name="tabTitle" type="java.lang.String" value="Prestamos"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -1455,7 +1541,7 @@
                       <Component id="jPprestamos" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jScrollPane7" min="-2" pref="850" max="-2" attributes="0"/>
-                      <EmptySpace pref="48" max="32767" attributes="0"/>
+                      <EmptySpace pref="28" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1463,10 +1549,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="jScrollPane7" alignment="1" pref="464" max="32767" attributes="0"/>
+                          <Component id="jScrollPane7" alignment="1" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPprestamos" max="32767" attributes="0"/>
+                              <Component id="jPprestamos" pref="459" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -1546,45 +1632,394 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="25" max="32767" attributes="0"/>
-                          <Component id="JlbBusquedaUser1" min="-2" pref="103" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
-                          <Component id="Txtbusqpres" min="-2" pref="159" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblTipoMaterialPrestamo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblcbxEstadoPrestamo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="cbxTipoMaterialPrestamo" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="cbxEstadoMaterialPrestamo" min="-2" pref="96" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="btnFiltrarPrestamo" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblCorreoEnPrestamo" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="txtCorreoEnPrestamo" min="-2" pref="105" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="lblNombreUsuarioEnPrestamo" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="txtNombreUsuarioEnPrestamo" min="-2" pref="105" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblUbicacionMaterialEnPrestamo" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="txtUbicacionEnPrestamo" min="-2" pref="105" max="-2" attributes="0"/>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Component id="lblTituloMaterialEnPrestamo" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="32767" attributes="0"/>
+                                                  <Component id="txtTituloMaterialEnPrestamo" min="-2" pref="105" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" attributes="0">
+                                                  <Component id="lblTipoMaterialEnPrestamo" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="32767" attributes="0"/>
+                                                  <Component id="txtTipoMaterialEnPrestamo" min="-2" pref="105" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="btnPrestarDevolverPrestamo" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblFechaPrestamo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblFechaDevolucion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblMoraAplicable" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblAccionesPrestamo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="btnDenegarPrestamo" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="btnLimpiarFormularioPrestamo" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="txtFechaPrestamo" min="-2" pref="66" max="-2" attributes="0"/>
+                                              <Component id="txtFechaDevolucionPrestamo" min="-2" pref="66" max="-2" attributes="0"/>
+                                              <Component id="txtMoraAplicablePrestamo" min="-2" pref="66" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="lblDiasDeRetradoPrestamo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblMoraActualPrestamo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblEstadoPrestamo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="txtEstadoPrestamo" min="-2" pref="66" max="-2" attributes="0"/>
+                                              <Component id="txtMoraActualPrestamo" min="-2" pref="66" max="-2" attributes="0"/>
+                                              <Component id="txtDiasRetrasoPrestamo" min="-2" pref="66" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace pref="18" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblFiltrosPrestamo" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblDetallesPrestamo" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="JlbBusquedaUser1" min="-2" max="-2" attributes="0"/>
-                              <Component id="Txtbusqpres" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                          <Component id="lblFiltrosPrestamo" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblTipoMaterialPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cbxTipoMaterialPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblcbxEstadoPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cbxEstadoMaterialPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnFiltrarPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="lblDetallesPrestamo" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblCorreoEnPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTituloMaterialEnPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtCorreoEnPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtTituloMaterialEnPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblNombreUsuarioEnPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTipoMaterialEnPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNombreUsuarioEnPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtTipoMaterialEnPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblUbicacionMaterialEnPrestamo" min="-2" pref="16" max="-2" attributes="0"/>
+                              <Component id="txtUbicacionEnPrestamo" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="lblAccionesPrestamo" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblFechaPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblDiasDeRetradoPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtFechaPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtDiasRetrasoPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblMoraActualPrestamo" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblFechaDevolucion" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtFechaDevolucionPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtMoraActualPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblEstadoPrestamo" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblMoraAplicable" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtMoraAplicablePrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtEstadoPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnPrestarDevolverPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDenegarPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnLimpiarFormularioPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="JlbBusquedaUser1">
+                <Component class="javax.swing.JLabel" name="lblFiltrosPrestamo">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="14" style="1"/>
+                      <Font name="Segoe UI" size="18" style="1"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Busqueda "/>
+                    <Property name="text" type="java.lang.String" value="Filtros"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="Txtbusqpres">
+                <Component class="javax.swing.JLabel" name="lblDetallesPrestamo">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="18" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Detalles"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblTipoMaterialPrestamo">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="14" style="1"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Tipo de material"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblcbxEstadoPrestamo">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Estado de prestamo"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="cbxTipoMaterialPrestamo">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="5">
+                        <StringItem index="0" value="Todos"/>
+                        <StringItem index="1" value="Libro"/>
+                        <StringItem index="2" value="Revista"/>
+                        <StringItem index="3" value="Audiovisual"/>
+                        <StringItem index="4" value="Otro"/>
+                      </StringArray>
+                    </Property>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="cbxEstadoMaterialPrestamo">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="5">
+                        <StringItem index="0" value="Todos"/>
+                        <StringItem index="1" value="Pendiente"/>
+                        <StringItem index="2" value="En curso"/>
+                        <StringItem index="3" value="Devuelto"/>
+                        <StringItem index="4" value="Denegado"/>
+                      </StringArray>
+                    </Property>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblCorreoEnPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Correo:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblTituloMaterialEnPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Titulo:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblNombreUsuarioEnPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Nombre:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblTipoMaterialEnPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Tipo:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblUbicacionMaterialEnPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Ubicacion:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblAccionesPrestamo">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="18" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Prestamo"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblFechaPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Fecha de prestamo"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblFechaDevolucion">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Fecha de devolucion"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblMoraAplicable">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Mora aplicable"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblEstadoPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Estado"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblDiasDeRetradoPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Dias de retraso:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblMoraActualPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Mora actual:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnPrestarDevolverPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Prestar"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnDenegarPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Denegar"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnLimpiarFormularioPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Limpiar"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtCorreoEnPrestamo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtNombreUsuarioEnPrestamo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TxtbusqpresActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNombreUsuarioEnPrestamoActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTituloMaterialEnPrestamo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTipoMaterialEnPrestamo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtUbicacionEnPrestamo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUbicacionEnPrestamoActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtFechaPrestamo">
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtFechaDevolucionPrestamo">
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtMoraAplicablePrestamo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtDiasRetrasoPrestamo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtMoraActualPrestamo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtEstadoPrestamo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnFiltrarPrestamo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Filtrar"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFiltrarPrestamoActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

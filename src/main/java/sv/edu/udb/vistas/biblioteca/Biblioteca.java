@@ -177,6 +177,10 @@ public class Biblioteca extends javax.swing.JFrame {
             lblDescripcion.setVisible(true);
             jScrollPaneDescripcion.setVisible(true);
         }
+        
+        // Forzar actualización de la interfaz
+        jPmaterial.revalidate();
+        jPmaterial.repaint();
     }
 
     // Limpia todos los campos específicos de cada tipo de material
@@ -274,6 +278,26 @@ public class Biblioteca extends javax.swing.JFrame {
         txtCantPrestados = new javax.swing.JTextField();
         lblCantDaniados = new javax.swing.JLabel();
         txtCantDaniados = new javax.swing.JTextField();
+        lblISBN = new javax.swing.JLabel();
+        txtISBN = new javax.swing.JTextField();
+        lblEditorial = new javax.swing.JLabel();
+        cbxEditorial = new javax.swing.JComboBox<>();
+        lblAutores = new javax.swing.JLabel();
+        jScrollPaneAutores = new javax.swing.JScrollPane();
+        lstAutores = new javax.swing.JList<>();
+        lblVolumen = new javax.swing.JLabel();
+        txtVolumen = new javax.swing.JTextField();
+        lblNumero = new javax.swing.JLabel();
+        txtNumero = new javax.swing.JTextField();
+        lblFechaPublicacion = new javax.swing.JLabel();
+        txtFechaPublicacion = new javax.swing.JTextField();
+        lblFormato = new javax.swing.JLabel();
+        txtFormato = new javax.swing.JTextField();
+        lblDuracion = new javax.swing.JLabel();
+        txtDuracion = new javax.swing.JTextField();
+        lblDescripcion = new javax.swing.JLabel();
+        jScrollPaneDescripcion = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
         jPaneluser = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbluser = new javax.swing.JTable();
@@ -309,8 +333,39 @@ public class Biblioteca extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         tblPrestamo = new javax.swing.JTable();
         jPprestamos = new javax.swing.JPanel();
-        JlbBusquedaUser1 = new javax.swing.JLabel();
-        Txtbusqpres = new javax.swing.JTextField();
+        lblFiltrosPrestamo = new javax.swing.JLabel();
+        lblDetallesPrestamo = new javax.swing.JLabel();
+        lblTipoMaterialPrestamo = new javax.swing.JLabel();
+        lblcbxEstadoPrestamo = new javax.swing.JLabel();
+        cbxTipoMaterialPrestamo = new javax.swing.JComboBox<>();
+        cbxEstadoMaterialPrestamo = new javax.swing.JComboBox<>();
+        lblCorreoEnPrestamo = new javax.swing.JLabel();
+        lblTituloMaterialEnPrestamo = new javax.swing.JLabel();
+        lblNombreUsuarioEnPrestamo = new javax.swing.JLabel();
+        lblTipoMaterialEnPrestamo = new javax.swing.JLabel();
+        lblUbicacionMaterialEnPrestamo = new javax.swing.JLabel();
+        lblAccionesPrestamo = new javax.swing.JLabel();
+        lblFechaPrestamo = new javax.swing.JLabel();
+        lblFechaDevolucion = new javax.swing.JLabel();
+        lblMoraAplicable = new javax.swing.JLabel();
+        lblEstadoPrestamo = new javax.swing.JLabel();
+        lblDiasDeRetradoPrestamo = new javax.swing.JLabel();
+        lblMoraActualPrestamo = new javax.swing.JLabel();
+        btnPrestarDevolverPrestamo = new javax.swing.JButton();
+        btnDenegarPrestamo = new javax.swing.JButton();
+        btnLimpiarFormularioPrestamo = new javax.swing.JButton();
+        txtCorreoEnPrestamo = new javax.swing.JTextField();
+        txtNombreUsuarioEnPrestamo = new javax.swing.JTextField();
+        txtTituloMaterialEnPrestamo = new javax.swing.JTextField();
+        txtTipoMaterialEnPrestamo = new javax.swing.JTextField();
+        txtUbicacionEnPrestamo = new javax.swing.JTextField();
+        txtFechaPrestamo = new javax.swing.JTextField();
+        txtFechaDevolucionPrestamo = new javax.swing.JTextField();
+        txtMoraAplicablePrestamo = new javax.swing.JTextField();
+        txtDiasRetrasoPrestamo = new javax.swing.JTextField();
+        txtMoraActualPrestamo = new javax.swing.JTextField();
+        txtEstadoPrestamo = new javax.swing.JTextField();
+        btnFiltrarPrestamo = new javax.swing.JButton();
         jTfBibliotecaamigosDonBosco = new javax.swing.JTextField();
         Administracion = new javax.swing.JMenuBar();
 
@@ -634,12 +689,52 @@ public class Biblioteca extends javax.swing.JFrame {
 
         cbxtipomaterial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cbxtipomaterial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Libro", "Revista", "Audiovisual", "Otro" }));
+        cbxtipomaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxtipomaterialActionPerformed(evt);
+            }
+        });
 
         lblCantPrestados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblCantPrestados.setText("Cantidad Prestada");
 
         lblCantDaniados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblCantDaniados.setText("Cantidad Dañados");
+
+        lblISBN.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblISBN.setText("ISBN");
+
+        lblEditorial.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblEditorial.setText("Editorial");
+
+        cbxEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        lblAutores.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblAutores.setText("Autores");
+
+        jScrollPaneAutores.setViewportView(lstAutores);
+
+        lblVolumen.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblVolumen.setText("Volumen");
+
+        lblNumero.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblNumero.setText("Número");
+
+        lblFechaPublicacion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFechaPublicacion.setText("Fecha Publicación");
+
+        lblFormato.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFormato.setText("Formato");
+
+        lblDuracion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDuracion.setText("Duración (min)");
+
+        lblDescripcion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDescripcion.setText("Descripción");
+
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(3);
+        jScrollPaneDescripcion.setViewportView(txtDescripcion);
 
         javax.swing.GroupLayout jPmaterialLayout = new javax.swing.GroupLayout(jPmaterial);
         jPmaterial.setLayout(jPmaterialLayout);
@@ -655,27 +750,6 @@ public class Biblioteca extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnlimpiarmaterial))
                     .addGroup(jPmaterialLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cbxtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPmaterialLayout.createSequentialGroup()
-                                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLbCantDispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLbUbicmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLbtitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLbcanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLbtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPmaterialLayout.createSequentialGroup()
-                                        .addGap(25, 25, 25)
-                                        .addComponent(jTfCantdispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmaterialLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTfUbimaterial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTftitulomaterial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addComponent(jTfCanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPmaterialLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPmaterialLayout.createSequentialGroup()
@@ -685,7 +759,63 @@ public class Biblioteca extends javax.swing.JFrame {
                             .addGroup(jPmaterialLayout.createSequentialGroup()
                                 .addComponent(lblCantPrestados, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtCantPrestados, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtCantPrestados, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(jLbcanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTfCanttotal, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(jLbCantDispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTfCantdispmat, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(jLbUbicmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTfUbimaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(jLbtitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTftitulomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(jLbtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbxtipomaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(lblISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(lblEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbxEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(lblAutores, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPaneAutores, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(lblVolumen, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtVolumen, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(lblFechaPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtFechaPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(lblFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(lblDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmaterialLayout.createSequentialGroup()
+                                .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPaneDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(45, 45, 45))
         );
         jPmaterialLayout.setVerticalGroup(
@@ -719,6 +849,42 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCantDaniados)
                     .addComponent(txtCantDaniados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblISBN)
+                    .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEditorial)
+                    .addComponent(cbxEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAutores)
+                    .addComponent(jScrollPaneAutores, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblVolumen)
+                    .addComponent(txtVolumen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNumero)
+                    .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFechaPublicacion)
+                    .addComponent(txtFechaPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFormato)
+                    .addComponent(txtFormato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDuracion)
+                    .addComponent(txtDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDescripcion)
+                    .addComponent(jScrollPaneDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPmaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnlimpiarmaterial)
@@ -743,7 +909,7 @@ public class Biblioteca extends javax.swing.JFrame {
             .addGroup(jpMaterialLayout.createSequentialGroup()
                 .addGroup(jpMaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPmaterial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jcpTablaMaterial, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE))
+                    .addComponent(jcpTablaMaterial))
                 .addGap(21, 21, 21))
         );
 
@@ -1048,13 +1214,85 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jPprestamos.setBackground(new java.awt.Color(0, 102, 204));
 
-        JlbBusquedaUser1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        JlbBusquedaUser1.setText("Busqueda ");
+        lblFiltrosPrestamo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblFiltrosPrestamo.setText("Filtros");
 
-        Txtbusqpres.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        Txtbusqpres.addActionListener(new java.awt.event.ActionListener() {
+        lblDetallesPrestamo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblDetallesPrestamo.setText("Detalles");
+
+        lblTipoMaterialPrestamo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTipoMaterialPrestamo.setText("Tipo de material");
+
+        lblcbxEstadoPrestamo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblcbxEstadoPrestamo.setText("Estado de prestamo");
+
+        cbxTipoMaterialPrestamo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Libro", "Revista", "Audiovisual", "Otro" }));
+
+        cbxEstadoMaterialPrestamo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Pendiente", "En curso", "Devuelto", "Denegado" }));
+
+        lblCorreoEnPrestamo.setText("Correo:");
+
+        lblTituloMaterialEnPrestamo.setText("Titulo:");
+
+        lblNombreUsuarioEnPrestamo.setText("Nombre:");
+
+        lblTipoMaterialEnPrestamo.setText("Tipo:");
+
+        lblUbicacionMaterialEnPrestamo.setText("Ubicacion:");
+
+        lblAccionesPrestamo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblAccionesPrestamo.setText("Prestamo");
+
+        lblFechaPrestamo.setText("Fecha de prestamo");
+
+        lblFechaDevolucion.setText("Fecha de devolucion");
+
+        lblMoraAplicable.setText("Mora aplicable");
+
+        lblEstadoPrestamo.setText("Estado");
+
+        lblDiasDeRetradoPrestamo.setText("Dias de retraso:");
+
+        lblMoraActualPrestamo.setText("Mora actual:");
+
+        btnPrestarDevolverPrestamo.setText("Prestar");
+
+        btnDenegarPrestamo.setText("Denegar");
+
+        btnLimpiarFormularioPrestamo.setText("Limpiar");
+
+        txtCorreoEnPrestamo.setEditable(false);
+
+        txtNombreUsuarioEnPrestamo.setEditable(false);
+        txtNombreUsuarioEnPrestamo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TxtbusqpresActionPerformed(evt);
+                txtNombreUsuarioEnPrestamoActionPerformed(evt);
+            }
+        });
+
+        txtTituloMaterialEnPrestamo.setEditable(false);
+
+        txtTipoMaterialEnPrestamo.setEditable(false);
+
+        txtUbicacionEnPrestamo.setEditable(false);
+        txtUbicacionEnPrestamo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUbicacionEnPrestamoActionPerformed(evt);
+            }
+        });
+
+        txtMoraAplicablePrestamo.setEditable(false);
+
+        txtDiasRetrasoPrestamo.setEditable(false);
+
+        txtMoraActualPrestamo.setEditable(false);
+
+        txtEstadoPrestamo.setEditable(false);
+
+        btnFiltrarPrestamo.setText("Filtrar");
+        btnFiltrarPrestamo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarPrestamoActionPerformed(evt);
             }
         });
 
@@ -1062,21 +1300,147 @@ public class Biblioteca extends javax.swing.JFrame {
         jPprestamos.setLayout(jPprestamosLayout);
         jPprestamosLayout.setHorizontalGroup(
             jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(JlbBusquedaUser1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(108, 108, 108)
-                .addComponent(Txtbusqpres, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+            .addGroup(jPprestamosLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTipoMaterialPrestamo)
+                            .addComponent(lblcbxEstadoPrestamo))
+                        .addGap(29, 29, 29)
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbxTipoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPprestamosLayout.createSequentialGroup()
+                                .addComponent(cbxEstadoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnFiltrarPrestamo)))
+                        .addContainerGap())
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPprestamosLayout.createSequentialGroup()
+                                .addComponent(lblCorreoEnPrestamo)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtCorreoEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
+                                .addComponent(lblNombreUsuarioEnPrestamo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtNombreUsuarioEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPprestamosLayout.createSequentialGroup()
+                                .addComponent(lblUbicacionMaterialEnPrestamo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtUbicacionEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
+                                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                                        .addComponent(lblTituloMaterialEnPrestamo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtTituloMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                                        .addComponent(lblTipoMaterialEnPrestamo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtTipoMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(32, 32, 32))))
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnPrestarDevolverPrestamo)
+                            .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblFechaPrestamo)
+                                .addComponent(lblFechaDevolucion)
+                                .addComponent(lblMoraAplicable)
+                                .addComponent(lblAccionesPrestamo)))
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPprestamosLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(btnDenegarPrestamo)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnLimpiarFormularioPrestamo)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPprestamosLayout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFechaDevolucionPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtMoraAplicablePrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblDiasDeRetradoPrestamo)
+                                    .addComponent(lblMoraActualPrestamo)
+                                    .addComponent(lblEstadoPrestamo))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtEstadoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtMoraActualPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtDiasRetrasoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(18, Short.MAX_VALUE))))
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblFiltrosPrestamo)
+                            .addComponent(lblDetallesPrestamo))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPprestamosLayout.setVerticalGroup(
             jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPprestamosLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(JlbBusquedaUser1)
-                    .addComponent(Txtbusqpres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(17, 17, 17)
+                .addComponent(lblFiltrosPrestamo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTipoMaterialPrestamo)
+                    .addComponent(cbxTipoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblcbxEstadoPrestamo)
+                    .addComponent(cbxEstadoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFiltrarPrestamo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblDetallesPrestamo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCorreoEnPrestamo)
+                    .addComponent(lblTituloMaterialEnPrestamo)
+                    .addComponent(txtCorreoEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTituloMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNombreUsuarioEnPrestamo)
+                    .addComponent(lblTipoMaterialEnPrestamo)
+                    .addComponent(txtNombreUsuarioEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTipoMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblUbicacionMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUbicacionEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addComponent(lblAccionesPrestamo)
+                .addGap(18, 18, 18)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFechaPrestamo)
+                    .addComponent(lblDiasDeRetradoPrestamo)
+                    .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDiasRetrasoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblMoraActualPrestamo)
+                    .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblFechaDevolucion)
+                        .addComponent(txtFechaDevolucionPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtMoraActualPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEstadoPrestamo)
+                    .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblMoraAplicable)
+                        .addComponent(txtMoraAplicablePrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtEstadoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPrestarDevolverPrestamo)
+                    .addComponent(btnDenegarPrestamo)
+                    .addComponent(btnLimpiarFormularioPrestamo))
+                .addGap(36, 36, 36))
         );
 
         javax.swing.GroupLayout jPanelprestamoLayout = new javax.swing.GroupLayout(jPanelprestamo);
@@ -1088,20 +1452,20 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addComponent(jPprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanelprestamoLayout.setVerticalGroup(
             jPanelprestamoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelprestamoLayout.createSequentialGroup()
                 .addGroup(jPanelprestamoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                    .addComponent(jScrollPane7)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelprestamoLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPprestamos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, 459, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jtbprestamos.addTab("prestamos", jPanelprestamo);
+        jtbprestamos.addTab("Prestamos", jPanelprestamo);
 
         jTfBibliotecaamigosDonBosco.setEditable(false);
         jTfBibliotecaamigosDonBosco.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
@@ -1136,129 +1500,6 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addComponent(jtbprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        lblISBN = new javax.swing.JLabel();
-        lblISBN.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblISBN.setText("ISBN");
-        txtISBN = new javax.swing.JTextField();
-        
-        lblEditorial = new javax.swing.JLabel();
-        lblEditorial.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblEditorial.setText("Editorial");
-        cbxEditorial = new javax.swing.JComboBox<>();
-        cbxEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14));
-        
-        lblAutores = new javax.swing.JLabel();
-        lblAutores.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblAutores.setText("Autores");
-        lstAutores = new javax.swing.JList<>();
-        lstAutores.setFont(new java.awt.Font("Segoe UI", 0, 12));
-        lstAutores.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        jScrollPaneAutores = new javax.swing.JScrollPane();
-        jScrollPaneAutores.setViewportView(lstAutores);
-        jScrollPaneAutores.setPreferredSize(new java.awt.Dimension(200, 80));
-        
-        lblVolumen = new javax.swing.JLabel();
-        lblVolumen.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblVolumen.setText("Volumen");
-        txtVolumen = new javax.swing.JTextField();
-        
-        lblNumero = new javax.swing.JLabel();
-        lblNumero.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblNumero.setText("Número");
-        txtNumero = new javax.swing.JTextField();
-        
-        lblFechaPublicacion = new javax.swing.JLabel();
-        lblFechaPublicacion.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblFechaPublicacion.setText("Fecha (YYYY-MM-DD)");
-        txtFechaPublicacion = new javax.swing.JTextField();
-        
-        lblFormato = new javax.swing.JLabel();
-        lblFormato.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblFormato.setText("Formato");
-        txtFormato = new javax.swing.JTextField();
-        
-        lblDuracion = new javax.swing.JLabel();
-        lblDuracion.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblDuracion.setText("Duración (min)");
-        txtDuracion = new javax.swing.JTextField();
-        
-        lblDescripcion = new javax.swing.JLabel();
-        lblDescripcion.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        lblDescripcion.setText("Descripción");
-        txtDescripcion = new javax.swing.JTextArea();
-        txtDescripcion.setColumns(20);
-        txtDescripcion.setRows(3);
-        txtDescripcion.setLineWrap(true);
-        txtDescripcion.setWrapStyleWord(true);
-        jScrollPaneDescripcion = new javax.swing.JScrollPane();
-        jScrollPaneDescripcion.setViewportView(txtDescripcion);
-        jScrollPaneDescripcion.setPreferredSize(new java.awt.Dimension(200, 60));
-        
-        jPmaterial.add(lblISBN);
-        jPmaterial.add(txtISBN);
-        jPmaterial.add(lblEditorial);
-        jPmaterial.add(cbxEditorial);
-        jPmaterial.add(lblAutores);
-        jPmaterial.add(jScrollPaneAutores);
-        jPmaterial.add(lblVolumen);        jPmaterial.add(txtVolumen);
-        jPmaterial.add(lblNumero);
-        jPmaterial.add(txtNumero);
-        jPmaterial.add(lblFechaPublicacion);
-        jPmaterial.add(txtFechaPublicacion);
-        jPmaterial.add(lblFormato);
-        jPmaterial.add(txtFormato);
-        jPmaterial.add(lblDuracion);
-        jPmaterial.add(txtDuracion);
-        jPmaterial.add(lblDescripcion);
-        jPmaterial.add(jScrollPaneDescripcion);
-        
-        int yPos = 250; // Start below existing fields
-        int labelX = 15;
-        int fieldX = 191;
-        int fieldWidth = 119;
-        int rowHeight = 30;
-        
-        lblISBN.setBounds(labelX, yPos, 166, 25);
-        txtISBN.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos += rowHeight;
-        lblEditorial.setBounds(labelX, yPos, 166, 25);
-        cbxEditorial.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos += rowHeight;
-        lblAutores.setBounds(labelX, yPos, 166, 25);
-        jScrollPaneAutores.setBounds(fieldX, yPos, fieldWidth, 80);
-        
-        yPos = 250;
-        lblVolumen.setBounds(labelX, yPos, 166, 25);
-        txtVolumen.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos += rowHeight;
-        lblNumero.setBounds(labelX, yPos, 166, 25);
-        txtNumero.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos += rowHeight;
-        lblFechaPublicacion.setBounds(labelX, yPos, 166, 25);
-        txtFechaPublicacion.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos = 250;
-        lblFormato.setBounds(labelX, yPos, 166, 25);
-        txtFormato.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos += rowHeight;
-        lblDuracion.setBounds(labelX, yPos, 166, 25);
-        txtDuracion.setBounds(fieldX, yPos, fieldWidth, 22);
-        
-        yPos = 250;
-        lblDescripcion.setBounds(labelX, yPos, 166, 25);
-        jScrollPaneDescripcion.setBounds(fieldX, yPos, fieldWidth + 50, 60);
-
-         cbxtipomaterial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxtipomaterialActionPerformed(evt);
-            }
-        });
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1433,6 +1674,18 @@ public class Biblioteca extends javax.swing.JFrame {
     private void jTfCantdispmatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTfCantdispmatActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTfCantdispmatActionPerformed
+
+    private void btnFiltrarPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarPrestamoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFiltrarPrestamoActionPerformed
+
+    private void txtNombreUsuarioEnPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreUsuarioEnPrestamoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreUsuarioEnPrestamoActionPerformed
+
+    private void txtUbicacionEnPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUbicacionEnPrestamoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUbicacionEnPrestamoActionPerformed
 
     private void jTfBibliotecaamigosDonBoscoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTfBibliotecaamigosDonBoscoActionPerformed
 
@@ -1968,51 +2221,6 @@ public class Biblioteca extends javax.swing.JFrame {
         }
     } // BOTON DE REGISTRAR PRESTAMO
 
-    private void btnregprestActionPerformed(java.awt.event.ActionEvent evt) {
-
-        java.awt.Component parent = javax.swing.SwingUtilities.getWindowAncestor(btnregprest);
-
-        String id = "";
-        String categoria = "";
-        String titulo = jTftituloprestamo.getText().trim();
-        String autor = jTfAutorprestamo.getText().trim();
-        String anioPub = jTfAniopubprestamo.getText().trim();
-        String fechaDevolucion = "";
-        String estado = "Pendiente";
-
-        if (titulo.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(parent,
-                    "Debe llenar al menos el título del préstamo.",
-                    "Campos obligatorios",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblPrestamo.getModel();
-
-        Object[] fila = new Object[] {
-                id.isEmpty() ? "P" + (model.getRowCount() + 1) : id,
-                categoria,
-                titulo,
-                autor,
-                anioPub,
-                fechaDevolucion,
-                estado
-        };
-
-        model.insertRow(0, fila);
-
-        javax.swing.JOptionPane.showMessageDialog(parent,
-                "Préstamo registrado correctamente.");
-        limpiarCamposPrestamo();
-    }
-
-    private void limpiarCamposPrestamo() {
-        jTfcatprestamo.setText("");
-        jTftituloprestamo.setText("");
-        jTfAutorprestamo.setText("");
-        jTfAniopubprestamo.setText("");
-    }
-
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -2025,25 +2233,28 @@ public class Biblioteca extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar Administracion;
     private javax.swing.JLabel JlbBusquedaUser;
-    private javax.swing.JLabel JlbBusquedaUser1;
     private javax.swing.JTable Tblmora;
-    private javax.swing.JTextField Txtbusqpres;
     private javax.swing.JButton btmLimpiarAutor;
     private javax.swing.JButton btnConsultamora;
+    private javax.swing.JButton btnDenegarPrestamo;
     private javax.swing.JButton btnEdituser;
     private javax.swing.JButton btnEliminarAutor;
     private javax.swing.JButton btnEliminarEditorial;
     private javax.swing.JButton btnEliminarmat;
+    private javax.swing.JButton btnFiltrarPrestamo;
     private javax.swing.JButton btnGuardarAutor;
     private javax.swing.JButton btnGuardarEditorial;
     private javax.swing.JButton btnGuardarmat;
     private javax.swing.JButton btnLimpiarEditorial;
+    private javax.swing.JButton btnLimpiarFormularioPrestamo;
+    private javax.swing.JButton btnPrestarDevolverPrestamo;
     private javax.swing.JButton btneliminarUser;
     private javax.swing.JButton btnguardarUser;
     private javax.swing.JButton btnlimpiarmaterial;
     private javax.swing.JButton btnnuevouser;
-    private javax.swing.JButton btnregdev;
-    private javax.swing.JButton btnregprest;
+    private javax.swing.JComboBox<String> cbxEditorial;
+    private javax.swing.JComboBox<String> cbxEstadoMaterialPrestamo;
+    private javax.swing.JComboBox<String> cbxTipoMaterialPrestamo;
     private javax.swing.JComboBox<String> cbxtipomaterial;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
@@ -2068,6 +2279,8 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPaneAutores;
+    private javax.swing.JScrollPane jScrollPaneDescripcion;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTfBibliotecaamigosDonBosco;
     private javax.swing.JTextField jTfBusquedauser;
@@ -2093,13 +2306,39 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JPanel jpEditorialinterno;
     private javax.swing.JPanel jpMaterial;
     private javax.swing.JTabbedPane jtbprestamos;
+    private javax.swing.JLabel lblAccionesPrestamo;
     private javax.swing.JLabel lblApellidosAutor;
+    private javax.swing.JLabel lblAutores;
     private javax.swing.JLabel lblCantDaniados;
     private javax.swing.JLabel lblCantPrestados;
+    private javax.swing.JLabel lblCorreoEnPrestamo;
+    private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JLabel lblDetallesPrestamo;
+    private javax.swing.JLabel lblDiasDeRetradoPrestamo;
+    private javax.swing.JLabel lblDuracion;
+    private javax.swing.JLabel lblEditorial;
+    private javax.swing.JLabel lblEstadoPrestamo;
+    private javax.swing.JLabel lblFechaDevolucion;
+    private javax.swing.JLabel lblFechaPrestamo;
+    private javax.swing.JLabel lblFechaPublicacion;
+    private javax.swing.JLabel lblFiltrosPrestamo;
+    private javax.swing.JLabel lblFormato;
+    private javax.swing.JLabel lblISBN;
+    private javax.swing.JLabel lblMoraActualPrestamo;
+    private javax.swing.JLabel lblMoraAplicable;
     private javax.swing.JLabel lblNombreAutor;
     private javax.swing.JLabel lblNombreEditorial;
+    private javax.swing.JLabel lblNombreUsuarioEnPrestamo;
+    private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblPaisAutor;
     private javax.swing.JLabel lblPaisEditorial;
+    private javax.swing.JLabel lblTipoMaterialEnPrestamo;
+    private javax.swing.JLabel lblTipoMaterialPrestamo;
+    private javax.swing.JLabel lblTituloMaterialEnPrestamo;
+    private javax.swing.JLabel lblUbicacionMaterialEnPrestamo;
+    private javax.swing.JLabel lblVolumen;
+    private javax.swing.JLabel lblcbxEstadoPrestamo;
+    private javax.swing.JList<String> lstAutores;
     private javax.swing.JTable tblAutor;
     private javax.swing.JTable tblEditorial;
     private javax.swing.JTable tblPrestamo;
@@ -2108,30 +2347,27 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField txtApellidosAutor;
     private javax.swing.JTextField txtCantDaniados;
     private javax.swing.JTextField txtCantPrestados;
+    private javax.swing.JTextField txtCorreoEnPrestamo;
+    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextField txtDiasRetrasoPrestamo;
+    private javax.swing.JTextField txtDuracion;
+    private javax.swing.JTextField txtEstadoPrestamo;
+    private javax.swing.JTextField txtFechaDevolucionPrestamo;
+    private javax.swing.JTextField txtFechaPrestamo;
+    private javax.swing.JTextField txtFechaPublicacion;
+    private javax.swing.JTextField txtFormato;
+    private javax.swing.JTextField txtISBN;
+    private javax.swing.JTextField txtMoraActualPrestamo;
+    private javax.swing.JTextField txtMoraAplicablePrestamo;
     private javax.swing.JTextField txtNombreAutor;
     private javax.swing.JTextField txtNombreEditorial;
+    private javax.swing.JTextField txtNombreUsuarioEnPrestamo;
+    private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtPaisAutor;
     private javax.swing.JTextField txtPaisEditorial;
-    // Material type-specific components
-    private javax.swing.JLabel lblISBN;
-    private javax.swing.JTextField txtISBN;
-    private javax.swing.JLabel lblEditorial;
-    private javax.swing.JComboBox<String> cbxEditorial;
-    private javax.swing.JLabel lblAutores;
-    private javax.swing.JScrollPane jScrollPaneAutores;
-    private javax.swing.JList<String> lstAutores;
-    private javax.swing.JLabel lblVolumen;
+    private javax.swing.JTextField txtTipoMaterialEnPrestamo;
+    private javax.swing.JTextField txtTituloMaterialEnPrestamo;
+    private javax.swing.JTextField txtUbicacionEnPrestamo;
     private javax.swing.JTextField txtVolumen;
-    private javax.swing.JLabel lblNumero;
-    private javax.swing.JTextField txtNumero;
-    private javax.swing.JLabel lblFechaPublicacion;
-    private javax.swing.JTextField txtFechaPublicacion;
-    private javax.swing.JLabel lblFormato;
-    private javax.swing.JTextField txtFormato;
-    private javax.swing.JLabel lblDuracion;
-    private javax.swing.JTextField txtDuracion;
-    private javax.swing.JLabel lblDescripcion;
-    private javax.swing.JScrollPane jScrollPaneDescripcion;
-    private javax.swing.JTextArea txtDescripcion;
     // End of variables declaration//GEN-END:variables
 }
