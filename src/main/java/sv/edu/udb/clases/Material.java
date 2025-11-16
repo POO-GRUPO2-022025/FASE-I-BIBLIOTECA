@@ -4,10 +4,10 @@ package sv.edu.udb.clases;
 
 public class Material {
     public enum TipoMaterial {
-        LIBRO,
-        REVISTA,
-        AUDIOVISUAL,
-        OTRO_DOCUMENTO
+        Libro,
+        Revista,
+        Audiovisual,
+        Otro,
 
     }
 

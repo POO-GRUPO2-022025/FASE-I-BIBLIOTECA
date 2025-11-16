@@ -8,7 +8,7 @@ public class Conexion {
     private static final String driverDB = "com.mysql.cj.jdbc.Driver";
     private static final String urlDB = "jdbc:mysql://localhost:3306/biblioteca_db";
     private static final String usuarioDB = "root";
-    private static final String passDB = "rootpassword";
+    private static final String passDB = "123456789";
 
     public static Connection getConexion() throws SQLException, ClassNotFoundException {
         Class.forName(driverDB);
