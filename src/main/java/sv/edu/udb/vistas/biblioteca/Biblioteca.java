@@ -27,6 +27,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private int idMaterialSeleccionado = 0;
     private int idUsuarioSeleccionado = 0;
     private int idAutorSeleccionado = 0;
+    private int idPrestamoSeleccionado = 0;
 
     public Biblioteca() {
         editorialDB = new EditorialDB();
@@ -366,6 +367,7 @@ public class Biblioteca extends javax.swing.JFrame {
         txtMoraActualPrestamo = new javax.swing.JTextField();
         txtEstadoPrestamo = new javax.swing.JTextField();
         btnFiltrarPrestamo = new javax.swing.JButton();
+        checkConMora = new javax.swing.JCheckBox();
         jTfBibliotecaamigosDonBosco = new javax.swing.JTextField();
         Administracion = new javax.swing.JMenuBar();
 
@@ -1255,11 +1257,28 @@ public class Biblioteca extends javax.swing.JFrame {
 
         lblMoraActualPrestamo.setText("Mora actual:");
 
-        btnPrestarDevolverPrestamo.setText("Prestar");
+        btnPrestarDevolverPrestamo.setText("Aprobar");
+        btnPrestarDevolverPrestamo.setEnabled(false);
+        btnPrestarDevolverPrestamo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrestarDevolverPrestamoActionPerformed(evt);
+            }
+        });
 
         btnDenegarPrestamo.setText("Denegar");
+        btnDenegarPrestamo.setEnabled(false);
+        btnDenegarPrestamo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDenegarPrestamoActionPerformed(evt);
+            }
+        });
 
         btnLimpiarFormularioPrestamo.setText("Limpiar");
+        btnLimpiarFormularioPrestamo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarFormularioPrestamoActionPerformed(evt);
+            }
+        });
 
         txtCorreoEnPrestamo.setEditable(false);
 
@@ -1296,6 +1315,8 @@ public class Biblioteca extends javax.swing.JFrame {
             }
         });
 
+        checkConMora.setText("Con Mora");
+
         javax.swing.GroupLayout jPprestamosLayout = new javax.swing.GroupLayout(jPprestamos);
         jPprestamos.setLayout(jPprestamosLayout);
         jPprestamosLayout.setHorizontalGroup(
@@ -1305,26 +1326,15 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPprestamosLayout.createSequentialGroup()
                         .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTipoMaterialPrestamo)
-                            .addComponent(lblcbxEstadoPrestamo))
-                        .addGap(29, 29, 29)
-                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbxTipoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPprestamosLayout.createSequentialGroup()
-                                .addComponent(cbxEstadoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnFiltrarPrestamo)))
-                        .addContainerGap())
-                    .addGroup(jPprestamosLayout.createSequentialGroup()
-                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblNombreUsuarioEnPrestamo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtNombreUsuarioEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPprestamosLayout.createSequentialGroup()
                                 .addComponent(lblCorreoEnPrestamo)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtCorreoEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
-                                .addComponent(lblNombreUsuarioEnPrestamo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtNombreUsuarioEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lblDetallesPrestamo))
                         .addGap(18, 18, 18)
                         .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPprestamosLayout.createSequentialGroup()
@@ -1344,42 +1354,63 @@ public class Biblioteca extends javax.swing.JFrame {
                                         .addComponent(txtTipoMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(32, 32, 32))))
                     .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addComponent(lblFiltrosPrestamo)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPprestamosLayout.createSequentialGroup()
+                                .addComponent(lblTipoMaterialPrestamo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbxTipoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPprestamosLayout.createSequentialGroup()
+                                .addComponent(lblcbxEstadoPrestamo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(checkConMora)
+                                    .addComponent(cbxEstadoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(35, 35, 35)
+                        .addComponent(btnFiltrarPrestamo)
+                        .addContainerGap())))
+            .addGroup(jPprestamosLayout.createSequentialGroup()
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnPrestarDevolverPrestamo)
-                            .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblFechaPrestamo)
-                                .addComponent(lblFechaDevolucion)
-                                .addComponent(lblMoraAplicable)
-                                .addComponent(lblAccionesPrestamo)))
-                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPprestamosLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(btnDenegarPrestamo)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnLimpiarFormularioPrestamo)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPprestamosLayout.createSequentialGroup()
-                                .addGap(9, 9, 9)
                                 .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtFechaDevolucionPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtMoraAplicablePrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblDiasDeRetradoPrestamo)
-                                    .addComponent(lblMoraActualPrestamo)
-                                    .addComponent(lblEstadoPrestamo))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtEstadoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtMoraActualPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtDiasRetrasoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(18, Short.MAX_VALUE))))
+                                    .addComponent(lblAccionesPrestamo)
+                                    .addComponent(lblFechaPrestamo))
+                                .addGap(29, 29, 29))))
                     .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblFechaDevolucion))
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblMoraAplicable)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addComponent(btnDenegarPrestamo)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLimpiarFormularioPrestamo)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                            .addComponent(txtFechaDevolucionPrestamo)
+                            .addComponent(txtMoraAplicablePrestamo))
+                        .addGap(18, 18, 18)
                         .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblFiltrosPrestamo)
-                            .addComponent(lblDetallesPrestamo))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(lblDiasDeRetradoPrestamo)
+                            .addComponent(lblMoraActualPrestamo)
+                            .addComponent(lblEstadoPrestamo))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtEstadoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMoraActualPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDiasRetrasoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12))))
         );
         jPprestamosLayout.setVerticalGroup(
             jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1390,28 +1421,39 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTipoMaterialPrestamo)
                     .addComponent(cbxTipoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(btnFiltrarPrestamo))
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblcbxEstadoPrestamo)
+                            .addComponent(cbxEstadoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkConMora)))
+                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPprestamosLayout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblTituloMaterialEnPrestamo)
+                            .addComponent(txtTituloMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(3, 3, 3))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPprestamosLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDetallesPrestamo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblcbxEstadoPrestamo)
-                    .addComponent(cbxEstadoMaterialPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFiltrarPrestamo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblDetallesPrestamo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCorreoEnPrestamo)
-                    .addComponent(lblTituloMaterialEnPrestamo)
-                    .addComponent(txtCorreoEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTituloMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3)
-                .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNombreUsuarioEnPrestamo)
                     .addComponent(lblTipoMaterialEnPrestamo)
-                    .addComponent(txtNombreUsuarioEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTipoMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTipoMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCorreoEnPrestamo)
+                    .addComponent(txtCorreoEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblUbicacionMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPprestamosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblUbicacionMaterialEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblNombreUsuarioEnPrestamo)
+                        .addComponent(txtNombreUsuarioEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtUbicacionEnPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addComponent(lblAccionesPrestamo)
@@ -1452,7 +1494,7 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addComponent(jPprestamos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanelprestamoLayout.setVerticalGroup(
             jPanelprestamoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1676,16 +1718,226 @@ public class Biblioteca extends javax.swing.JFrame {
     }//GEN-LAST:event_jTfCantdispmatActionPerformed
 
     private void btnFiltrarPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarPrestamoActionPerformed
-        // TODO add your handling code here:
+    
     }//GEN-LAST:event_btnFiltrarPrestamoActionPerformed
+
+    private void txtUbicacionEnPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUbicacionEnPrestamoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUbicacionEnPrestamoActionPerformed
 
     private void txtNombreUsuarioEnPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreUsuarioEnPrestamoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreUsuarioEnPrestamoActionPerformed
 
-    private void txtUbicacionEnPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUbicacionEnPrestamoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUbicacionEnPrestamoActionPerformed
+    private void btnLimpiarFormularioPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarFormularioPrestamoActionPerformed
+        limpiarFormularioPrestamo();
+    }//GEN-LAST:event_btnLimpiarFormularioPrestamoActionPerformed
+
+    private void btnDenegarPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDenegarPrestamoActionPerformed
+        if (idPrestamoSeleccionado == 0) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione un préstamo primero", 
+                "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Confirmar la denegación del préstamo
+        int confirmacion = JOptionPane.showConfirmDialog(this, 
+            "¿Está seguro que desea denegar este préstamo?", 
+            "Confirmar Denegación", 
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+            
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        try {
+            // Obtener el préstamo actual
+            Prestamo prestamo = prestamosDB.select(idPrestamoSeleccionado);
+            
+            if (prestamo == null) {
+                JOptionPane.showMessageDialog(this, "No se pudo encontrar el préstamo seleccionado", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Verificar que el préstamo esté en estado Pendiente
+            if (prestamo.getEstado() != Prestamo.Estado.Pendiente) {
+                JOptionPane.showMessageDialog(this, 
+                    "Solo se pueden denegar préstamos en estado Pendiente", 
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            // Cambiar el estado a Denegado
+            prestamo.setEstado(Prestamo.Estado.Denegado);
+            
+            // Actualizar en la base de datos
+            if (prestamosDB.update(prestamo)) {
+                JOptionPane.showMessageDialog(this, "Préstamo denegado exitosamente", 
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                limpiarFormularioPrestamo();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al denegar el préstamo", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnDenegarPrestamoActionPerformed
+
+    private void btnPrestarDevolverPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrestarDevolverPrestamoActionPerformed
+        if (idPrestamoSeleccionado == 0) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione un préstamo primero", 
+                "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try {
+            // Obtener el préstamo actual
+            Prestamo prestamo = prestamosDB.select(idPrestamoSeleccionado);
+            
+            if (prestamo == null) {
+                JOptionPane.showMessageDialog(this, "No se pudo encontrar el préstamo seleccionado", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Determinar la acción según el estado actual
+            if (prestamo.getEstado() == Prestamo.Estado.Pendiente) {
+                // APROBAR PRÉSTAMO: Cambiar de Pendiente a En_Curso
+                aprobarPrestamo(prestamo);
+                
+            } else if (prestamo.getEstado() == Prestamo.Estado.En_Curso) {
+                // REGISTRAR DEVOLUCIÓN: Cambiar de En_Curso a Devuelto
+                registrarDevolucion(prestamo);
+                
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Este préstamo no se puede modificar en su estado actual", 
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnPrestarDevolverPrestamoActionPerformed
+    
+    // Aprueba un préstamo pendiente y lo pone en curso
+    private void aprobarPrestamo(Prestamo prestamo) {
+        // Obtener la fecha de devolución del campo (puede haber sido editada por el usuario)
+        String fechaDevolucionStr = txtFechaDevolucionPrestamo.getText().trim();
+        
+        if (fechaDevolucionStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese una fecha de devolución estimada", 
+                "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            // Parsear la fecha
+            LocalDate fechaEstimada = LocalDate.parse(fechaDevolucionStr);
+            
+            // Validar que la fecha estimada sea posterior a la fecha de préstamo
+            if (fechaEstimada.isBefore(prestamo.getFechaPrestamo().toLocalDate()) || 
+                fechaEstimada.isEqual(prestamo.getFechaPrestamo().toLocalDate())) {
+                JOptionPane.showMessageDialog(this, 
+                    "La fecha de devolución debe ser posterior a la fecha de préstamo", 
+                    "Error de validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Confirmar la aprobación
+            int confirmacion = JOptionPane.showConfirmDialog(this, 
+                "¿Está seguro que desea aprobar este préstamo?", 
+                "Confirmar Aprobación", 
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+                
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return;
+            }
+            
+            // Actualizar el préstamo
+            prestamo.setEstado(Prestamo.Estado.En_Curso);
+            prestamo.setFechaEstimada(java.sql.Date.valueOf(fechaEstimada));
+            prestamo.setFechaDevolucion(null);
+            
+            // Guardar en la base de datos
+            if (prestamosDB.update(prestamo)) {
+                JOptionPane.showMessageDialog(this, "Préstamo aprobado exitosamente", 
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                limpiarFormularioPrestamo();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al aprobar el préstamo", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al procesar la fecha: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    // Registra la devolución de un préstamo en curso
+    private void registrarDevolucion(Prestamo prestamo) {
+        LocalDate fechaDevolucion = LocalDate.now();
+        LocalDate fechaEstimada = prestamo.getFechaEstimada().toLocalDate();
+        
+        // Calcular mora si hay retraso
+        java.math.BigDecimal moraTotal = java.math.BigDecimal.ZERO;
+        int diasRetraso = 0;
+        
+        if (fechaDevolucion.isAfter(fechaEstimada)) {
+            diasRetraso = (int) java.time.temporal.ChronoUnit.DAYS.between(fechaEstimada, fechaDevolucion);
+            
+            // Obtener la tarifa de mora
+            MorasDB morasDB = new MorasDB();
+            Mora mora = morasDB.select(prestamo.getIdMora());
+            
+            if (mora != null && diasRetraso > 0) {
+                moraTotal = mora.getTarifaDiaria().multiply(java.math.BigDecimal.valueOf(diasRetraso));
+            }
+        }
+        
+        // Mostrar información de la devolución
+        String mensaje = "¿Confirmar devolución del préstamo?\n\n" +
+                         "Fecha de devolución: " + fechaDevolucion + "\n" +
+                         "Días de retraso: " + diasRetraso + "\n" +
+                         "Mora total: $" + moraTotal;
+        
+        int confirmacion = JOptionPane.showConfirmDialog(this, 
+            mensaje, 
+            "Confirmar Devolución", 
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+            
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        // Actualizar el préstamo
+        prestamo.setEstado(Prestamo.Estado.Devuelto);
+        prestamo.setFechaDevolucion(java.sql.Date.valueOf(fechaDevolucion));
+        prestamo.setMoraTotal(moraTotal);
+        
+        // Guardar en la base de datos
+        if (prestamosDB.update(prestamo)) {
+            JOptionPane.showMessageDialog(this, 
+                "Devolución registrada exitosamente\n" +
+                "Mora total: $" + moraTotal, 
+                "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            limpiarFormularioPrestamo();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al registrar la devolución", 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void jTfBibliotecaamigosDonBoscoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTfBibliotecaamigosDonBoscoActionPerformed
 
@@ -1698,9 +1950,167 @@ public class Biblioteca extends javax.swing.JFrame {
     private void btnregdevActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnregdevActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_btnregdevActionPerformed
+    
+    // Calcula los días de retraso y la mora actual para un préstamo
+    private void calcularDiasRetrasoYMora(Prestamo prestamo, Mora mora) {
+        LocalDate hoy = LocalDate.now();
+        int diasRetraso = 0;
+        java.math.BigDecimal moraActual = java.math.BigDecimal.ZERO;
+        
+        // Solo calcular retraso si el préstamo está "En_Curso"
+        if (prestamo.getEstado() == Prestamo.Estado.En_Curso) {
+            LocalDate fechaEstimada = prestamo.getFechaEstimada().toLocalDate();
+            
+            // Si la fecha actual es posterior a la fecha estimada, hay retraso
+            if (hoy.isAfter(fechaEstimada)) {
+                diasRetraso = (int) java.time.temporal.ChronoUnit.DAYS.between(fechaEstimada, hoy);
+                
+                // Calcular mora actual = días de retraso * tarifa diaria
+                if (mora != null && diasRetraso > 0) {
+                    moraActual = mora.getTarifaDiaria().multiply(java.math.BigDecimal.valueOf(diasRetraso));
+                }
+            }
+        } else if (prestamo.getEstado() == Prestamo.Estado.Devuelto && prestamo.getMoraTotal() != null) {
+            // Si ya está devuelto, mostrar la mora total que se cobró
+            moraActual = prestamo.getMoraTotal();
+            
+            // Calcular días de retraso basado en la mora total y tarifa diaria
+            if (mora != null && mora.getTarifaDiaria().compareTo(java.math.BigDecimal.ZERO) > 0) {
+                diasRetraso = moraActual.divide(mora.getTarifaDiaria(), 0, java.math.RoundingMode.DOWN).intValue();
+            }
+        }
+        
+        txtDiasRetrasoPrestamo.setText(String.valueOf(diasRetraso));
+        txtMoraActualPrestamo.setText(moraActual.toString());
+    }
+    
+    // Actualiza la visibilidad y texto de los botones según el estado del préstamo
+    private void actualizarBotonesSegunEstado(Prestamo.Estado estado) {
+        switch (estado) {
+            case Pendiente:
+                btnPrestarDevolverPrestamo.setText("Aprobar");
+                btnPrestarDevolverPrestamo.setEnabled(true);
+                btnDenegarPrestamo.setEnabled(true);
+                txtFechaDevolucionPrestamo.setEditable(true);
+                break;
+                
+            case En_Curso:
+                btnPrestarDevolverPrestamo.setText("Devolver");
+                btnPrestarDevolverPrestamo.setEnabled(true);
+                btnDenegarPrestamo.setEnabled(false);
+                txtFechaDevolucionPrestamo.setEditable(false);
+                break;
+                
+            case Devuelto:
+            case Denegado:
+                btnPrestarDevolverPrestamo.setEnabled(false);
+                btnDenegarPrestamo.setEnabled(false);
+                txtFechaDevolucionPrestamo.setEditable(false);
+                break;
+        }
+    }
+    
+    // Limpia todos los campos del formulario de préstamos
+    private void limpiarFormularioPrestamo() {
+        idPrestamoSeleccionado = 0;
+        txtCorreoEnPrestamo.setText("");
+        txtNombreUsuarioEnPrestamo.setText("");
+        txtTituloMaterialEnPrestamo.setText("");
+        txtTipoMaterialEnPrestamo.setText("");
+        txtUbicacionEnPrestamo.setText("");
+        txtFechaPrestamo.setText("");
+        txtFechaDevolucionPrestamo.setText("");
+        txtMoraAplicablePrestamo.setText("");
+        txtDiasRetrasoPrestamo.setText("0");
+        txtMoraActualPrestamo.setText("0");
+        txtEstadoPrestamo.setText("");
+        
+        btnPrestarDevolverPrestamo.setText("Prestar");
+        btnPrestarDevolverPrestamo.setEnabled(false);
+        btnDenegarPrestamo.setEnabled(false);
+        txtFechaDevolucionPrestamo.setEditable(false);
+        actualizarTablaPrestamos();
+    }
+    
+    // Actualiza la tabla de préstamos
+    private void actualizarTablaPrestamos() {
+        tblPrestamo.setModel(prestamosDB.selectPrestamosDetallado());
+        if (tblPrestamo.getColumnModel().getColumnCount() > 0) {
+            tblPrestamo.getColumnModel().getColumn(5).setHeaderValue("Fecha de Devolución");
+            tblPrestamo.getColumnModel().getColumn(6).setHeaderValue("Estado");
+        }
+    }
 
     private void tblPrestamoMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblPrestamoMouseClicked
+        int fila = tblPrestamo.rowAtPoint(evt.getPoint());
+        int columna = tblPrestamo.columnAtPoint(evt.getPoint());
 
+        if ((fila > -1) && (columna > -1)) {
+            DefaultTableModel modelo = (DefaultTableModel) tblPrestamo.getModel();
+            
+            // Obtener ID del préstamo seleccionado
+            idPrestamoSeleccionado = Integer.parseInt(modelo.getValueAt(fila, 0).toString());
+            
+            // Cargar datos del préstamo completo desde la base de datos
+            Prestamo prestamo = prestamosDB.select(idPrestamoSeleccionado);
+            
+            if (prestamo != null) {
+                // Cargar información del usuario
+                Usuarios usuario = UsuariosDB.select(prestamo.getIdUsuario());
+                if (usuario != null) {
+                    txtNombreUsuarioEnPrestamo.setText(usuario.getNombre());
+                    txtCorreoEnPrestamo.setText(usuario.getCorreo());
+                }
+                
+                // Cargar información del material
+                Material material = materialesDB.select(prestamo.getIdMaterial());
+                if (material != null) {
+                    txtTituloMaterialEnPrestamo.setText(material.getTitulo());
+                    txtTipoMaterialEnPrestamo.setText(material.getTipoMaterial().toString());
+                    txtUbicacionEnPrestamo.setText(material.getUbicacion());
+                }
+                
+                // Cargar información de la mora
+                MorasDB morasDB = new MorasDB();
+                Mora mora = morasDB.select(prestamo.getIdMora());
+                if (mora != null) {
+                    txtMoraAplicablePrestamo.setText(mora.getTarifaDiaria().toString());
+                } else {
+                    txtMoraAplicablePrestamo.setText("0.00");
+                }
+                
+                // Cargar fechas
+                txtFechaPrestamo.setText(prestamo.getFechaPrestamo().toString());
+                
+                // Para fecha de devolución, si es estado "Pendiente" calcular fecha estimada
+                if (prestamo.getEstado() == Prestamo.Estado.Pendiente) {
+                    // Si la fecha estimada es null, calcular 3 días después de la fecha de préstamo
+                    if (prestamo.getFechaEstimada() != null) {
+                        txtFechaDevolucionPrestamo.setText(prestamo.getFechaEstimada().toString());
+                    } else {
+                        LocalDate fechaEstimadaCalculada = prestamo.getFechaPrestamo().toLocalDate().plusDays(3);
+                        txtFechaDevolucionPrestamo.setText(fechaEstimadaCalculada.toString());
+                    }
+                } else {
+                    // Para otros estados, mostrar fecha de devolución real o calcular 3 días después
+                    if (prestamo.getFechaDevolucion() != null) {
+                        txtFechaDevolucionPrestamo.setText(prestamo.getFechaDevolucion().toString());
+                    } else {
+                        LocalDate fechaEstimadaCalculada = prestamo.getFechaPrestamo().toLocalDate().plusDays(3);
+                        txtFechaDevolucionPrestamo.setText(fechaEstimadaCalculada.toString());
+                    }
+                }
+                
+                // Cargar estado
+                txtEstadoPrestamo.setText(prestamo.getEstado().toString().replace("_", " "));
+                
+                // Calcular días de retraso y mora actual
+                calcularDiasRetrasoYMora(prestamo, mora);
+                
+                // Actualizar botones según el estado
+                actualizarBotonesSegunEstado(prestamo.getEstado());
+            }
+        }
     }// GEN-LAST:event_tblPrestamoMouseClicked
 
     private void jTfbusqumoraActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTfbusqumoraActionPerformed
@@ -2256,6 +2666,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbxEstadoMaterialPrestamo;
     private javax.swing.JComboBox<String> cbxTipoMaterialPrestamo;
     private javax.swing.JComboBox<String> cbxtipomaterial;
+    private javax.swing.JCheckBox checkConMora;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLbCantDispmat;
