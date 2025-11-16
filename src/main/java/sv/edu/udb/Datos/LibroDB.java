@@ -54,8 +54,7 @@ public class LibroDB {
                         baseMaterial.getCantidadDisponible(),
                         baseMaterial.getCantidadPrestada(),
                         baseMaterial.getCantidadDaniada(),
-                        libro.getAutor(),
-                        libro.getEditorial(),
+                        rs.getInt("id_editorial"),
                         rs.getString("isbn")
                 );
                 nuevoLibro.setIdEditorial(rs.getInt("id_editorial"));
@@ -155,8 +154,7 @@ public class LibroDB {
                         baseMaterial.getCantidadDisponible(),
                         baseMaterial.getCantidadPrestada(),
                         baseMaterial.getCantidadDaniada(),
-                        "", 
-                        "", 
+                        rs.getInt("id_editorial"),
                         rs.getString("isbn")
                 );
                 libro.setIdEditorial(rs.getInt("id_editorial"));

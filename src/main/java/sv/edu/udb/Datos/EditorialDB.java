@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 import sv.edu.udb.clases.Editorial;
@@ -146,5 +148,34 @@ public class EditorialDB {
         }
         
         return dtm;
+    }
+
+    public List<Editorial> getAllEditoriales() {
+        List<Editorial> editoriales = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT);
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Editorial editorial = new Editorial();
+                editorial.setIdEditorial(rs.getInt("id_editorial"));
+                editorial.setNombre(rs.getString("nombre"));
+                editorial.setPais(rs.getString("pais"));
+                editoriales.add(editorial);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return editoriales;
     }
 }

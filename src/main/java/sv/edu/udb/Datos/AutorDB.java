@@ -182,4 +182,35 @@ public class AutorDB {
         
         return dtm;
     }
+
+    public List<Autor> getAllAutores() {
+        List<Autor> autores = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_ALL);
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Autor autor = new Autor(
+                    rs.getInt("id_autor"),
+                    rs.getString("nombre"),
+                    rs.getString("apellidos"),
+                    rs.getString("pais")
+                );
+                autores.add(autor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return autores;
+    }
 }
