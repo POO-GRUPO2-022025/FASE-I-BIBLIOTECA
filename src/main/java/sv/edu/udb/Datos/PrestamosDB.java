@@ -268,4 +268,85 @@ public class PrestamosDB {
         return dtm;
     }
 
+    public DefaultTableModel selectPrestamosDetalladoFiltrado(String tipoMaterial, String estado, boolean conMora) {
+        DefaultTableModel dtm = new DefaultTableModel();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        // Construir query dinámicamente según filtros
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT p.id_prestamo, u.nombre AS usuario, m.titulo AS material, ")
+           .append("COALESCE(mo.tarifa_diaria, 0) AS tarifa_diaria, p.fecha_prestamo, p.fecha_estimada, p.fecha_devolucion, p.estado ")
+           .append("FROM prestamos p ")
+           .append("INNER JOIN usuarios u ON p.id_usuario = u.id_usuario ")
+           .append("INNER JOIN materiales m ON p.id_material = m.id_material ")
+           .append("LEFT JOIN moras mo ON p.id_mora = mo.id_mora ");
+        
+        // Agregar condiciones WHERE si hay filtros
+        boolean hayFiltros = false;
+        if (tipoMaterial != null && !tipoMaterial.equals("Todos")) {
+            sql.append("WHERE m.tipo_material = ? ");
+            hayFiltros = true;
+        }
+        
+        if (estado != null && !estado.equals("Todos")) {
+            if (hayFiltros) {
+                sql.append("AND p.estado = ? ");
+            } else {
+                sql.append("WHERE p.estado = ? ");
+                hayFiltros = true;
+            }
+        }
+        
+        if (conMora) {
+            if (hayFiltros) {
+                sql.append("AND p.mora_total > 0 ");
+            } else {
+                sql.append("WHERE p.mora_total > 0 ");
+            }
+        }
+        
+        sql.append("ORDER BY p.id_prestamo");
+        
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(sql.toString());
+            
+            // Establecer parámetros según filtros
+            int paramIndex = 1;
+            if (tipoMaterial != null && !tipoMaterial.equals("Todos")) {
+                stmt.setString(paramIndex++, tipoMaterial);
+            }
+            if (estado != null && !estado.equals("Todos")) {
+                stmt.setString(paramIndex, estado);
+            }
+            
+            rs = stmt.executeQuery();
+            
+            ResultSetMetaData meta = rs.getMetaData();
+            int numberOfColumns = meta.getColumnCount();
+            
+            for (int i = 1; i <= numberOfColumns; i++) {
+                dtm.addColumn(meta.getColumnLabel(i));
+            }
+            
+            while (rs.next()) {
+                Object[] fila = new Object[numberOfColumns];
+                for (int i = 0; i < numberOfColumns; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                dtm.addRow(fila);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar préstamos filtrados", e);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        
+        return dtm;
+    }
+
 }

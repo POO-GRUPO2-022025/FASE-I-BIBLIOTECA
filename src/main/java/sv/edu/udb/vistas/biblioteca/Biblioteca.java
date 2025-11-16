@@ -1209,11 +1209,6 @@ public class Biblioteca extends javax.swing.JFrame {
             }
         });
         jScrollPane7.setViewportView(tblPrestamo);
-        if (tblPrestamo.getColumnModel().getColumnCount() > 0) {
-            tblPrestamo.getColumnModel().getColumn(5).setHeaderValue("Fecha de Devolución");
-            tblPrestamo.getColumnModel().getColumn(6).setHeaderValue("Estado");
-        }
-
         jPprestamos.setBackground(new java.awt.Color(0, 102, 204));
 
         lblFiltrosPrestamo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -1718,8 +1713,63 @@ public class Biblioteca extends javax.swing.JFrame {
     }//GEN-LAST:event_jTfCantdispmatActionPerformed
 
     private void btnFiltrarPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarPrestamoActionPerformed
-    
+        try {
+            // Obtener valores seleccionados de los filtros
+            String tipoMaterialSeleccionado = (String) cbxTipoMaterialPrestamo.getSelectedItem();
+            String estadoSeleccionado = (String) cbxEstadoMaterialPrestamo.getSelectedItem();
+            boolean soloConMora = checkConMora.isSelected();
+            
+            // Convertir "En curso" a "En_Curso" para que coincida con el enum
+            if (estadoSeleccionado != null && estadoSeleccionado.equals("En curso")) {
+                estadoSeleccionado = "En_Curso";
+            }
+            
+            // Limpiar selección actual
+            idPrestamoSeleccionado = 0;
+            limpiarCamposDetallesPrestamo();
+            
+            // Aplicar filtros y actualizar tabla
+            if (tipoMaterialSeleccionado.equals("Todos") && estadoSeleccionado.equals("Todos") && !soloConMora) {
+                // Si todos los filtros están en "Todos" y no hay filtro de mora, mostrar todos los préstamos
+                actualizarTablaPrestamos();
+            } else {
+                // Aplicar filtros
+                DefaultTableModel modeloFiltrado = prestamosDB.selectPrestamosDetalladoFiltrado(
+                    tipoMaterialSeleccionado, 
+                    estadoSeleccionado,
+                    soloConMora
+                );
+                tblPrestamo.setModel(modeloFiltrado);
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al aplicar filtros: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnFiltrarPrestamoActionPerformed
+    
+    // Limpia solo los campos de detalles del préstamo sin afectar la tabla
+    private void limpiarCamposDetallesPrestamo() {
+        txtCorreoEnPrestamo.setText("");
+        txtNombreUsuarioEnPrestamo.setText("");
+        txtTituloMaterialEnPrestamo.setText("");
+        txtTipoMaterialEnPrestamo.setText("");
+        txtUbicacionEnPrestamo.setText("");
+        txtFechaPrestamo.setText("");
+        txtFechaDevolucionPrestamo.setText("");
+        txtMoraAplicablePrestamo.setText("");
+        txtDiasRetrasoPrestamo.setText("0");
+        txtMoraActualPrestamo.setText("0");
+        txtEstadoPrestamo.setText("");
+        
+        btnPrestarDevolverPrestamo.setText("Prestar");
+        btnPrestarDevolverPrestamo.setEnabled(false);
+        btnDenegarPrestamo.setEnabled(false);
+        txtFechaDevolucionPrestamo.setEditable(false);
+    }
 
     private void txtUbicacionEnPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUbicacionEnPrestamoActionPerformed
         // TODO add your handling code here:
@@ -2035,10 +2085,6 @@ public class Biblioteca extends javax.swing.JFrame {
     // Actualiza la tabla de préstamos
     private void actualizarTablaPrestamos() {
         tblPrestamo.setModel(prestamosDB.selectPrestamosDetallado());
-        if (tblPrestamo.getColumnModel().getColumnCount() > 0) {
-            tblPrestamo.getColumnModel().getColumn(5).setHeaderValue("Fecha de Devolución");
-            tblPrestamo.getColumnModel().getColumn(6).setHeaderValue("Estado");
-        }
     }
 
     private void tblPrestamoMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblPrestamoMouseClicked
