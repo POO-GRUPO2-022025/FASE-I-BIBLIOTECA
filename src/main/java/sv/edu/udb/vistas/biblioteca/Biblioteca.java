@@ -40,9 +40,11 @@ public class Biblioteca extends javax.swing.JFrame {
     private int idPrestamoConMora = 0;
     private int idPrestamoSeleccionado = 0;
     private int idTarifaSeleccionada = 0;
-    private int idUsuarioActual = 1; // ID del usuario que inició sesión (temporal, cambiar según login)
+    private int idUsuarioActual = -1;
 
     public Biblioteca(Usuarios usuarioValidado) {
+        idUsuarioActual = usuarioValidado.getIdUsuario();
+        
         editorialDB = new EditorialDB();
         UsuariosDB = new UsuariosDB();
         materialesDB = new MaterialesDB();
@@ -53,7 +55,12 @@ public class Biblioteca extends javax.swing.JFrame {
         otroDocumentoDB = new OtroDocumentoDB();
         prestamosDB = new PrestamosDB();
         morasDB = new MorasDB();
+        
         initComponents();
+        ValidarTipoUsuario(usuarioValidado);
+        configurarLimites(usuarioValidado);
+
+    
         setLocationRelativeTo(null);
         cbxtipomaterial.setSelectedIndex(-1);
         ocultarCamposEspecificosMaterial();
@@ -62,22 +69,33 @@ public class Biblioteca extends javax.swing.JFrame {
         cargarListaAutores();
         actualizarTablaUsuario();
         jpEditorial.setVisible(false);
-        ValidarTipoUsuario(usuarioValidado);
     }
     //Metodo para activar o desactivar paneles acorde al tipo de usuario
+
+    private void configurarLimites(Usuarios usuarioValidado){
+        if(usuarioValidado.getTipoUsuario().toString().equals("Alumno")){
+            prestamosMaximos = 3;
+        } else if (usuarioValidado.getTipoUsuario().toString().equals("Profesor")){
+            prestamosMaximos = 6;
+        } else {
+            prestamosMaximos = 3;
+        }
+        actualizarMisPrestamos();
+    }
+
     public void ValidarTipoUsuario(Usuarios usuarioValidado){
         if(!usuarioValidado.getTipoUsuario().toString().equals("Encargado")) {
+            jtbprestamos.removeTabAt(6);
+            jtbprestamos.removeTabAt(5);
             jtbprestamos.removeTabAt(4);
             jtbprestamos.removeTabAt(3);
             jtbprestamos.removeTabAt(2);
             jtbprestamos.removeTabAt(1);
             jtbprestamos.removeTabAt(0);
+        } else {
+            jtbprestamos.removeTabAt(7);
         }
-
         jLbNombreUsuario.setText("Hola, "+usuarioValidado.getNombre());
-
-        actualizarMisPrestamos();
-
     }
 
     private void actualizarMisPrestamos(){
