@@ -20,7 +20,6 @@ public class PrestamosDB {
         ResultSet rs = null;
         Prestamo nuevoPrestamo = null;
 
-
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
@@ -40,11 +39,10 @@ public class PrestamosDB {
                 System.out.println(nuevoPrestamo.getIdPrestamo());
             }
 
-
-        } catch (SQLException | ClassNotFoundException e) { //Proceso para capturar errores y manda un mensaje
+        } catch (SQLException | ClassNotFoundException e) { // Proceso para capturar errores y manda un mensaje
             throw new RuntimeException("Error al insertar Prestamo", e);
         } finally {
-            //Cierre de todos los recursos
+            // Cierre de todos los recursos
             Conexion.close(stmt);
             Conexion.close(conn);
         }
@@ -148,14 +146,14 @@ public class PrestamosDB {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_SELECT_ALL);
             rs = stmt.executeQuery();
-            
+
             ResultSetMetaData meta = rs.getMetaData();
             int numberOfColumns = meta.getColumnCount();
-            
+
             for (int i = 1; i <= numberOfColumns; i++) {
                 dtm.addColumn(meta.getColumnLabel(i));
             }
-            
+
             while (rs.next()) {
                 Object[] fila = new Object[numberOfColumns];
                 for (int i = 0; i < numberOfColumns; i++) {
@@ -172,8 +170,59 @@ public class PrestamosDB {
             Conexion.close(stmt);
             Conexion.close(conn);
         }
-        
+
         return dtm;
     }
 
+    public DefaultTableModel selectPrestamosConMoraTotal(int idUsuario) {
+        DefaultTableModel dtm = new DefaultTableModel();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        String SQL_SELECT_ACTIVOS_USUARIO = "SELECT m.titulo, p.fecha_prestamo, p.fecha_estimada, " +
+                "p.fecha_devolucion, COALESCE(p.mora_total, 0) AS mora " +
+                "FROM prestamos p " +
+                "INNER JOIN materiales m ON p.id_material = m.id_material " +
+                "WHERE p.id_usuario = ? " +
+                "AND p.mora_total > 0 " +
+                "ORDER BY p.fecha_prestamo DESC";
+
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_ACTIVOS_USUARIO);
+            stmt.setInt(1, idUsuario);
+            rs = stmt.executeQuery();
+
+            ResultSetMetaData meta = rs.getMetaData();
+            int numberOfColumns = meta.getColumnCount();
+
+            dtm.addColumn("Material");
+            dtm.addColumn("Fecha Préstamo");
+            dtm.addColumn("Fecha Estimada");
+            dtm.addColumn("Fecha Devolución");
+            dtm.addColumn("Dias de retraso");
+            dtm.addColumn("Mora Total");
+
+            while (rs.next()) {
+                Object[] fila = new Object[numberOfColumns + 1];
+                    fila[0] = rs.getObject(1);
+                    fila[1] = rs.getObject(2);
+                    fila[2] = rs.getObject(3);
+                    fila[3] = rs.getObject(4);
+                    fila[4] = (int) java.time.temporal.ChronoUnit.DAYS.between(rs.getDate("fecha_estimada").toLocalDate(), rs.getDate("fecha_devolucion").toLocalDate());
+                    fila[5] = rs.getObject(5);
+                
+                    dtm.addRow(fila);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar préstamos activos del usuario", e);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return dtm;
+    }
 }

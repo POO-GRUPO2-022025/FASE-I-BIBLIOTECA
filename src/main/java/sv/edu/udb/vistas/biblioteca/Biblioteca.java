@@ -1041,43 +1041,39 @@ public class Biblioteca extends javax.swing.JFrame {
         jLbnombremora.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLbnombremora.setText("Nombre ");
 
+        jTfnombremora.setEditable(false);
+
         javax.swing.GroupLayout jPmoraLayout = new javax.swing.GroupLayout(jPmora);
         jPmora.setLayout(jPmoraLayout);
         jPmoraLayout.setHorizontalGroup(
             jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPmoraLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
                 .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLbidUsermora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLbnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTfnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPmoraLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmoraLayout.createSequentialGroup()
-                                .addComponent(jLbidUsermora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(85, 85, 85))
-                            .addGroup(jPmoraLayout.createSequentialGroup()
-                                .addComponent(jLbnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(85, 85, 85)))
-                        .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTfnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPmoraLayout.createSequentialGroup()
-                        .addGap(149, 149, 149)
+                        .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
                         .addComponent(btnConsultamora)))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         jPmoraLayout.setVerticalGroup(
             jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmoraLayout.createSequentialGroup()
-                .addGap(137, 137, 137)
+                .addGap(32, 32, 32)
                 .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbidUsermora)
-                    .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(76, 76, 76)
+                    .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConsultamora))
+                .addGap(18, 18, 18)
                 .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbnombremora)
                     .addComponent(jTfnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                .addComponent(btnConsultamora)
-                .addGap(23, 23, 23))
+                .addContainerGap(310, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelmoraLayout = new javax.swing.GroupLayout(jPanelmora);
@@ -1474,132 +1470,45 @@ public class Biblioteca extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTfCantdispmatActionPerformed
 
-    private void btnConsultamoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultamoraActionPerformed
+    private void btnConsultamoraActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnConsultamoraActionPerformed
         // TODO add your handling code here:
         String idTexto = jTfidusermora.getText().trim();
-        
+
         if (idTexto.isEmpty()) {
-        JOptionPane.showMessageDialog(this, 
-                "Ingrese el ID de usuario.",                              
-                "Aviso",
-                JOptionPane.WARNING_MESSAGE);
-        return;
-        
+            JOptionPane.showMessageDialog(this,
+                    "Ingrese el ID de usuario.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+
         }
         int idUsuario;
         try {
             idUsuario = Integer.parseInt(idTexto);
-            
+
         } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this,
-                "El ID de usuario debe ser numérico.",
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
-        return;
-        }
-        String tipoUsuario = null;
-        String nombreUsuario = "";
-        DefaultTableModel modeloUsuarios = (DefaultTableModel) tbluser.getModel();
-        
-         for (int i = 0; i < modeloUsuarios.getRowCount(); i++) {
-        Object idTabla = modeloUsuarios.getValueAt(i, 0);
-        if (idTabla != null && idTexto.equals(idTabla.toString())) {
-            nombreUsuario = modeloUsuarios.getValueAt(i, 1).toString();
-            
-            tipoUsuario = modeloUsuarios.getValueAt(i, 2).toString();
-            break;
-        }
-    }
-         if (tipoUsuario == null) {
-        JOptionPane.showMessageDialog(this,
-                "No se encontró el usuario en la tabla de usuarios.",
-                "Informacion",
-                JOptionPane.INFORMATION_MESSAGE);
-        return;
-    }
-        jTfnombremora.setText(nombreUsuario);
-        
-        
-        Mora configuracion = morasDB.selectByTipoUsuario(Usuarios.TipoUsuario.Encargado);
-
-        if (configuracion == null) {
-        JOptionPane.showMessageDialog(this,
-                "Este tipo de usuario no tiene mora configurada.",
-                "Información",
-                JOptionPane.INFORMATION_MESSAGE);
-        return;
-    }
-        LocalDate fechaInicioConfiguracion = configuracion.getFechaInicio(); // desde cuándo aplica la mora
-    BigDecimal tarifaDiaria = configuracion.getTarifaDiaria();
-    if (tarifaDiaria == null) {
-        tarifaDiaria = TARIFA_POR_DEFECTO;
-    }
-        DefaultTableModel modeloPrestamos = prestamosDB.selectPrestamos();   //filtramos por user
-        
-         DefaultTableModel modeloMora = (DefaultTableModel) Tblmora.getModel();
-           modeloMora.setRowCount(0);
-        
-        LocalDate hoy = LocalDate.now();
-        
-        for (int i = 0; i < modeloPrestamos.getRowCount(); i++) {
-
-        Object idUsuarioObj = modeloPrestamos.getValueAt(i, 1);
-        if (idUsuarioObj == null) {
-            continue;
+            JOptionPane.showMessageDialog(this,
+                    "El ID de usuario debe ser numérico.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-        int idUsuarioFila;
-        try {
-            idUsuarioFila = Integer.parseInt(idUsuarioObj.toString());
-        } catch (NumberFormatException ex) {
-            continue;
-        }
-        
-         if (idUsuarioFila != idUsuario) {
-            continue;
-        }
-         Object idPrestamoObj    = modeloPrestamos.getValueAt(i, 0);
-        Object fechaPrestamoObj = modeloPrestamos.getValueAt(i, 5);
-        Object fechaDevObj      = modeloPrestamos.getValueAt(i, 6);
+        Usuarios usuario = UsuariosDB.select(idUsuario);
 
-        if (fechaPrestamoObj == null) {
-            continue;
+        if (usuario == null) {
+            JOptionPane.showMessageDialog(this,
+                    "No se encontró el usuario en la tabla de usuarios.",
+                    "Informacion",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
-
-         LocalDate fechaPrestamo = ((java.sql.Date) fechaPrestamoObj).toLocalDate();
-        LocalDate fechaLimite   = fechaPrestamo.plusDays(DIAS_PRESTAMO);
+        jTfnombremora.setText(usuario.getNombre());
+  
+        Tblmora.setModel(prestamosDB.selectPrestamosConMoraTotal(idUsuario));
         
-          LocalDate fechaReferencia;
-        if (fechaDevObj != null) {
-            fechaReferencia = ((java.sql.Date) fechaDevObj).toLocalDate();
-        } else {
-            fechaReferencia = hoy;
-        }
-        
-        if (fechaReferencia.isAfter(fechaLimite)
-                && !fechaReferencia.isBefore(fechaInicioConfiguracion)) {
 
-            long diasMora = ChronoUnit.DAYS.between(fechaLimite, fechaReferencia);
-
-            BigDecimal montoMora = tarifaDiaria
-                    .multiply(BigDecimal.valueOf(diasMora));
-            
-            
-              modeloMora.addRow(new Object[]{
-                    idPrestamoObj,  
-                    diasMora,       
-                    montoMora       
-            });
-        }
-    }
-       if (modeloMora.getRowCount() == 0) {
-        JOptionPane.showMessageDialog(this,
-                "Este usuario no tiene préstamos en mora según la configuración.",
-                "Información",
-                JOptionPane.INFORMATION_MESSAGE);
-    } 
-        
-    }//GEN-LAST:event_btnConsultamoraActionPerformed
+    }                                               
 
     private void jTfBibliotecaamigosDonBoscoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTfBibliotecaamigosDonBoscoActionPerformed
 
