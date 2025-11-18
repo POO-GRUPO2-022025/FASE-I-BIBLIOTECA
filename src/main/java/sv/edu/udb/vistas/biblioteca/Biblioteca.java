@@ -88,6 +88,8 @@ public class Biblioteca extends javax.swing.JFrame {
         jTfpassworduser.setText("");
         btnguardarUser.setText("Guardar");
         btneliminarUser.setEnabled(false);
+        jTfpassworduser.setText("");
+        btnCambiarContra.setEnabled(false);
         idUsuariosseleccionado = 0;
 
         actualizarTablaUsuario();
@@ -165,6 +167,7 @@ public class Biblioteca extends javax.swing.JFrame {
         jlbpassworduser = new javax.swing.JLabel();
         btnlimpiarUser = new javax.swing.JButton();
         cbxuser = new javax.swing.JComboBox<>();
+        btnCambiarContra = new javax.swing.JToggleButton();
         jPanelmora = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tblmora = new javax.swing.JTable();
@@ -667,6 +670,7 @@ public class Biblioteca extends javax.swing.JFrame {
             }
         });
 
+        jTfiduser.setEditable(false);
         jTfiduser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTfiduserActionPerformed(evt);
@@ -697,6 +701,14 @@ public class Biblioteca extends javax.swing.JFrame {
         });
 
         cbxuser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alumno", "Profesor", "Encargado" }));
+
+        btnCambiarContra.setText("Cambiar contraseña");
+        btnCambiarContra.setEnabled(false);
+        btnCambiarContra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarContraActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPusuariosLayout = new javax.swing.GroupLayout(jPusuarios);
         jPusuarios.setLayout(jPusuariosLayout);
@@ -737,7 +749,10 @@ public class Biblioteca extends javax.swing.JFrame {
                                     .addComponent(jTfpassworduser, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPusuariosLayout.createSequentialGroup()
                                         .addComponent(cbxuser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(jPusuariosLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnCambiarContra)))
                         .addGap(18, 18, 18))))
         );
         jPusuariosLayout.setVerticalGroup(
@@ -766,7 +781,9 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlbpassworduser)
                     .addComponent(jTfpassworduser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCambiarContra)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
                 .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPusuariosLayout.createSequentialGroup()
                         .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1108,6 +1125,34 @@ public class Biblioteca extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarContraActionPerformed
+        String correo = jTfcorreouser.getText();
+        String contra =  jTfpassworduser.getText();
+        
+        if(correo.isEmpty() || contra.isEmpty()){
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Debe proporcionar un correo y una contraseña",
+                    "Error de validación",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        boolean resultado = UsuariosDB.ResetPass(correo, contra);
+        if (resultado) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Contraseña asignada correctamente\nContraseña nueva: " + contra,
+                    "Éxito",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            limpiarFormularioAutor();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Error al cambiar contraseña",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+        jTfpassworduser.setText("");
+    }//GEN-LAST:event_btnCambiarContraActionPerformed
+
     private void btnEliminarEditorialActionPerformed(java.awt.event.ActionEvent evt) {                                                     
         if (idEditorialSeleccionado == 0) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -1289,7 +1334,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
         // TRABAJAR : SI EL BOTON DICE GUARDAR ES GUARADARLO, CAPTURAR EL TIPO
         // DEMATERIAL DE CONMBOX Y CONVERTIRLO A ENUM
-      Usuarios.TipoUsuario tipo = Usuarios.TipoUsuario.valueOf(cbxuser.getSelectedItem().toString());
+        Usuarios.TipoUsuario tipo = Usuarios.TipoUsuario.valueOf(cbxuser.getSelectedItem().toString());
         String nombre = jTfnombreuser.getText();
         String correo = jTfcorreouser.getText();
         String passwordHash = jTfpassworduser.getText();
@@ -1310,20 +1355,18 @@ public class Biblioteca extends javax.swing.JFrame {
             return;
         }
 
-        
+        if (btnguardarUser.getText().equals("Guardar")) {
 
-        if  (btnguardarUser.getText().equals("Guardar")) {
+            Usuarios usuarioNuevo = new Usuarios(
+                    0,
+                    nombre,
+                    correo,
+                    passwordHash,
+                    tipo
+            );
+            UsuariosDB db = new UsuariosDB();
+            Usuarios resultado = db.insert(usuarioNuevo);
 
-    Usuarios usuarioNuevo = new Usuarios(
-            0,
-            nombre,
-            correo,
-            passwordHash,
-            tipo
-    );
-    UsuariosDB db = new UsuariosDB();       
-    Usuarios resultado = db.insert(usuarioNuevo);
-   
             if (resultado != null) {
                 javax.swing.JOptionPane.showMessageDialog(this,
                         "Usuario guardado correctamente",
@@ -1337,17 +1380,15 @@ public class Biblioteca extends javax.swing.JFrame {
                         javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            
-            
-           Usuarios usuario = new Usuarios(
-            idUsuariosseleccionado,
-            nombre,
-            correo,
-            passwordHash,
-            tipo
-    );
-       UsuariosDB db = new UsuariosDB(); 
-    boolean resultado = UsuariosDB.update(usuario);
+            Usuarios usuario = new Usuarios(
+                    idUsuariosseleccionado,
+                    nombre,
+                    correo,
+                    passwordHash,
+                    tipo
+            );
+            UsuariosDB db = new UsuariosDB();
+            boolean resultado = UsuariosDB.update(usuario);
             if (resultado) {
                 javax.swing.JOptionPane.showMessageDialog(this,
                         "Usuario actualizado correctamente",
@@ -1383,9 +1424,9 @@ public class Biblioteca extends javax.swing.JFrame {
             jTfnombreuser.setText(modelo.getValueAt(fila,1).toString());
             cbxuser.setSelectedItem(modelo.getValueAt(fila,2).toString());
             jTfcorreouser.setText(modelo.getValueAt(fila,3).toString());
-           
-            jTfpassworduser.setText(""); 
-          
+            jTfpassworduser.setText("");
+            jTfpassworduser.setEditable(true);
+            btnCambiarContra.setEnabled(true);
                    
         String tipoTabla = modelo.getValueAt(fila, 3).toString().trim();
 
@@ -1819,6 +1860,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTable Tblmora;
     private javax.swing.JTextField Txtbusqpres;
     private javax.swing.JButton btmLimpiarAutor;
+    private javax.swing.JToggleButton btnCambiarContra;
     private javax.swing.JButton btnConsultamora;
     private javax.swing.JButton btnEliminarAutor;
     private javax.swing.JButton btnEliminarEditorial;

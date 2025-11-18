@@ -928,6 +928,10 @@
                                               </Group>
                                           </Group>
                                       </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          <Component id="btnCambiarContra" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                                   <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
                               </Group>
@@ -968,7 +972,9 @@
                               <Component id="jlbpassworduser" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jTfpassworduser" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="117" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="btnCambiarContra" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="82" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -1011,6 +1017,9 @@
                   </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTfiduser">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTfiduserActionPerformed"/>
                   </Events>
@@ -1085,6 +1094,15 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
+                </Component>
+                <Component class="javax.swing.JToggleButton" name="btnCambiarContra">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Cambiar contrase&#xf1;a"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCambiarContraActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
