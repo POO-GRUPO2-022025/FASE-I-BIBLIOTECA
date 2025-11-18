@@ -361,7 +361,7 @@ public class PrestamosDB {
             "FROM prestamos p " +
             "INNER JOIN materiales m ON p.id_material = m.id_material " +
             "WHERE p.id_usuario = ? " +
-            "AND (p.estado = 'En_Curso' OR p.mora_total > 0) " +
+            "AND (p.estado in ('En_Curso', 'Pendiente') OR p.mora_total > 0) " +
             "ORDER BY p.fecha_prestamo DESC";
 
         try {
