@@ -2183,6 +2183,33 @@ public class Biblioteca extends javax.swing.JFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            if(btnDenegarPrestamo.getText().equals("Denegar")){
+                // DENEGAR PRÉSTAMO: Cambiar de Pendiente a Denegado
+                int confirmacion = JOptionPane.showConfirmDialog(this, 
+                    "¿Está seguro que desea denegar este préstamo?", 
+                    "Confirmar Denegación", 
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+                    
+                if (confirmacion != JOptionPane.YES_OPTION) {
+                    return;
+                }
+                
+                prestamo.setEstado(Prestamo.Estado.Denegado);
+                
+                if (prestamosDB.update(prestamo)) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Préstamo denegado exitosamente", 
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    actualizarTablaPrestamos();
+                    limpiarFormularioPrestamo();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al denegar el préstamo", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                return;
+            }
             
             // Verificar que el préstamo tenga mora
             if (prestamo.getMoraTotal() == null || prestamo.getMoraTotal().compareTo(java.math.BigDecimal.ZERO) <= 0) {
@@ -2699,8 +2726,8 @@ public class Biblioteca extends javax.swing.JFrame {
             case Pendiente:
                 btnPrestarDevolverPrestamo.setText("Aprobar");
                 btnPrestarDevolverPrestamo.setEnabled(true);
-                btnDenegarPrestamo.setText("Abonar Mora");
-                btnDenegarPrestamo.setEnabled(false); // No hay mora en pendiente
+                btnDenegarPrestamo.setText("Denegar");
+                btnDenegarPrestamo.setEnabled(true); // No hay mora en pendiente
                 txtFechaDevolucionPrestamo.setEditable(true);
                 break;
                 
