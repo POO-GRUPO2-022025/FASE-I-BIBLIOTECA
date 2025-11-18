@@ -16,6 +16,7 @@ public class Prestamo {
     private int idMaterial;
     private int idMora;
     private Date fechaPrestamo;
+    private Date fechaEstimada;
     private Date fechaDevolucion;
     private BigDecimal moraTotal;
     private Estado estado;
@@ -25,13 +26,14 @@ public class Prestamo {
 
     // Constructor completo
     public Prestamo(int idPrestamo, int idUsuario, int idMaterial,
-                    int idMora, Date fechaPrestamo, Date fechaDevolucion,
+                    int idMora, Date fechaPrestamo, Date fechaEstimada, Date fechaDevolucion,
                     BigDecimal moraTotal, Estado estado) {
         this.idPrestamo = idPrestamo;
         this.idUsuario = idUsuario;
         this.idMaterial = idMaterial;
         this.idMora = idMora;
         this.fechaPrestamo = fechaPrestamo;
+        this.fechaEstimada = fechaEstimada;
         this.fechaDevolucion = fechaDevolucion;
         this.moraTotal = moraTotal;
         this.estado = estado;
@@ -103,6 +105,12 @@ public class Prestamo {
 
     public void setEstado(Estado estado) {
         this.estado = estado;
+    }
+    public Date getFechaEstimada() {
+        return fechaEstimada;
+    }
+    public void setFechaEstimada(Date fechaEstimada) {
+        this.fechaEstimada = fechaEstimada;
     }
 }
 

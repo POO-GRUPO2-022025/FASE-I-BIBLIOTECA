@@ -190,4 +190,76 @@ public class MaterialesDB {
         return dtm;
     }
 
+    public DefaultTableModel selectMaterialesFiltrado(String tipoMaterial, String titulo) {
+        DefaultTableModel dtm = new DefaultTableModel();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        // Construir query dinámicamente según filtros
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT id_material, tipo_material, titulo, ubicacion, cantidad_total, ")
+           .append("cantidad_disponible, cantidad_prestados, cantidad_daniado ")
+           .append("FROM materiales ");
+        
+        boolean hayFiltros = false;
+        
+        // Filtro por tipo de material
+        if (tipoMaterial != null && !tipoMaterial.isEmpty() && !tipoMaterial.equals("Todos")) {
+            sql.append("WHERE tipo_material = ? ");
+            hayFiltros = true;
+        }
+        
+        // Filtro por título (búsqueda parcial)
+        if (titulo != null && !titulo.isEmpty()) {
+            if (hayFiltros) {
+                sql.append("AND titulo LIKE ? ");
+            } else {
+                sql.append("WHERE titulo LIKE ? ");
+                hayFiltros = true;
+            }
+        }
+        
+        sql.append("ORDER BY id_material");
+        
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(sql.toString());
+            
+            // Establecer parámetros según filtros
+            int paramIndex = 1;
+            if (tipoMaterial != null && !tipoMaterial.isEmpty() && !tipoMaterial.equals("Todos")) {
+                stmt.setString(paramIndex++, tipoMaterial);
+            }
+            if (titulo != null && !titulo.isEmpty()) {
+                stmt.setString(paramIndex, "%" + titulo + "%");
+            }
+            
+            rs = stmt.executeQuery();
+            
+            ResultSetMetaData meta = rs.getMetaData();
+            int numberOfColumns = meta.getColumnCount();
+            
+            for (int i = 1; i <= numberOfColumns; i++) {
+                dtm.addColumn(meta.getColumnLabel(i));
+            }
+            
+            while (rs.next()) {
+                Object[] fila = new Object[numberOfColumns];
+                for (int i = 0; i < numberOfColumns; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                dtm.addRow(fila);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar materiales filtrados", e);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        
+        return dtm;
+    }
+
 }
