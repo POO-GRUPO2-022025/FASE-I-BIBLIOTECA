@@ -9,7 +9,7 @@ import java.sql.*;
 public class UsuariosDB {
 
     private final String SQL_INSERT = "INSERT INTO usuarios(nombre,tipo_usuario,correo,password) VALUES(?,?,?,?)";
-    private final String SQL_UPDATE = "UPDATE usuarios SET nombre=?, tipo_usuario=?, correo=?, password=? WHERE id_usuario=?\n";
+    private final String SQL_UPDATE = "UPDATE usuarios SET nombre=?, tipo_usuario=?, correo=? WHERE id_usuario=?\n";
     private final String SQL_DELETE = "DELETE FROM usuarios where id_usuario=?";
     private final String SQL_SELECT = "SELECT id_usuario,nombre,tipo_usuario,correo,password FROM usuarios WHERE id_usuario=?";
     private final String SQL_LOGIN = "SELECT * FROM usuarios WHERE correo=?";
@@ -66,8 +66,8 @@ public class UsuariosDB {
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getTipoUsuario().toString());
             stmt.setString(3, usuario.getCorreo());
-            stmt.setString(4, usuario.getPassword());
-            stmt.setInt(5, usuario.getIdUsuario());
+           
+            stmt.setInt(4, usuario.getIdUsuario());
             int filas = stmt.executeUpdate(); //Ejecuta el UPDATE y devuelve nuemero de lineas modificadas
             retorno = filas > 0; //Si las lineas modificadas es mayor a cero, retorna true
 

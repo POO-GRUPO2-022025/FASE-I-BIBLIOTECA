@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import sv.edu.udb.Datos.EditorialDB;
 import sv.edu.udb.Datos.UsuariosDB;
 import sv.edu.udb.clases.*;
+import sv.edu.udb.clases.Usuarios;
 import sv.edu.udb.Datos.MaterialesDB;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -80,7 +81,7 @@ public class Biblioteca extends javax.swing.JFrame {
     }
 
      private void limpiarFormularioUsuarios() {
-        tpUser.setSelectedIndex(0);
+        cbxuser.setSelectedIndex(0);
         jTfiduser.setText("");
         jTfnombreuser.setText("");
         jTfcorreouser.setText("");
@@ -163,7 +164,7 @@ public class Biblioteca extends javax.swing.JFrame {
         jLbcorreouser = new javax.swing.JLabel();
         jlbpassworduser = new javax.swing.JLabel();
         btnlimpiarUser = new javax.swing.JButton();
-        tpUser = new javax.swing.JComboBox<>();
+        cbxuser = new javax.swing.JComboBox<>();
         jPanelmora = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tblmora = new javax.swing.JTable();
@@ -659,6 +660,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
         btneliminarUser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btneliminarUser.setText("Eliminar");
+        btneliminarUser.setEnabled(false);
         btneliminarUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btneliminarUserActionPerformed(evt);
@@ -694,7 +696,7 @@ public class Biblioteca extends javax.swing.JFrame {
             }
         });
 
-        tpUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alumno", "Profesor", "Administrador" }));
+        cbxuser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alumno", "Profesor", "Encargado" }));
 
         javax.swing.GroupLayout jPusuariosLayout = new javax.swing.GroupLayout(jPusuarios);
         jPusuarios.setLayout(jPusuariosLayout);
@@ -731,11 +733,11 @@ public class Biblioteca extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                                         .addComponent(btneliminarUser, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(33, 33, 33))
-                                    .addGroup(jPusuariosLayout.createSequentialGroup()
-                                        .addComponent(tpUser, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
                                     .addComponent(jTfcorreouser)
-                                    .addComponent(jTfpassworduser, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                    .addComponent(jTfpassworduser, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPusuariosLayout.createSequentialGroup()
+                                        .addComponent(cbxuser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(18, 18, 18))))
         );
         jPusuariosLayout.setVerticalGroup(
@@ -749,10 +751,10 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbnombreuser)
                     .addComponent(jTfnombreuser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLbTipouser, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tpUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxuser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPusuariosLayout.createSequentialGroup()
                         .addGap(27, 27, 27)
@@ -764,7 +766,7 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlbpassworduser)
                     .addComponent(jTfpassworduser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
                 .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPusuariosLayout.createSequentialGroup()
                         .addGroup(jPusuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -783,17 +785,17 @@ public class Biblioteca extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPaneluserLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jPusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         jPaneluserLayout.setVerticalGroup(
             jPaneluserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPaneluserLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPaneluserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPusuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4))
+                .addGroup(jPaneluserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -1132,6 +1134,8 @@ public class Biblioteca extends javax.swing.JFrame {
                         "Éxito",
                         javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 limpiarFormularioEditorial();
+                
+                  
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this,
                         "Error al eliminar la editorial",
@@ -1285,7 +1289,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
         // TRABAJAR : SI EL BOTON DICE GUARDAR ES GUARADARLO, CAPTURAR EL TIPO
         // DEMATERIAL DE CONMBOX Y CONVERTIRLO A ENUM
-        Usuarios.TipoUsuario tipo = Usuarios.TipoUsuario.valueOf(tpUser.getSelectedItem().toString());
+      Usuarios.TipoUsuario tipo = Usuarios.TipoUsuario.valueOf(cbxuser.getSelectedItem().toString());
         String nombre = jTfnombreuser.getText();
         String correo = jTfcorreouser.getText();
         String passwordHash = jTfpassworduser.getText();
@@ -1306,24 +1310,26 @@ public class Biblioteca extends javax.swing.JFrame {
             return;
         }
 
-        if (passwordHash.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "La Contraseña es Obligatoria ",
-                    "Error de validación",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        
 
-        if (btnguardarUser.getText().equals("Guardar")) {
-            Usuarios usuarios = new Usuarios(0, tipo, nombre, correo, passwordHash);
-            Usuarios resultado = UsuariosDB.insert(usuarios);
+        if  (btnguardarUser.getText().equals("Guardar")) {
 
+    Usuarios usuarioNuevo = new Usuarios(
+            0,
+            nombre,
+            correo,
+            passwordHash,
+            tipo
+    );
+    UsuariosDB db = new UsuariosDB();       
+    Usuarios resultado = db.insert(usuarioNuevo);
+   
             if (resultado != null) {
                 javax.swing.JOptionPane.showMessageDialog(this,
                         "Usuario guardado correctamente",
                         "Éxito",
                         javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                limpiarFormularioMaterial();
+                limpiarFormularioUsuarios();
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this,
                         "Error al guardar el Usuario",
@@ -1331,15 +1337,23 @@ public class Biblioteca extends javax.swing.JFrame {
                         javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            Usuarios usuario = new Usuarios(idUsuariosseleccionado, tipo, nombre, correo, passwordHash);
-            boolean resultado = UsuariosDB.update(usuario);
-
+            
+            
+           Usuarios usuario = new Usuarios(
+            idUsuariosseleccionado,
+            nombre,
+            correo,
+            passwordHash,
+            tipo
+    );
+       UsuariosDB db = new UsuariosDB(); 
+    boolean resultado = UsuariosDB.update(usuario);
             if (resultado) {
                 javax.swing.JOptionPane.showMessageDialog(this,
                         "Usuario actualizado correctamente",
                         "Éxito",
                         javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                limpiarFormularioMaterial();
+                limpiarFormularioUsuarios();
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this,
                         "Error al actualizar el Usuario",
@@ -1365,13 +1379,30 @@ public class Biblioteca extends javax.swing.JFrame {
         if ((fila > -1) && (columna > -1)){
             DefaultTableModel modelo = (DefaultTableModel) tbluser.getModel();
             idUsuariosseleccionado = Integer.parseInt(modelo.getValueAt(fila,0).toString());
-            jTfiduser.setText(modelo.getValueAt(fila,1).toString());
-            jTfnombreuser.setText(modelo.getValueAt(fila,2).toString());
-            jTfcorreouser.setText(modelo.getValueAt(fila,4).toString());
-            jTfpassworduser.setText(modelo.getValueAt(fila,5).toString());
+            jTfiduser.setText(modelo.getValueAt(fila,0).toString());
+            jTfnombreuser.setText(modelo.getValueAt(fila,1).toString());
+            cbxuser.setSelectedItem(modelo.getValueAt(fila,2).toString());
+            jTfcorreouser.setText(modelo.getValueAt(fila,3).toString());
+           
             jTfpassworduser.setText(""); 
-            tpUser.setSelectedItem(modelo.getValueAt(fila,3).toString());
+          
                    
+        String tipoTabla = modelo.getValueAt(fila, 3).toString().trim();
+
+        boolean encontrado = false;
+        for (int i = 0; i < cbxuser.getItemCount(); i++) {
+            String item = cbxuser.getItemAt(i).trim();
+            if (item.equalsIgnoreCase(tipoTabla)) {
+                cbxuser.setSelectedIndex(i);
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            System.out.println("Advertencia: el ComboBox no contiene el tipo '" + tipoTabla + "'");
+        }
+
              btnguardarUser.setText("Editar");
             btneliminarUser.setEnabled(true);
         }   
@@ -1379,33 +1410,41 @@ public class Biblioteca extends javax.swing.JFrame {
     }// GEN-LAST:event_tbluserMouseClicked
 
     private void btneliminarUserActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btneliminarUserActionPerformed
-        if (idUsuariosseleccionado > 0) {
+        if (idUsuariosseleccionado == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Debe seleccionar un Usuario para eliminar",
+                    "Error de validación",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    
+               
             int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this,
                     "¿Está seguro que desea eliminar este Usuario?",
                     "Confirmar eliminación",
                     javax.swing.JOptionPane.YES_NO_OPTION);
-
-            if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
-                boolean resultado = UsuariosDB.delete(idUsuariosseleccionado);
-
+            
+                if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+            boolean resultado = UsuariosDB.delete(idUsuariosseleccionado);
+               
                 if (resultado) {
                     javax.swing.JOptionPane.showMessageDialog(this,
                             "Usuario eliminado correctamente",
                             "Éxito",
                             javax.swing.JOptionPane.INFORMATION_MESSAGE);
+       
                     limpiarFormularioUsuarios();
+                    actualizarTablaUsuario ();
+
+                    
                 } else {
                     javax.swing.JOptionPane.showMessageDialog(this,
                             "Error al eliminar el usuario",
                             "Error",
                             javax.swing.JOptionPane.ERROR_MESSAGE);
                 }
-            }
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Debe seleccionar un usuario para eliminar",
-                    "Error de validación",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            
+                
             // TODO add your handling code here:
         } // GEN-LAST:event_btneliminarUserActionPerformed
     }
@@ -1762,7 +1801,8 @@ public class Biblioteca extends javax.swing.JFrame {
         jTftituloprestamo.setText("");
         jTfAutorprestamo.setText("");
         jTfAniopubprestamo.setText("");
-    }
+        
+    }    
 
     public static void main(String args[]) {
 
@@ -1794,6 +1834,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JButton btnregdev;
     private javax.swing.JButton btnregprest;
     private javax.swing.JComboBox<String> cbxtipomaterial;
+    private javax.swing.JComboBox<String> cbxuser;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLbAnioPubprestamo;
@@ -1868,6 +1909,5 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombreEditorial;
     private javax.swing.JTextField txtPaisAutor;
     private javax.swing.JTextField txtPaisEditorial;
-    private javax.swing.JComboBox<String> tpUser;
     // End of variables declaration//GEN-END:variables
 }
