@@ -35,21 +35,21 @@ public class PrestamosDB {
             stmt.setInt(3, prestamo.getIdMora());
             stmt.setBigDecimal(4, prestamo.getMoraTotal());
             stmt.setDate(5, Date.valueOf(prestamo.getFechaPrestamo().toLocalDate()));
-            
+
             // Validar null para fecha_estimada
             if (prestamo.getFechaEstimada() != null) {
                 stmt.setDate(6, Date.valueOf(prestamo.getFechaEstimada().toLocalDate()));
             } else {
                 stmt.setNull(6, java.sql.Types.DATE);
             }
-            
+
             // Validar null para fecha_devolucion
             if (prestamo.getFechaDevolucion() != null) {
                 stmt.setDate(7, Date.valueOf(prestamo.getFechaDevolucion().toLocalDate()));
             } else {
                 stmt.setNull(7, java.sql.Types.DATE);
             }
-            
+
             stmt.setString(8, prestamo.getEstado().toString());
             stmt.executeUpdate();
 
@@ -86,21 +86,21 @@ public class PrestamosDB {
             stmt.setInt(3, prestamo.getIdMora());
             stmt.setBigDecimal(4, prestamo.getMoraTotal());
             stmt.setDate(5, Date.valueOf(prestamo.getFechaPrestamo().toLocalDate()));
-            
+
             // Validar null para fecha_estimada
             if (prestamo.getFechaEstimada() != null) {
                 stmt.setDate(6, Date.valueOf(prestamo.getFechaEstimada().toLocalDate()));
             } else {
                 stmt.setNull(6, java.sql.Types.DATE);
             }
-            
+
             // Validar null para fecha_devolucion
             if (prestamo.getFechaDevolucion() != null) {
                 stmt.setDate(7, Date.valueOf(prestamo.getFechaDevolucion().toLocalDate()));
             } else {
                 stmt.setNull(7, java.sql.Types.DATE);
             }
-            
+
             stmt.setString(8, prestamo.getEstado().toString());
             stmt.setInt(9, prestamo.getIdPrestamo());
 
@@ -157,23 +157,23 @@ public class PrestamosDB {
                 prestamo.setIdMaterial(rs.getInt("id_material"));
                 prestamo.setIdMora(rs.getInt("id_mora"));
                 prestamo.setMoraTotal(rs.getBigDecimal("mora_total"));
-                
+
                 // Verificar null antes de convertir fechas
                 Date fechaPrestamo = rs.getDate("fecha_prestamo");
                 if (fechaPrestamo != null) {
                     prestamo.setFechaPrestamo(Date.valueOf(fechaPrestamo.toLocalDate()));
                 }
-                
+
                 Date fechaEstimada = rs.getDate("fecha_estimada");
                 if (fechaEstimada != null) {
                     prestamo.setFechaEstimada(Date.valueOf(fechaEstimada.toLocalDate()));
                 }
-                
+
                 Date fechaDevolucion = rs.getDate("fecha_devolucion");
                 if (fechaDevolucion != null) {
                     prestamo.setFechaDevolucion(Date.valueOf(fechaDevolucion.toLocalDate()));
                 }
-                
+
                 prestamo.setEstado(Prestamo.Estado.valueOf(rs.getString("estado")));
             }
 
@@ -221,7 +221,7 @@ public class PrestamosDB {
             Conexion.close(stmt);
             Conexion.close(conn);
         }
-        
+
         return dtm;
     }
 
@@ -237,19 +237,19 @@ public class PrestamosDB {
                 "INNER JOIN materiales m ON p.id_material = m.id_material " +
                 "LEFT JOIN moras mo ON p.id_mora = mo.id_mora " +
                 "ORDER BY p.id_prestamo";
-        
+
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_SELECT_DETALLADO);
             rs = stmt.executeQuery();
-            
+
             ResultSetMetaData meta = rs.getMetaData();
             int numberOfColumns = meta.getColumnCount();
-            
+
             for (int i = 1; i <= numberOfColumns; i++) {
                 dtm.addColumn(meta.getColumnLabel(i));
             }
-            
+
             while (rs.next()) {
                 Object[] fila = new Object[numberOfColumns];
                 for (int i = 0; i < numberOfColumns; i++) {
@@ -264,7 +264,7 @@ public class PrestamosDB {
             Conexion.close(stmt);
             Conexion.close(conn);
         }
-        
+
         return dtm;
     }
 
@@ -273,7 +273,7 @@ public class PrestamosDB {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
+
         // Construir query dinámicamente según filtros
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT p.id_prestamo, u.nombre AS usuario, m.titulo AS material, ")
@@ -282,14 +282,14 @@ public class PrestamosDB {
            .append("INNER JOIN usuarios u ON p.id_usuario = u.id_usuario ")
            .append("INNER JOIN materiales m ON p.id_material = m.id_material ")
            .append("LEFT JOIN moras mo ON p.id_mora = mo.id_mora ");
-        
+
         // Agregar condiciones WHERE si hay filtros
         boolean hayFiltros = false;
         if (tipoMaterial != null && !tipoMaterial.equals("Todos")) {
             sql.append("WHERE m.tipo_material = ? ");
             hayFiltros = true;
         }
-        
+
         if (estado != null && !estado.equals("Todos")) {
             if (hayFiltros) {
                 sql.append("AND p.estado = ? ");
@@ -298,7 +298,7 @@ public class PrestamosDB {
                 hayFiltros = true;
             }
         }
-        
+
         if (conMora) {
             if (hayFiltros) {
                 sql.append("AND (p.mora_total > 0 OR (p.estado = 'En_Curso' AND p.fecha_estimada < CURDATE())) ");
@@ -306,13 +306,13 @@ public class PrestamosDB {
                 sql.append("WHERE (p.mora_total > 0 OR (p.estado = 'En_Curso' AND p.fecha_estimada < CURDATE())) ");
             }
         }
-        
+
         sql.append("ORDER BY p.id_prestamo");
-        
+
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(sql.toString());
-            
+
             // Establecer parámetros según filtros
             int paramIndex = 1;
             if (tipoMaterial != null && !tipoMaterial.equals("Todos")) {
@@ -321,16 +321,16 @@ public class PrestamosDB {
             if (estado != null && !estado.equals("Todos")) {
                 stmt.setString(paramIndex, estado);
             }
-            
+
             rs = stmt.executeQuery();
-            
+
             ResultSetMetaData meta = rs.getMetaData();
             int numberOfColumns = meta.getColumnCount();
-            
+
             for (int i = 1; i <= numberOfColumns; i++) {
                 dtm.addColumn(meta.getColumnLabel(i));
             }
-            
+
             while (rs.next()) {
                 Object[] fila = new Object[numberOfColumns];
                 for (int i = 0; i < numberOfColumns; i++) {
@@ -345,7 +345,7 @@ public class PrestamosDB {
             Conexion.close(stmt);
             Conexion.close(conn);
         }
-        
+
         return dtm;
     }
 
@@ -354,8 +354,8 @@ public class PrestamosDB {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
-        String SQL_SELECT_ACTIVOS_USUARIO = 
+
+        String SQL_SELECT_ACTIVOS_USUARIO =
             "SELECT m.titulo, m.tipo_material, p.fecha_prestamo, p.fecha_estimada, " +
             "p.fecha_devolucion, COALESCE(p.mora_total, 0) AS mora, p.estado " +
             "FROM prestamos p " +
@@ -363,20 +363,20 @@ public class PrestamosDB {
             "WHERE p.id_usuario = ? " +
             "AND (p.estado = 'En_Curso' OR p.mora_total > 0) " +
             "ORDER BY p.fecha_prestamo DESC";
-        
+
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_SELECT_ACTIVOS_USUARIO);
             stmt.setInt(1, idUsuario);
             rs = stmt.executeQuery();
-            
+
             ResultSetMetaData meta = rs.getMetaData();
             int numberOfColumns = meta.getColumnCount();
-            
+
             for (int i = 1; i <= numberOfColumns; i++) {
                 dtm.addColumn(meta.getColumnLabel(i));
             }
-            
+
             while (rs.next()) {
                 Object[] fila = new Object[numberOfColumns];
                 for (int i = 0; i < numberOfColumns; i++) {
@@ -391,8 +391,61 @@ public class PrestamosDB {
             Conexion.close(stmt);
             Conexion.close(conn);
         }
-        
+
         return dtm;
     }
 
+    public DefaultTableModel selectPrestamosConMoraTotal(int idUsuario) {
+        DefaultTableModel dtm = new DefaultTableModel();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        String SQL_SELECT_ACTIVOS_USUARIO = "SELECT p.id_prestamo, m.titulo, p.fecha_prestamo, p.fecha_estimada, " +
+                "p.fecha_devolucion, COALESCE(p.mora_total, 0) AS mora " +
+                "FROM prestamos p " +
+                "INNER JOIN materiales m ON p.id_material = m.id_material " +
+                "WHERE p.id_usuario = ? " +
+                "AND p.mora_total > 0 " +
+                "ORDER BY p.fecha_prestamo DESC";
+
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_ACTIVOS_USUARIO);
+            stmt.setInt(1, idUsuario);
+            rs = stmt.executeQuery();
+
+            ResultSetMetaData meta = rs.getMetaData();
+            int numberOfColumns = meta.getColumnCount();
+
+            dtm.addColumn("ID Prestamo");
+            dtm.addColumn("Material");
+            dtm.addColumn("Fecha Préstamo");
+            dtm.addColumn("Fecha Estimada");
+            dtm.addColumn("Fecha Devolución");
+            dtm.addColumn("Dias de retraso");
+            dtm.addColumn("Mora Total");
+
+            while (rs.next()) {
+                Object[] fila = new Object[numberOfColumns + 1];
+                    fila[0] = rs.getObject(1);
+                    fila[1] = rs.getObject(2);
+                    fila[2] = rs.getObject(3);
+                    fila[3] = rs.getObject(4);
+                    fila[4] = rs.getObject(5);
+                    fila[5] = (int) java.time.temporal.ChronoUnit.DAYS.between(rs.getDate("fecha_estimada").toLocalDate(), rs.getDate("fecha_devolucion").toLocalDate());
+                    fila[6] = rs.getObject(6);
+                
+                    dtm.addRow(fila);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar préstamos activos del usuario", e);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return dtm;
+    }
 }

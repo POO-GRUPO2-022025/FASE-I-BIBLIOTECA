@@ -1,7 +1,5 @@
 package sv.edu.udb.vistas.biblioteca;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +14,7 @@ import sv.edu.udb.Datos.MaterialesDB;
 import javax.swing.JOptionPane;
 import sv.edu.udb.clases.hijas.*;
 import sv.edu.udb.vistas.INICIO.INICIO;
+
 
 import javax.swing.table.DefaultTableModel;
 import sv.edu.udb.Datos.AutorDB;
@@ -38,6 +37,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private int idMaterialSeleccionado = 0;
     private int idUsuariosseleccionado = 0;
     private int idAutorSeleccionado = 0;
+    private int idPrestamoConMora = 0;
     private int idPrestamoSeleccionado = 0;
     private int idTarifaSeleccionada = 0;
     private int idUsuarioActual = 1; // ID del usuario que inició sesión (temporal, cambiar según login)
@@ -206,7 +206,7 @@ public class Biblioteca extends javax.swing.JFrame {
         cbxEditorial.setVisible(false);
         lblAutores.setVisible(false);
         jScrollPaneAutores.setVisible(false);
-
+        
         // Campos de Revista
         lblVolumen.setVisible(false);
         txtVolumen.setVisible(false);
@@ -214,13 +214,13 @@ public class Biblioteca extends javax.swing.JFrame {
         txtNumero.setVisible(false);
         lblFechaPublicacion.setVisible(false);
         txtFechaPublicacion.setVisible(false);
-
+        
         // Campos de Audiovisual
         lblFormato.setVisible(false);
         txtFormato.setVisible(false);
         lblDuracion.setVisible(false);
         txtDuracion.setVisible(false);
-
+        
         // Campos de Otro
         lblDescripcion.setVisible(false);
         jScrollPaneDescripcion.setVisible(false);
@@ -230,7 +230,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private void actualizarCamposPorTipoMaterial() {
         ocultarCamposEspecificosMaterial();
         String tipoSeleccionado = (String) cbxtipomaterial.getSelectedItem();
-
+        
         if ("Libro".equals(tipoSeleccionado)) {
             lblISBN.setVisible(true);
             txtISBN.setVisible(true);
@@ -375,6 +375,7 @@ public class Biblioteca extends javax.swing.JFrame {
         lblNumero = new javax.swing.JLabel();
         txtNumero = new javax.swing.JTextField();
         lblFechaPublicacion = new javax.swing.JLabel();
+        btnnuevouser = new javax.swing.JButton();
         txtFechaPublicacion = new javax.swing.JTextField();
         lblFormato = new javax.swing.JLabel();
         txtFormato = new javax.swing.JTextField();
@@ -425,6 +426,16 @@ public class Biblioteca extends javax.swing.JFrame {
         cbxTipoUsuarioTarifas = new javax.swing.JComboBox<>();
         jcpTablaTarifas = new javax.swing.JScrollPane();
         tblTarifas = new javax.swing.JTable();
+        lblPrestamoAdminMora = new javax.swing.JLabel();
+        lblFechaDePrestamoMora = new javax.swing.JLabel();
+        lblFechaDevolucionMora = new javax.swing.JLabel();
+        lblMoraActualEnMora = new javax.swing.JLabel();
+        btnAbonarMoraEnMora = new javax.swing.JToggleButton();
+        txtFechaPrestamoEnMora = new javax.swing.JTextField();
+        txtFechaDevolucionEnMora = new javax.swing.JTextField();
+        txtMoraActualEnMora = new javax.swing.JTextField();
+        lblDiasDeRetrasoMora = new javax.swing.JLabel();
+        txtDiasDeRetrasoMora = new javax.swing.JTextField();
         jPanelprestamo = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tblPrestamo = new javax.swing.JTable();
@@ -1113,6 +1124,9 @@ public class Biblioteca extends javax.swing.JFrame {
             }
         });
 
+        btnnuevouser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnnuevouser.setText("Nuevo");
+
         javax.swing.GroupLayout jPusuariosLayout = new javax.swing.GroupLayout(jPusuarios);
         jPusuarios.setLayout(jPusuariosLayout);
         jPusuariosLayout.setHorizontalGroup(
@@ -1221,23 +1235,22 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jtbprestamos.addTab("Usuarios", jPaneluser);
 
-        Tblmora.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Prestamo", "Dias Mora", "Monto Mora"
+        Tblmora.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TblmoraMouseClicked(evt);
             }
-        ));
+        });
         jScrollPane1.setViewportView(Tblmora);
 
         jPmora.setBackground(new java.awt.Color(0, 102, 204));
 
         btnConsultamora.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnConsultamora.setText("Consultar");
+        btnConsultamora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultamoraActionPerformed(evt);
+            }
+        });
 
         jTfidusermora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1251,14 +1264,37 @@ public class Biblioteca extends javax.swing.JFrame {
         jLbnombremora.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLbnombremora.setText("Nombre ");
 
-        jTfbusqumora.addActionListener(new java.awt.event.ActionListener() {
+        jTfnombremora.setEditable(false);
+
+        lblPrestamoAdminMora.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblPrestamoAdminMora.setText("Prestamo");
+
+        lblFechaDePrestamoMora.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFechaDePrestamoMora.setText("Fecha de prestamo:");
+
+        lblFechaDevolucionMora.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFechaDevolucionMora.setText("Fecha de devolucion:");
+
+        lblMoraActualEnMora.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMoraActualEnMora.setText("Mora actual:");
+
+        btnAbonarMoraEnMora.setText("Abonar");
+        btnAbonarMoraEnMora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTfbusqumoraActionPerformed(evt);
+                btnAbonarMoraEnMoraActionPerformed(evt);
             }
         });
 
-        jlbBusqumora.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jlbBusqumora.setText("Busqueda ");
+        txtFechaPrestamoEnMora.setEditable(false);
+
+        txtFechaDevolucionEnMora.setEditable(false);
+
+        txtMoraActualEnMora.setEditable(false);
+
+        lblDiasDeRetrasoMora.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDiasDeRetrasoMora.setText("Dias de retraso:");
+
+        txtDiasDeRetrasoMora.setEditable(false);
 
         javax.swing.GroupLayout jPmoraLayout = new javax.swing.GroupLayout(jPmora);
         jPmora.setLayout(jPmoraLayout);
@@ -1267,43 +1303,74 @@ public class Biblioteca extends javax.swing.JFrame {
             .addGroup(jPmoraLayout.createSequentialGroup()
                 .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPmoraLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmoraLayout.createSequentialGroup()
-                                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jlbBusqumora, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLbidUsermora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(71, 71, 71))
+                        .addGap(26, 26, 26)
+                        .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPmoraLayout.createSequentialGroup()
-                                .addComponent(jLbnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(85, 85, 85)))
-                        .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTfnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTfbusqumora, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lblDiasDeRetrasoMora)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtDiasDeRetrasoMora, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPmoraLayout.createSequentialGroup()
+                                .addComponent(lblFechaDevolucionMora)
+                                .addGap(68, 68, 68)
+                                .addComponent(txtFechaDevolucionEnMora))
+                            .addComponent(lblPrestamoAdminMora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPmoraLayout.createSequentialGroup()
+                                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLbidUsermora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLbnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(34, 34, 34)
+                                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTfnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPmoraLayout.createSequentialGroup()
+                                        .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(39, 39, 39)
+                                        .addComponent(btnConsultamora))))
+                            .addGroup(jPmoraLayout.createSequentialGroup()
+                                .addComponent(lblFechaDePrestamoMora)
+                                .addGap(77, 77, 77)
+                                .addComponent(txtFechaPrestamoEnMora))
+                            .addGroup(jPmoraLayout.createSequentialGroup()
+                                .addComponent(lblMoraActualEnMora)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtMoraActualEnMora, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPmoraLayout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(btnConsultamora)))
-                .addContainerGap(34, Short.MAX_VALUE))
+                        .addGap(159, 159, 159)
+                        .addComponent(btnAbonarMoraEnMora)))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         jPmoraLayout.setVerticalGroup(
             jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPmoraLayout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlbBusqumora)
-                    .addComponent(jTfbusqumora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59)
+                .addGap(32, 32, 32)
                 .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbidUsermora)
-                    .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(76, 76, 76)
+                    .addComponent(jTfidusermora, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConsultamora))
+                .addGap(18, 18, 18)
                 .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLbnombremora)
                     .addComponent(jTfnombremora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                .addComponent(btnConsultamora)
-                .addGap(23, 23, 23))
+                .addGap(85, 85, 85)
+                .addComponent(lblPrestamoAdminMora)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFechaDePrestamoMora)
+                    .addComponent(txtFechaPrestamoEnMora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFechaDevolucionMora)
+                    .addComponent(txtFechaDevolucionEnMora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDiasDeRetrasoMora)
+                    .addComponent(txtDiasDeRetrasoMora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblMoraActualEnMora)
+                    .addComponent(txtMoraActualEnMora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnAbonarMoraEnMora)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelmoraLayout = new javax.swing.GroupLayout(jPanelmora);
@@ -1324,7 +1391,7 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPanelmoraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPmora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
 
         jtbprestamos.addTab("Mora ", jPanelmora);
@@ -2190,6 +2257,156 @@ public class Biblioteca extends javax.swing.JFrame {
     private void jTfCantdispmatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTfCantdispmatActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTfCantdispmatActionPerformed
+
+    private void btnAbonarMoraEnMoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarMoraEnMoraActionPerformed
+     if (idPrestamoConMora == 0) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione un préstamo primero",
+                "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // Obtener el préstamo actual
+
+            // Solicitar el monto a abonar
+            String montoStr = JOptionPane.showInputDialog(this,
+                "Mora actual: $" + txtMoraActualEnMora.getText() + "\n\nIngrese el monto a abonar:",
+                "Abonar a la Mora",
+                JOptionPane.QUESTION_MESSAGE);
+            if(montoStr == null) {
+                return; // El usuario canceló la operación
+            }
+
+            try {
+                java.math.BigDecimal montoAbonar = new java.math.BigDecimal(montoStr.trim());
+
+                // Validar que el monto sea positivo
+                if (montoAbonar.compareTo(java.math.BigDecimal.ZERO) <= 0) {
+                    JOptionPane.showMessageDialog(this,
+                        "El monto debe ser mayor a cero",
+                        "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Validar que el monto no sea mayor a la mora actual
+                if (montoAbonar.compareTo(new java.math.BigDecimal(txtMoraActualEnMora.getText())) > 0) {
+                    JOptionPane.showMessageDialog(this,
+                        "El monto a abonar no puede ser mayor a la mora actual ($" + txtMoraActualEnMora.getText() + ")",
+                        "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Calcular nueva mora
+                java.math.BigDecimal nuevaMora = new java.math.BigDecimal(txtMoraActualEnMora.getText()).subtract(montoAbonar);
+
+                // Confirmar el abono
+                int confirmacion = JOptionPane.showConfirmDialog(this,
+                    "¿Confirmar abono?\n\n" +
+                    "Mora actual: $" + txtMoraActualEnMora.getText() + "\n" +
+                    "Monto a abonar: $" + montoAbonar + "\n" +
+                    "Nueva mora: $" + nuevaMora,
+                    "Confirmar Abono",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+
+                if (confirmacion != JOptionPane.YES_OPTION) {
+                    return;
+                }
+
+                Prestamo prestamo = prestamosDB.select(idPrestamoConMora);
+
+                // Actualizar la mora
+                prestamo.setMoraTotal(nuevaMora);
+
+                // Guardar en la base de datos
+                if (prestamosDB.update(prestamo)) {
+                    JOptionPane.showMessageDialog(this,
+                        "Abono registrado exitosamente\n" +
+                        "Nueva mora: $" + nuevaMora,
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Actualizar solo el campo de mora en la interfaz
+                    txtMoraActualEnMora.setText(nuevaMora.toString());
+
+                    // Si la mora llegó a cero, deshabilitar el botón
+                    if (nuevaMora.compareTo(java.math.BigDecimal.ZERO) == 0) {
+                        btnAbonarMoraEnMora.setEnabled(false);
+                    }
+
+                    Tblmora.setModel(new DefaultTableModel()); // Limpiar la tabla
+                    txtMoraActualEnMora.setText(""); // Limpiar el campo de mora
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al registrar el abono",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this,
+                    "Por favor ingrese un número válido",
+                    "Error de validación", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnAbonarMoraEnMoraActionPerformed
+
+    private void TblmoraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TblmoraMouseClicked
+        int fila = Tblmora.rowAtPoint(evt.getPoint());
+        int columna = Tblmora.columnAtPoint(evt.getPoint());
+
+        if ((fila > -1) && (columna > -1)){
+            DefaultTableModel modelo = (DefaultTableModel) Tblmora.getModel();
+            idPrestamoConMora = Integer.parseInt(modelo.getValueAt(fila,0).toString());
+            txtFechaPrestamoEnMora.setText(modelo.getValueAt(fila,2).toString());
+            txtFechaDevolucionEnMora.setText(modelo.getValueAt(fila,4).toString());
+            txtDiasDeRetrasoMora.setText(modelo.getValueAt(fila,5).toString());
+            txtMoraActualEnMora.setText(modelo.getValueAt(fila,6).toString());
+        }
+
+    }//GEN-LAST:event_TblmoraMouseClicked
+
+    private void btnConsultamoraActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnConsultamoraActionPerformed
+        // TODO add your handling code here:
+        String idTexto = jTfidusermora.getText().trim();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Ingrese el ID de usuario.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+
+        }
+        int idUsuario;
+        try {
+            idUsuario = Integer.parseInt(idTexto);
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "El ID de usuario debe ser numérico.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Usuarios usuario = UsuariosDB.select(idUsuario);
+
+        if (usuario == null) {
+            JOptionPane.showMessageDialog(this,
+                    "No se encontró el usuario en la tabla de usuarios.",
+                    "Informacion",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        jTfnombremora.setText(usuario.getNombre());
+
+        Tblmora.setModel(prestamosDB.selectPrestamosConMoraTotal(idUsuario));
+
+
+    }
 
     private void jTfiduserActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTfiduserActionPerformed
         // TODO add your handling code here:
@@ -3428,9 +3645,9 @@ public class Biblioteca extends javax.swing.JFrame {
             txtCantPrestados.setText(modelo.getValueAt(fila, 6) != null ? modelo.getValueAt(fila, 6).toString() : "0");
             txtCantDaniados.setText(modelo.getValueAt(fila, 7) != null ? modelo.getValueAt(fila, 7).toString() : "0");
             cbxtipomaterial.setSelectedItem(tipoMaterial);
-
+            
             cargarDatosEspecificosMaterial(idMaterialSeleccionado, tipoMaterial);
-
+            
             btnGuardarmat.setText("Editar");
             btnEliminarmat.setEnabled(true);
         }
@@ -3565,6 +3782,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTable Tblmora;
     private javax.swing.JButton btmLimpiarAutor;
     private javax.swing.JToggleButton btnCambiarContra;
+    private javax.swing.JToggleButton btnAbonarMoraEnMora;
     private javax.swing.JButton btnConsultamora;
     private javax.swing.JButton btnDenegarPrestamo;
     private javax.swing.JButton btnEliminarAutor;
@@ -3587,6 +3805,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JButton btnguardarUser;
     private javax.swing.JButton btnlimpiarUser;
     private javax.swing.JButton btnlimpiarmaterial;
+    private javax.swing.JButton btnnuevouser;
     private javax.swing.JComboBox<String> cbxEditorial;
     private javax.swing.JComboBox<String> cbxEstadoMaterialPrestamo;
     private javax.swing.JComboBox<String> cbxTipoMaterialPrestamo;
@@ -3628,7 +3847,6 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField jTfCantdispmat;
     private javax.swing.JTextField jTfCanttotal;
     private javax.swing.JTextField jTfUbimaterial;
-    private javax.swing.JTextField jTfbusqumora;
     private javax.swing.JTextField jTfcorreouser;
     private javax.swing.JTextField jTfiduser;
     private javax.swing.JTextField jTfidusermora;
@@ -3640,7 +3858,6 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JScrollPane jcpTablaEditorial;
     private javax.swing.JScrollPane jcpTablaMaterial;
     private javax.swing.JScrollPane jcpTablaTarifas;
-    private javax.swing.JLabel jlbBusqumora;
     private javax.swing.JLabel jlbpassworduser;
     private javax.swing.JPanel jpAutores;
     private javax.swing.JPanel jpAutoresInterno;
@@ -3660,12 +3877,9 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JLabel lblCantDaniados;
     private javax.swing.JLabel lblCantPrestados;
     private javax.swing.JLabel lblCorreoEnPrestamo;
-    private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblDetallesPrestamo;
     private javax.swing.JLabel lblDetallesPrestamoUsuario;
     private javax.swing.JLabel lblDiasDeRetradoPrestamo;
-    private javax.swing.JLabel lblDuracion;
-    private javax.swing.JLabel lblEditorial;
     private javax.swing.JLabel lblErrorPrestamosUsuario;
     private javax.swing.JLabel lblEstadoPrestamo;
     private javax.swing.JLabel lblFechaDevolucion;
@@ -3678,12 +3892,20 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JLabel lblMisPrestamosUsuario;
     private javax.swing.JLabel lblMoraActualPrestamo;
     private javax.swing.JLabel lblMoraAplicable;
+    private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JLabel lblDiasDeRetrasoMora;
+    private javax.swing.JLabel lblDuracion;
+    private javax.swing.JLabel lblEditorial;
+    private javax.swing.JLabel lblFechaDePrestamoMora;
+    private javax.swing.JLabel lblFechaDevolucionMora;
+    private javax.swing.JLabel lblMoraActualEnMora;
     private javax.swing.JLabel lblNombreAutor;
     private javax.swing.JLabel lblNombreEditorial;
-    private javax.swing.JLabel lblNombreUsuarioEnPrestamo;
     private javax.swing.JLabel lblNumero;
+    private javax.swing.JLabel lblNombreUsuarioEnPrestamo;
     private javax.swing.JLabel lblPaisAutor;
     private javax.swing.JLabel lblPaisEditorial;
+    private javax.swing.JLabel lblPrestamoAdminMora;
     private javax.swing.JLabel lblTarifa;
     private javax.swing.JLabel lblTipoMaterialEnPrestamo;
     private javax.swing.JLabel lblTipoMaterialEnPrestamoUsuario;
@@ -3710,10 +3932,14 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField txtCantDaniados;
     private javax.swing.JTextField txtCantPrestados;
     private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextField txtDiasDeRetrasoMora;
     private javax.swing.JTextField txtDuracion;
+    private javax.swing.JTextField txtFechaDevolucionEnMora;
+    private javax.swing.JTextField txtFechaPrestamoEnMora;
     private javax.swing.JTextField txtFechaPublicacion;
     private javax.swing.JTextField txtFormato;
     private javax.swing.JTextField txtISBN;
+    private javax.swing.JTextField txtMoraActualEnMora;
     private javax.swing.JTextField txtCorreoEnPrestamo;
     private javax.swing.JTextField txtDiasRetrasoPrestamo;
     private javax.swing.JTextField txtEstadoPrestamo;
@@ -3735,5 +3961,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField txtTituloMaterialEnPrestamoUsuario;
     private javax.swing.JTextField txtUbicacionEnPrestamo;
     private javax.swing.JTextField txtVolumen;
+    private javax.swing.JTextField jTfbusqumora;
+    private javax.swing.JLabel jlbBusqumora;
     // End of variables declaration//GEN-END:variables
 }
