@@ -89,7 +89,7 @@ CREATE TABLE otros_documentos
 CREATE TABLE moras
 (
     id_mora       INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_inicio  DATE,
+    anio_aplicable YEAR,
     tipo_usuario  ENUM('Profesor','Alumno'),
     tarifa_diaria DECIMAL(6, 2) DEFAULT 0.00
 );
@@ -102,9 +102,10 @@ CREATE TABLE prestamos
     id_mora          INT,
     mora_total       DECIMAL(6, 2),
     fecha_prestamo   DATE NOT NULL,
+    fecha_estimada   DATE,
     fecha_devolucion DATE,
-    estado           ENUM ('Pendiente','En curso','Devuelto','Denegado'),
+    estado           ENUM ('Pendiente','En_Curso','Devuelto','Denegado'),
     FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario),
     FOREIGN KEY (id_material) REFERENCES materiales (id_material),
-    foreign key (id_mora) references moras (id_mora)
+    FOREIGN KEY (id_mora) REFERENCES moras (id_mora)
 );

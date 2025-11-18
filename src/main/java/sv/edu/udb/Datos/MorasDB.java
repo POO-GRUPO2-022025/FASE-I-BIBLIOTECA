@@ -6,29 +6,28 @@ import sv.edu.udb.clases.Usuarios;
 import javax.swing.table.DefaultTableModel;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.time.LocalDate;
+import java.time.Year;
 
 public class MorasDB {
-    private final String SQL_INSERT = "INSERT INTO moras(fecha_inicio,tipo_usuario,tarifa_diaria) VALUES (?,?,?)";
-    private final String SQL_UPDATE = "UPDATE moras SET fecha_inicio =?,tipo_usuario =?,tarifa_diaria =? WHERE id_mora = ?\n";
+    private final String SQL_INSERT = "INSERT INTO moras(anio_aplicable,tipo_usuario,tarifa_diaria) VALUES (?,?,?)";
+    private final String SQL_UPDATE = "UPDATE moras SET anio_aplicable =?,tipo_usuario =?,tarifa_diaria =? WHERE id_mora = ?\n";
     private final String SQL_DELETE = "DELETE FROM moras WHERE id_mora = ?";
-    private final String SQL_SELECT = "SELECT id_mora, fecha_inicio, tipo_usuario, tarifa_diaria FROM moras WHERE id_mora = ?";
-    private final String SQL_SELECT_ALL = "SELECT id_mora, fecha_inicio, tipo_usuario, tarifa_diaria FROM moras ORDER BY id_mora";
+    private final String SQL_SELECT = "SELECT id_mora, anio_aplicable, tipo_usuario, tarifa_diaria FROM moras WHERE id_mora = ?";
+    private final String SQL_SELECT_ALL = "SELECT id_mora, anio_aplicable, tipo_usuario, tarifa_diaria FROM moras ORDER BY id_mora";
 
-    public Mora insert(LocalDate fechaInicio, Usuarios.TipoUsuario tipoUsuario,
-                       BigDecimal taridaDiaria) {
+    public Mora insert(int anioAplicable, Usuarios.TipoUsuario tipoUsuario,
+                       BigDecimal tarifaDiaria) {
         Connection conn = null;
         PreparedStatement stmt = null;
-        ResultSet IdGenerado = null;
         ResultSet rs = null;
         Mora moraNueva = null;
 
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-            stmt.setDate(1, Date.valueOf(fechaInicio));
+            stmt.setInt(1, anioAplicable);
             stmt.setString(2, tipoUsuario.toString());
-            stmt.setBigDecimal(3, taridaDiaria);
+            stmt.setBigDecimal(3, tarifaDiaria);
             stmt.executeUpdate();
             rs = stmt.getGeneratedKeys();
 
@@ -57,7 +56,7 @@ public class MorasDB {
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL_UPDATE);
-            stmt.setDate(1, Date.valueOf(moraUpdate.getFechaInicio()));
+            stmt.setInt(1, moraUpdate.getanio_aplicable());
             stmt.setString(2, moraUpdate.getTipoUsuario().toString());
             stmt.setBigDecimal(3, moraUpdate.getTarifaDiaria());
             stmt.setInt(4, moraUpdate.getIdMora());
@@ -89,7 +88,8 @@ public class MorasDB {
             retorno = filas > 0;
 
         }catch (SQLException | ClassNotFoundException e) { //Proceso para capturar errores y manda un mensaje
-            throw new RuntimeException("Error al actualizar mora", e);
+
+            System.out.println(e.getMessage());
         } finally {
             //Cierre de todos los recursos
             Conexion.close(stmt);
@@ -115,7 +115,7 @@ public class MorasDB {
             if (rs.next()) {
                 mora = new Mora();
                 mora.setIdMora(rs.getInt(1));
-                mora.setFechaInicio(Date.valueOf(rs.getDate("fecha_inicio").toLocalDate()).toLocalDate());
+                mora.setanio_aplicable(rs.getInt("anio_aplicable"));
                 mora.setTipoUsuario(Usuarios.TipoUsuario.valueOf(rs.getString("tipo_usuario")));
                 mora.setTarifaDiaria(rs.getBigDecimal("tarifa_diaria"));
             }
@@ -166,6 +166,36 @@ public class MorasDB {
         }
         
         return dtm;
+    }
+
+    public int getIdMoraPorTipoUsuario(Usuarios.TipoUsuario tipoUsuario, int anio_prestamo) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        int idMora = 0;
+
+        String SQL_SELECT_BY_TIPO = "SELECT id_mora FROM moras WHERE tipo_usuario = ? AND anio_aplicable = ? LIMIT 1";
+
+        try {
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_SELECT_BY_TIPO);
+            stmt.setString(1, tipoUsuario.toString());
+            stmt.setInt(2, anio_prestamo);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                idMora = rs.getInt("id_mora");
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al consultar ID de mora por tipo de usuario", e);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return idMora;
     }
 
 }
