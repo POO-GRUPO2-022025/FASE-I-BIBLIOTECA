@@ -2529,7 +2529,9 @@ public class Biblioteca extends javax.swing.JFrame {
                     "Tarifa guardada correctamente",
                     "Éxito",
                     javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            }            else {
+                    actualizarTablaTarifas();
+                    limpiarFormularioTarifas();
+            } else {
                 javax.swing.JOptionPane.showMessageDialog(this,
                     "Error al guardar la tarifa",
                     "Error",
@@ -2556,6 +2558,9 @@ public class Biblioteca extends javax.swing.JFrame {
                     "Tarifa actualizada correctamente",
                     "Éxito",
                     javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    actualizarTablaTarifas();
+                    limpiarFormularioTarifas();
+
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this,
                     "Error al actualizar la tarifa",
@@ -3359,89 +3364,6 @@ public class Biblioteca extends javax.swing.JFrame {
         
     }// GEN-LAST:event_btnGuardarEditorialActionPerformed
 
-    // BOTON EDITAR
-    private void btnEdituserActionPerformed(java.awt.event.ActionEvent evt) {
-
-        String id = jTfiduser.getText().trim();
-        if (id.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Debe ingresar o buscar un usuario antes de editar.",
-                    "Aviso",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String nombre = jTfnombreuser.getText().trim();
-        String correo = jTfcorreouser.getText().trim();
-        String password = jTfpassworduser.getText().trim();
-
-        String tipo = "";
-        for (java.awt.Component c : jPusuarios.getComponents()) {
-            if (c instanceof javax.swing.JComboBox) {
-                Object sel = ((javax.swing.JComboBox<?>) c).getSelectedItem();
-                tipo = sel == null ? "" : sel.toString();
-                break;
-            }
-        }
-
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tbluser.getModel();
-
-        boolean encontrado = false;
-
-        for (int i = 0; i < model.getRowCount(); i++) {
-            Object existingID = model.getValueAt(i, 0);
-            if (existingID != null && id.equalsIgnoreCase(existingID.toString())) {
-
-                model.setValueAt(nombre, i, 1);
-                model.setValueAt(tipo, i, 2);
-                model.setValueAt(correo, i, 3);
-                if (model.getColumnCount() > 4) {
-                    model.setValueAt(password, i, 4);
-                }
-
-                tbluser.setRowSelectionInterval(i, i);
-                encontrado = true;
-                break;
-            }
-        }
-
-        if (encontrado) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    " Usuario actualizado correctamente.",
-                    "Éxito",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-            jTfiduser.setText("");
-            jTfnombreuser.setText("");
-            jTfcorreouser.setText("");
-            jTfpassworduser.setText("");
-
-            for (java.awt.Component c : jPusuarios.getComponents()) {
-                if (c instanceof javax.swing.JComboBox) {
-                    ((javax.swing.JComboBox<?>) c).setSelectedIndex(0);
-                    break;
-                }
-            }
-
-            jTfiduser.setEnabled(true);
-
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "No se encontró ningún usuario con ese ID para editar.",
-                    "Error",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
-    } // BOTON DE REGISTRAR PRESTAMO
-
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Biblioteca().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar Administracion;
     private javax.swing.JLabel JlbBusquedaUser;
@@ -3475,9 +3397,6 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbxTipoMaterialPrestamo;
     private javax.swing.JComboBox<String> cbxTipoMaterialPrestamoUsuario;
     private javax.swing.JComboBox<String> cbxTipoUsuarioTarifas;
-    private javax.swing.JButton btnregdev;
-    private javax.swing.JButton btnregprest;
-    private javax.swing.JComboBox<String> cbxEditorial;
     private javax.swing.JComboBox<String> cbxtipomaterial;
     private javax.swing.JCheckBox checkConMora;
     private javax.swing.JButton jButton1;
@@ -3545,12 +3464,6 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JLabel lblAutores;
     private javax.swing.JLabel lblCantDaniados;
     private javax.swing.JLabel lblCantPrestados;
-    private javax.swing.JLabel lblDescripcion;
-    private javax.swing.JLabel lblDuracion;
-    private javax.swing.JLabel lblEditorial;
-    private javax.swing.JLabel lblFechaPublicacion;
-    private javax.swing.JLabel lblFormato;
-    private javax.swing.JLabel lblISBN;
     private javax.swing.JLabel lblCorreoEnPrestamo;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblDetallesPrestamo;
@@ -3572,13 +3485,10 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JLabel lblMoraAplicable;
     private javax.swing.JLabel lblNombreAutor;
     private javax.swing.JLabel lblNombreEditorial;
-    private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblNombreUsuarioEnPrestamo;
     private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblPaisAutor;
     private javax.swing.JLabel lblPaisEditorial;
-    private javax.swing.JLabel lblVolumen;
-    private javax.swing.JList<String> lstAutores;
     private javax.swing.JLabel lblTarifa;
     private javax.swing.JLabel lblTipoMaterialEnPrestamo;
     private javax.swing.JLabel lblTipoMaterialEnPrestamoUsuario;
@@ -3610,22 +3520,16 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField txtFormato;
     private javax.swing.JTextField txtISBN;
     private javax.swing.JTextField txtCorreoEnPrestamo;
-    private javax.swing.JTextArea txtDescripcion;
     private javax.swing.JTextField txtDiasRetrasoPrestamo;
-    private javax.swing.JTextField txtDuracion;
     private javax.swing.JTextField txtEstadoPrestamo;
     private javax.swing.JTextField txtFechaDevolucionPrestamo;
     private javax.swing.JTextField txtFechaPrestamo;
-    private javax.swing.JTextField txtFechaPublicacion;
-    private javax.swing.JTextField txtFormato;
-    private javax.swing.JTextField txtISBN;
     private javax.swing.JTextField txtMoraActualPrestamo;
     private javax.swing.JTextField txtMoraAplicablePrestamo;
     private javax.swing.JTextField txtNombreAutor;
     private javax.swing.JTextField txtNombreEditorial;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtNombreUsuarioEnPrestamo;
-    private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtPaisAutor;
     private javax.swing.JTextField txtPaisEditorial;
     private javax.swing.JTextField txtTarifa;
