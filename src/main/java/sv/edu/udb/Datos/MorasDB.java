@@ -13,10 +13,12 @@ public class MorasDB {
     private final String SQL_UPDATE = "UPDATE moras SET fecha_inicio =?,tipo_usuario =?,tarifa_diaria =? WHERE id_mora = ?\n";
     private final String SQL_DELETE = "DELETE FROM moras WHERE id_mora = ?";
     private final String SQL_SELECT = "SELECT id_mora, fecha_inicio, tipo_usuario, tarifa_diaria FROM moras WHERE id_mora = ?";
-    private final String SQL_SELECT_ALL = "SELECT id_mora, fecha_inicio, tipo_usuario, tarifa_diaria FROM moras ORDER BY id_mora";
+    private final String SQL_SELECT_ALL = "SELECT id_mora,fecha_inicio,tipo_usuario,tarifa_diaria FROM moras ORDER BY id_mora";
+    private final String SQL_SELECT_BY_TIPO = "SELECT id_mora, fecha_inicio, tipo_usuario, tarifa_diaria " +  
+    "FROM moras WHERE tipo_usuario = ?";
 
     public Mora insert(LocalDate fechaInicio, Usuarios.TipoUsuario tipoUsuario,
-                       BigDecimal taridaDiaria) {
+                       BigDecimal tarifaDiaria) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet IdGenerado = null;
@@ -28,7 +30,7 @@ public class MorasDB {
             stmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
             stmt.setDate(1, Date.valueOf(fechaInicio));
             stmt.setString(2, tipoUsuario.toString());
-            stmt.setBigDecimal(3, taridaDiaria);
+            stmt.setBigDecimal(3, tarifaDiaria);
             stmt.executeUpdate();
             rs = stmt.getGeneratedKeys();
 
@@ -99,6 +101,8 @@ public class MorasDB {
         
 
     }
+    
+    
 
     public Mora select(int idMora){
 
@@ -166,7 +170,36 @@ public class MorasDB {
         }
         
         return dtm;
+    }    
+    
+    
+     
+  public Mora selectByTipoUsuario(Usuarios.TipoUsuario tipoUsuario) {
+    Mora mora = null;
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement stmt = conn.prepareStatement(SQL_SELECT_BY_TIPO)) {
+
+        stmt.setString(1, tipoUsuario.toString());
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                mora = new Mora();
+                mora.setIdMora(rs.getInt("id_mora"));
+                mora.setFechaInicio(rs.getDate("fecha_inicio").toLocalDate());
+                mora.setTipoUsuario(
+                    Usuarios.TipoUsuario.valueOf(rs.getString("tipo_usuario"))
+                );
+                mora.setTarifaDiaria(rs.getBigDecimal("tarifa_diaria"));
+            }
+        }
+    } catch (SQLException | ClassNotFoundException e) {
+        e.printStackTrace();
     }
 
+    return mora;
 }
+}
+
+
 
