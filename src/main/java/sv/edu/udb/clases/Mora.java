@@ -1,23 +1,21 @@
 package sv.edu.udb.clases;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.LocalDate;
 
 public class Mora {
 
     private int idMora;
-    private LocalDate fechaInicio;
+    private int anio_aplicable;
     private Usuarios.TipoUsuario tipoUsuario;
     private BigDecimal tarifaDiaria;
 
     public Mora() {}
 
-    public Mora(int idMora, LocalDate fechaInicio, Usuarios.TipoUsuario tipoUsuario,
+    public Mora(int idMora, int anio_aplicable, Usuarios.TipoUsuario tipoUsuario,
                 BigDecimal tarifaDiaria) {
 
         this.idMora = idMora;
-        this.fechaInicio = fechaInicio;
+        this.anio_aplicable = anio_aplicable;
         this.tipoUsuario = tipoUsuario;
         this.tarifaDiaria = tarifaDiaria;
     }
@@ -30,12 +28,12 @@ public class Mora {
         this.idMora = idMora;
     }
 
-    public LocalDate getFechaInicio() {
-        return fechaInicio;
+    public int getanio_aplicable() {
+        return anio_aplicable;
     }
 
-    public void setFechaInicio(LocalDate fechaInicio) {
-        this.fechaInicio = fechaInicio;
+    public void setanio_aplicable(int anio_aplicable) {
+        this.anio_aplicable = anio_aplicable;
     }
 
     public Usuarios.TipoUsuario getTipoUsuario() {

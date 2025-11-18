@@ -89,7 +89,7 @@ CREATE TABLE otros_documentos
 CREATE TABLE moras
 (
     id_mora       INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_inicio  DATE,
+    anio_aplicable YEAR,
     tipo_usuario  ENUM('Profesor','Alumno'),
     tarifa_diaria DECIMAL(6, 2) DEFAULT 0.00
 );

@@ -2,6 +2,7 @@ package sv.edu.udb.vistas.biblioteca;
 
 import java.awt.event.ActionEvent;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private int idUsuarioSeleccionado = 0;
     private int idAutorSeleccionado = 0;
     private int idPrestamoSeleccionado = 0;
+    private int idTarifaSeleccionada = 0;
     private int idUsuarioActual = 1; // ID del usuario que inició sesión (temporal, cambiar según login)
 
     public Biblioteca() {
@@ -52,6 +54,7 @@ public class Biblioteca extends javax.swing.JFrame {
         cargarListaAutores();
         actualizarTablaUsuario();
         actualizarMisPrestamos();
+        
     }
 
     private void actualizarMisPrestamos(){
@@ -123,6 +126,16 @@ public class Biblioteca extends javax.swing.JFrame {
         idMaterialSeleccionado = 0;
         cbxtipomaterial.setSelectedIndex(-1);
         actualizarTablaMateriales();
+    }
+
+    private void limpiarFormularioTarifas() {
+        txtAnioAplicable.setText("");
+        txtTarifa.setText("");
+        cbxTipoUsuarioTarifas.setSelectedIndex(-1);
+        btnGuardarTarifa.setText("Guardar");
+        btnEliminarTarifa.setEnabled(false);
+        idTarifaSeleccionada = 0;
+        actualizarTablaTarifas();
     }
 
     private void limpiarFormularioPrestamoUsuario(){
@@ -250,6 +263,10 @@ public class Biblioteca extends javax.swing.JFrame {
         cargarListaAutores();
     }
 
+    private void actualizarTablaTarifas() {
+        tblTarifas.setModel(morasDB.selectMoras());
+    }
+
     private void actualizarTablaUsuario() {
         tbluser.setModel(UsuariosDB.selectUsuarios());
     }
@@ -370,6 +387,19 @@ public class Biblioteca extends javax.swing.JFrame {
         jTfnombremora = new javax.swing.JTextField();
         jTfbusqumora = new javax.swing.JTextField();
         jlbBusqumora = new javax.swing.JLabel();
+        jpTarifas = new javax.swing.JPanel();
+        jpTarifasInterno = new javax.swing.JPanel();
+        txtAnioAplicable = new javax.swing.JTextField();
+        txtTarifa = new javax.swing.JTextField();
+        lblAnioAplicable = new javax.swing.JLabel();
+        lblTarifa = new javax.swing.JLabel();
+        btnGuardarTarifa = new javax.swing.JButton();
+        btnEliminarTarifa = new javax.swing.JButton();
+        btnLimpiarFormularioTarifas = new javax.swing.JButton();
+        lnlTipoUsuarioTarifa = new javax.swing.JLabel();
+        cbxTipoUsuarioTarifas = new javax.swing.JComboBox<>();
+        jcpTablaTarifas = new javax.swing.JScrollPane();
+        tblTarifas = new javax.swing.JTable();
         jPanelprestamo = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tblPrestamo = new javax.swing.JTable();
@@ -502,13 +532,13 @@ public class Biblioteca extends javax.swing.JFrame {
                     .addComponent(lblNombreEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGuardarEditorial, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jpEditorialinternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jpEditorialinternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jpEditorialinternoLayout.createSequentialGroup()
                         .addComponent(btnEliminarEditorial)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnLimpiarEditorial))
-                    .addComponent(txtNombreEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPaisEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombreEditorial, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPaisEditorial, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
         jpEditorialinternoLayout.setVerticalGroup(
@@ -1261,6 +1291,130 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jtbprestamos.addTab("Mora ", jPanelmora);
 
+        jpTarifasInterno.setBackground(new java.awt.Color(0, 102, 204));
+
+        txtTarifa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTarifaActionPerformed(evt);
+            }
+        });
+
+        lblAnioAplicable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblAnioAplicable.setText("Año Aplicable:");
+
+        lblTarifa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTarifa.setText("Tarifa Diaria:");
+
+        btnGuardarTarifa.setText("Guardar");
+        btnGuardarTarifa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarTarifaActionPerformed(evt);
+            }
+        });
+
+        btnEliminarTarifa.setText("Eliminar");
+        btnEliminarTarifa.setEnabled(false);
+        btnEliminarTarifa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarTarifaActionPerformed(evt);
+            }
+        });
+
+        btnLimpiarFormularioTarifas.setText("Limpiar");
+        btnLimpiarFormularioTarifas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarFormularioTarifasActionPerformed(evt);
+            }
+        });
+
+        lnlTipoUsuarioTarifa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lnlTipoUsuarioTarifa.setText("Tipo Usuario:");
+
+        cbxTipoUsuarioTarifas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alumno", "Profesor" }));
+        cbxTipoUsuarioTarifas.setSelectedIndex(-1);
+
+        javax.swing.GroupLayout jpTarifasInternoLayout = new javax.swing.GroupLayout(jpTarifasInterno);
+        jpTarifasInterno.setLayout(jpTarifasInternoLayout);
+        jpTarifasInternoLayout.setHorizontalGroup(
+            jpTarifasInternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpTarifasInternoLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(jpTarifasInternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lnlTipoUsuarioTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpTarifasInternoLayout.createSequentialGroup()
+                        .addGroup(jpTarifasInternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblAnioAplicable, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGuardarTarifa, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jpTarifasInternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jpTarifasInternoLayout.createSequentialGroup()
+                                .addComponent(btnEliminarTarifa)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLimpiarFormularioTarifas))
+                            .addComponent(txtAnioAplicable, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTarifa, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbxTipoUsuarioTarifas, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(11, Short.MAX_VALUE))
+        );
+        jpTarifasInternoLayout.setVerticalGroup(
+            jpTarifasInternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpTarifasInternoLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jpTarifasInternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAnioAplicable, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAnioAplicable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpTarifasInternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lnlTipoUsuarioTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxTipoUsuarioTarifas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(jpTarifasInternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTarifa)
+                    .addComponent(txtTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jpTarifasInternoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardarTarifa)
+                    .addComponent(btnEliminarTarifa)
+                    .addComponent(btnLimpiarFormularioTarifas))
+                .addContainerGap(323, Short.MAX_VALUE))
+        );
+
+        tblTarifas.setModel(morasDB.selectMoras()
+        );
+        tblTarifas.setEnabled(false);
+        tblTarifas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTarifasMouseClicked(evt);
+            }
+        });
+        jcpTablaTarifas.setViewportView(tblTarifas);
+
+        javax.swing.GroupLayout jpTarifasLayout = new javax.swing.GroupLayout(jpTarifas);
+        jpTarifas.setLayout(jpTarifasLayout);
+        jpTarifasLayout.setHorizontalGroup(
+            jpTarifasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpTarifasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jpTarifasInterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jcpTablaTarifas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(543, Short.MAX_VALUE))
+        );
+        jpTarifasLayout.setVerticalGroup(
+            jpTarifasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpTarifasLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jpTarifasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpTarifasInterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpTarifasLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jcpTablaTarifas, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(92, 92, 92))
+        );
+
+        jtbprestamos.addTab("Admin Tarifas", jpTarifas);
+
         jPanelprestamo.setBackground(new java.awt.Color(255, 255, 255));
 
         tblPrestamo.setModel(prestamosDB.selectPrestamosDetallado());
@@ -1270,6 +1424,11 @@ public class Biblioteca extends javax.swing.JFrame {
             }
         });
         jScrollPane7.setViewportView(tblPrestamo);
+        if (tblPrestamo.getColumnModel().getColumnCount() > 0) {
+            tblPrestamo.getColumnModel().getColumn(5).setHeaderValue("Fecha de Devolución");
+            tblPrestamo.getColumnModel().getColumn(6).setHeaderValue("Estado");
+        }
+
         jPprestamos.setBackground(new java.awt.Color(0, 102, 204));
 
         lblFiltrosPrestamo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -1620,7 +1779,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
         lblErrorPrestamosUsuario.setBackground(new java.awt.Color(255, 255, 255));
         lblErrorPrestamosUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblErrorPrestamosUsuario.setForeground(new java.awt.Color(153, 0, 0));
+        lblErrorPrestamosUsuario.setForeground(new java.awt.Color(255, 255, 255));
         lblErrorPrestamosUsuario.setText("Posee prestamos pendientes. No es posible solicitar un nuevo prestamo");
         lblErrorPrestamosUsuario.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
@@ -2184,7 +2343,7 @@ public class Biblioteca extends javax.swing.JFrame {
                 nuevoPrestamo.setIdUsuario(idUsuarioActual);
                 nuevoPrestamo.setIdMaterial(idMaterialSeleccionado);
                 nuevoPrestamo.setFechaPrestamo(new java.sql.Date(System.currentTimeMillis()));
-                nuevoPrestamo.setIdMora(morasDB.getIdMoraPorTipoUsuario(Usuarios.TipoUsuario.Alumno)); // TODO: Ajustar usando objeto usuario
+                nuevoPrestamo.setIdMora(morasDB.getIdMoraPorTipoUsuario(Usuarios.TipoUsuario.Alumno, Year.now().getValue())); // TODO: Ajustar usando objeto usuario
                 nuevoPrestamo.setEstado(Prestamo.Estado.Pendiente);
                 nuevoPrestamo.setMoraTotal(java.math.BigDecimal.ZERO);
 
@@ -2221,6 +2380,155 @@ public class Biblioteca extends javax.swing.JFrame {
         DefaultTableModel modeloFiltrado = materialesDB.selectMaterialesFiltrado(tipoMaterial, tituloMaterial);
         tblMaterialesPrestamoUsuario.setModel(modeloFiltrado);
     }//GEN-LAST:event_btnFiltrarPrestamoUsuarioActionPerformed
+
+    private void txtTarifaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTarifaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTarifaActionPerformed
+
+    private void btnGuardarTarifaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarTarifaActionPerformed
+        String anioStr = txtAnioAplicable.getText().trim();
+        String tipoUsuarioStr = (String) cbxTipoUsuarioTarifas.getSelectedItem();
+        String tarifaStr = txtTarifa.getText().trim();
+
+        if (anioStr.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "El año aplicable es obligatorio", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int anioAplicable;
+        try {
+            anioAplicable = Integer.parseInt(anioStr);
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "El año aplicable debe ser un número", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (tarifaStr.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "La tarifa es obligatoria", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        java.math.BigDecimal tarifa;
+        try {
+            tarifa = new java.math.BigDecimal(tarifaStr);
+            if (tarifa.compareTo(java.math.BigDecimal.ZERO) < 0) {
+                throw new NumberFormatException("Tarifa negativa");
+            }
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "La tarifa debe ser un número válido mayor o igual a cero", 
+                "Error de validación", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Usuarios.TipoUsuario tipoUsuario = Usuarios.TipoUsuario.valueOf(tipoUsuarioStr);
+
+        if (btnGuardarTarifa.getText().equals("Guardar")) {
+            Mora resultado = morasDB.insert( anioAplicable, tipoUsuario, tarifa);
+
+            if (resultado != null) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Tarifa guardada correctamente", 
+                    "Éxito", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            }            else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error al guardar la tarifa", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            Mora tarifaExistente = morasDB.select(idTarifaSeleccionada);
+            if (tarifaExistente == null) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "No se encontró la tarifa seleccionada", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            tarifaExistente.setanio_aplicable(anioAplicable);
+            tarifaExistente.setTipoUsuario(tipoUsuario);
+            tarifaExistente.setTarifaDiaria(tarifa);
+
+            boolean resultado = morasDB.update(tarifaExistente);
+
+            if (resultado) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Tarifa actualizada correctamente", 
+                    "Éxito", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error al actualizar la tarifa", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnGuardarTarifaActionPerformed
+
+    private void btnEliminarTarifaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTarifaActionPerformed
+        if (idTarifaSeleccionada == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Debe seleccionar una tarifa para eliminar",
+                "Error de validación",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this,
+            "¿Está seguro que desea eliminar esta tarifa?",
+            "Confirmar eliminación",
+            javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+
+            boolean resultado = morasDB.delete(idTarifaSeleccionada);
+
+            if (resultado) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "Tarifa eliminada correctamente",
+                    "Éxito",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                limpiarFormularioTarifas();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "Error al eliminar la tarifa\nPosiblemente está en uso por préstamos existentes",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarTarifaActionPerformed
+
+    private void btnLimpiarFormularioTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarFormularioTarifasActionPerformed
+        limpiarFormularioTarifas();
+    }//GEN-LAST:event_btnLimpiarFormularioTarifasActionPerformed
+
+    private void tblTarifasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTarifasMouseClicked
+        int fila = tblTarifas.rowAtPoint(evt.getPoint());
+        int columna = tblTarifas.columnAtPoint(evt.getPoint());
+
+        if ((fila > -1) && (columna > -1)){
+            DefaultTableModel modelo = (DefaultTableModel) tblTarifas.getModel();
+            idTarifaSeleccionada = Integer.parseInt(modelo.getValueAt(fila,0).toString());
+            txtAnioAplicable.setText(modelo.getValueAt(fila,1).toString());
+            cbxTipoUsuarioTarifas.setSelectedItem(modelo.getValueAt(fila,2).toString());
+            txtTarifa.setText(modelo.getValueAt(fila,3).toString());
+            btnGuardarTarifa.setText("Editar");
+            btnEliminarTarifa.setEnabled(true);
+        }
+
+    }//GEN-LAST:event_tblTarifasMouseClicked
     
     // Aprueba un préstamo pendiente y lo pone en curso
     private void aprobarPrestamo(Prestamo prestamo) {
@@ -3056,15 +3364,18 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JButton btnEdituser;
     private javax.swing.JButton btnEliminarAutor;
     private javax.swing.JButton btnEliminarEditorial;
+    private javax.swing.JButton btnEliminarTarifa;
     private javax.swing.JButton btnEliminarmat;
     private javax.swing.JButton btnFiltrarPrestamo;
     private javax.swing.JButton btnFiltrarPrestamoUsuario;
     private javax.swing.JButton btnGuardarAutor;
     private javax.swing.JButton btnGuardarEditorial;
+    private javax.swing.JButton btnGuardarTarifa;
     private javax.swing.JButton btnGuardarmat;
     private javax.swing.JButton btnLimpiarEditorial;
     private javax.swing.JButton btnLimpiarFormularioPrestamo;
     private javax.swing.JButton btnLimpiarFormularioPrestamoUsuario;
+    private javax.swing.JButton btnLimpiarFormularioTarifas;
     private javax.swing.JButton btnPrestarDevolverPrestamo;
     private javax.swing.JButton btnSolicitarPrestamoUsuario;
     private javax.swing.JButton btneliminarUser;
@@ -3075,6 +3386,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbxEstadoMaterialPrestamo;
     private javax.swing.JComboBox<String> cbxTipoMaterialPrestamo;
     private javax.swing.JComboBox<String> cbxTipoMaterialPrestamoUsuario;
+    private javax.swing.JComboBox<String> cbxTipoUsuarioTarifas;
     private javax.swing.JComboBox<String> cbxtipomaterial;
     private javax.swing.JCheckBox checkConMora;
     private javax.swing.JInternalFrame jInternalFrame1;
@@ -3120,6 +3432,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JScrollPane jcpTablaAutoresInterno;
     private javax.swing.JScrollPane jcpTablaEditorial;
     private javax.swing.JScrollPane jcpTablaMaterial;
+    private javax.swing.JScrollPane jcpTablaTarifas;
     private javax.swing.JLabel jlbBusqumora;
     private javax.swing.JLabel jlbpassworduser;
     private javax.swing.JPanel jpAutores;
@@ -3128,10 +3441,13 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JPanel jpEditorialinterno;
     private javax.swing.JPanel jpMaterial;
     private javax.swing.JPanel jpPrestamosUsuario;
+    private javax.swing.JPanel jpTarifas;
+    private javax.swing.JPanel jpTarifasInterno;
     private javax.swing.JScrollPane jspPrestamoUsuarioTabla;
     private javax.swing.JScrollPane jspTablaPrestamosUsuario;
     private javax.swing.JTabbedPane jtbprestamos;
     private javax.swing.JLabel lblAccionesPrestamo;
+    private javax.swing.JLabel lblAnioAplicable;
     private javax.swing.JLabel lblApellidosAutor;
     private javax.swing.JLabel lblAutores;
     private javax.swing.JLabel lblCantDaniados;
@@ -3161,6 +3477,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblPaisAutor;
     private javax.swing.JLabel lblPaisEditorial;
+    private javax.swing.JLabel lblTarifa;
     private javax.swing.JLabel lblTipoMaterialEnPrestamo;
     private javax.swing.JLabel lblTipoMaterialEnPrestamoUsuario;
     private javax.swing.JLabel lblTipoMaterialPrestamo;
@@ -3171,14 +3488,17 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JLabel lblUbicacionMaterialEnPrestamo;
     private javax.swing.JLabel lblVolumen;
     private javax.swing.JLabel lblcbxEstadoPrestamo;
+    private javax.swing.JLabel lnlTipoUsuarioTarifa;
     private javax.swing.JList<String> lstAutores;
     private javax.swing.JTable tblAutor;
     private javax.swing.JTable tblEditorial;
     private javax.swing.JTable tblMaterialesPrestamoUsuario;
     private javax.swing.JTable tblPrestamo;
     private javax.swing.JTable tblPrestamosUsuario;
+    private javax.swing.JTable tblTarifas;
     private javax.swing.JTable tblmaterial;
     private javax.swing.JTable tbluser;
+    private javax.swing.JTextField txtAnioAplicable;
     private javax.swing.JTextField txtApellidosAutor;
     private javax.swing.JTextField txtCantDaniados;
     private javax.swing.JTextField txtCantPrestados;
@@ -3200,6 +3520,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtPaisAutor;
     private javax.swing.JTextField txtPaisEditorial;
+    private javax.swing.JTextField txtTarifa;
     private javax.swing.JTextField txtTipoMaterialEnPrestamo;
     private javax.swing.JTextField txtTipoMaterialEnPrestamoUsuario;
     private javax.swing.JTextField txtTituloFiltroPrestamoUsuario;
