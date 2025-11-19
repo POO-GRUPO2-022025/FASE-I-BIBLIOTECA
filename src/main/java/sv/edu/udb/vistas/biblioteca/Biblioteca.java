@@ -2160,7 +2160,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
     private void btnGuardarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarAutorActionPerformed
         String nombre = txtNombreAutor.getText().trim();
-        String apellidos = txtNombreAutor.getText().trim();
+        String apellidos = txtApellidosAutor.getText().trim();
         String pais = txtPaisAutor.getText().trim();
 
         if (nombre.isEmpty()) {
