@@ -5,6 +5,8 @@ import sv.edu.udb.clases.Usuarios;
 import sv.edu.udb.vistas.biblioteca.Biblioteca;
 
 import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
+import java.awt.Image;
 
 
 /**
@@ -19,8 +21,12 @@ public class INICIO extends javax.swing.JFrame {
     public INICIO() {
         initComponents();
         setLocationRelativeTo(null);
-
-
+        
+        // Escalar la imagen del logo para que se ajuste al JLabel
+        ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/interfazInicio/UDB_horizontal22.png"));
+        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(380, 200, Image.SCALE_SMOOTH);
+        icoLog.setIcon(new ImageIcon(imagenEscalada));
+        icoLog.setText(""); // Limpiar el texto del label
 
     }
 
@@ -161,8 +167,8 @@ public class INICIO extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
-                                .addComponent(icoLog, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(104, 104, 104))
+                                .addComponent(icoLog, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(80, 80, 80))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
                                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lblBiblio, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -191,7 +197,7 @@ public class INICIO extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(bgLayout.createSequentialGroup()
                 .addGap(68, 68, 68)
-                .addComponent(icoLog, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(icoLog, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblBiblio)
                 .addGap(38, 38, 38)
